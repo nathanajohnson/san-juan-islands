@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="An interactive exploration of the San Juan Islands — history, geography, wildlife, ecology, and the orcas of the Salish Sea." />
+  <title>San Juan Islands — An Interactive Exploration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Skip link -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Progress bar -->
+  <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Reading progress"></div>
+
+  <!-- Navigation -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a href="#hero" class="logo" aria-label="San Juan Islands home">
+        <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 22c3-4 6-2 9-5s5-1 8-4 5 1 7 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M6 26c4-2 8 0 12-2s7 0 10-2 6 1 8 2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5" stroke-linecap="round"/>
+          <circle cx="28" cy="12" r="2" fill="currentColor" opacity=".7"/>
+        </svg>
+        <span class="logo-text">San Juan Islands</span>
+      </a>
+      <nav class="main-nav" id="main-nav" aria-label="Primary">
+        <a href="#map" data-nav="map">Map</a>
+        <a href="#history" data-nav="history">History</a>
+        <a href="#whales" data-nav="whales">Whales</a>
+        <a href="#lime-kiln" data-nav="lime-kiln">Lime Kiln</a>
+        <a href="#wildlife" data-nav="wildlife">Wildlife</a>
+        <a href="#ecology" data-nav="ecology">Ecology</a>
+        <a href="#explore" data-nav="explore">Explore</a>
+        <a href="#scavenger" data-nav="scavenger">Hunt</a>
+        <a href="#discover" data-nav="discover">Discover</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="kid-toggle" id="kid-toggle" aria-pressed="false" title="Switch to Kid Mode">
+          <span class="kid-icon" aria-hidden="true">🦊</span>
+          <span class="kid-label">Kid Mode</span>
+        </button>
+        <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="hero" aria-label="Introduction">
+      <div class="hero-canvas" id="hero-canvas" aria-hidden="true"></div>
+      <div class="hero-islands" aria-hidden="true">
+        <svg viewBox="0 0 400 240">
+          <ellipse class="hi-isle" cx="200" cy="140" rx="90" ry="40"/>
+          <ellipse class="hi-isle" cx="100" cy="160" rx="50" ry="22"/>
+          <ellipse class="hi-isle" cx="310" cy="120" rx="70" ry="32"/>
+          <ellipse class="hi-isle" cx="280" cy="180" rx="35" ry="14"/>
+          <g class="hi-orca" transform="translate(80,190)">
+            <ellipse cx="20" cy="0" rx="22" ry="8"/>
+            <path d="M8 -4 L12 -20 L18 -2"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-gradient"></div>
+      <div class="hero-content">
+        <p class="hero-kicker reveal">The Salish Sea · Washington</p>
+        <h1 class="hero-title reveal">
+          <span class="line">An Archipelago of</span>
+          <span class="line italic">Stories &amp; Shores</span>
+        </h1>
+        <p class="hero-lede reveal" data-adult="Four hundred islands. One of the densest bald eagle populations on the continent. Endangered orcas that know these waters by memory. A border nearly redrawn by a pig. Welcome to the San Juan Islands." data-kid="There are more than 400 islands here! Eagles soar overhead, whales swim past, and long ago people almost went to war over a pig. Come explore with us!">
+          Four hundred islands. One of the densest bald eagle populations on the continent. Endangered orcas that know these waters by memory. A border nearly redrawn by a pig. Welcome to the San Juan Islands.
+        </p>
+        <div class="hero-cta reveal">
+          <a href="#map" class="btn btn-primary">Explore the map</a>
+          <a href="#whales" class="btn btn-ghost">Follow the whales</a>
+        </div>
+        <div class="hero-stats reveal">
+          <div class="stat">
+            <span class="stat-num" data-count="400">0</span><span class="stat-plus">+</span>
+            <span class="stat-label">Islands &amp; rocks</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-count="478">0</span>
+            <span class="stat-label">Miles of shoreline</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-count="2407">0</span>
+            <span class="stat-label">ft · Mt. Constitution</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-count="73">0</span>
+            <span class="stat-label">Southern Resident orcas*</span>
+          </div>
+        </div>
+        <p class="hero-footnote reveal">*Approximate census of critically endangered Southern Resident killer whales · Center for Whale Research</p>
+      </div>
+      <button type="button" class="scroll-hint" aria-label="Scroll to continue">
+        <span>Scroll to explore</span>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </section>
+
+    <!-- ==================== MAP ==================== -->
+    <section class="section map-section" id="map">
+      <div class="section-header">
+        <p class="section-kicker">Geography</p>
+        <h2 class="section-title" data-adult="Where land and sea tangle" data-kid="Find the islands!">Where land and sea tangle</h2>
+        <p class="section-lede" data-adult="Nestled in the rain shadow of the Olympics, the San Juans sit between Vancouver Island and mainland Washington — an archipelago of forests, prairies, and tidal labyrinths inside the Salish Sea." data-kid="These islands sit between Canada and Washington. Click any island to learn its secrets!">
+          Nestled in the rain shadow of the Olympics, the San Juans sit between Vancouver Island and mainland Washington — an archipelago of forests, prairies, and tidal labyrinths inside the Salish Sea.
+        </p>
+      </div>
+
+      <div class="map-workspace">
+        <div class="map-toolbar">
+          <div class="map-view-toggle" role="group" aria-label="Map style">
+            <button type="button" class="layer-btn active" data-map-view="live">Live map</button>
+            <button type="button" class="layer-btn" data-map-view="svg">Stylized SVG</button>
+          </div>
+          <div class="map-layers" role="group" aria-label="Map layers">
+            <button type="button" class="layer-btn active" data-layer="islands">Islands</button>
+            <button type="button" class="layer-btn" data-layer="whales">Whale routes</button>
+            <button type="button" class="layer-btn" data-layer="shipping">Shipping</button>
+            <button type="button" class="layer-btn" data-layer="protected">Protected lands</button>
+            <button type="button" class="layer-btn" data-layer="places">Places</button>
+          </div>
+          <div class="map-search">
+            <label class="sr-only" for="island-search">Search islands</label>
+            <input type="search" id="island-search" placeholder="Search islands…" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="map-live-options">
+          <label class="map-check">
+            <input type="checkbox" id="toggle-formline" checked />
+            <span>Formline motif overlay</span>
+          </label>
+          <label class="map-check">
+            <input type="checkbox" id="toggle-sightings" checked />
+            <span>Whale sighting pins</span>
+          </label>
+          <div class="basemap-toggle" role="group" aria-label="Basemap">
+            <button type="button" class="layer-btn active" id="basemap-osm">Accurate map</button>
+            <button type="button" class="layer-btn" id="basemap-google" hidden title="Requires SJI.GOOGLE_MAPS_KEY">Google satellite</button>
+          </div>
+        </div>
+        <p class="map-formline-note" data-adult="The decorative overlay is an abstract formline-inspired motif — an educational homage to Coast Salish design language (ovoids, U-forms, wave lines). It is not a tribal crest, not official Indigenous art, and not affiliated with any Nation." data-kid="The golden shapes on the map are inspired by traditional Northwest Coast art styles — made to honor, not copy, any tribe’s sacred designs.">
+          The decorative overlay is an abstract formline-inspired motif — an educational homage to Coast Salish design language (ovoids, U-forms, wave lines). It is not a tribal crest, not official Indigenous art, and not affiliated with any Nation.
+        </p>
+
+        <div class="map-stage">
+          <div class="map-canvas-stack">
+            <div class="live-map-pane" id="live-map-pane">
+              <div id="leaflet-map" class="leaflet-map" role="application" aria-label="Interactive map of the San Juan Islands"></div>
+              <div id="google-map-embed" class="google-map-embed" hidden></div>
+            </div>
+            <div class="svg-map-pane" id="svg-map-pane" hidden>
+              <div class="map-svg-wrap" id="map-svg-wrap">
+                <!-- SVG map injected by map.js -->
+              </div>
+            </div>
+          </div>
+          <aside class="map-panel" id="map-panel" aria-live="polite">
+            <div class="map-panel-empty">
+              <div class="panel-icon">🗺</div>
+              <h3>Choose an island</h3>
+              <p data-adult="Click any island marker on the live map — or switch to the stylized SVG — to open a field card with people, peaks, and places." data-kid="Tap a green island to open a fun fact card!">
+                Click any island marker on the live map — or switch to the stylized SVG — to open a field card with people, peaks, and places.
+              </p>
+              <ul class="quick-picks">
+                <li><button type="button" data-island="san-juan">San Juan</button></li>
+                <li><button type="button" data-island="orcas">Orcas</button></li>
+                <li><button type="button" data-island="lopez">Lopez</button></li>
+                <li><button type="button" data-island="shaw">Shaw</button></li>
+                <li><button type="button" data-island="sucia">Sucia</button></li>
+              </ul>
+            </div>
+            <div class="map-panel-content" hidden></div>
+          </aside>
+        </div>
+
+        <div class="map-context">
+          <div class="context-card">
+            <h4>Rain shadow</h4>
+            <p data-adult="The Olympic Mountains wring moisture from Pacific storms. Friday Harbor receives roughly half the rain of Seattle — making Garry oak meadows and madrona bluffs possible." data-kid="Mountains steal the rain before it reaches these islands. That means more sunshine!">
+              The Olympic Mountains wring moisture from Pacific storms. Friday Harbor receives roughly half the rain of Seattle — making Garry oak meadows and madrona bluffs possible.
+            </p>
+          </div>
+          <div class="context-card">
+            <h4>Salish Sea</h4>
+            <p data-adult="Recognized by the U.S. (2009) and Canada (2010), the Salish Sea unites Puget Sound, the Strait of Georgia, and the Strait of Juan de Fuca — a single inland sea of shared waters and peoples." data-kid="The Salish Sea is the big body of water around the islands. It has a special name that honors the Coast Salish peoples.">
+              Recognized by the U.S. (2009) and Canada (2010), the Salish Sea unites Puget Sound, the Strait of Georgia, and the Strait of Juan de Fuca — a single inland sea of shared waters and peoples.
+            </p>
+          </div>
+          <div class="context-card">
+            <h4>No bridges</h4>
+            <p data-adult="Everything arrives by ferry, seaplane, or private boat. Washington State Ferries serve Lopez, Shaw, Orcas, and San Juan from Anacortes — the islands’ living arteries." data-kid="You can’t drive a car bridge here. Ferries and seaplanes are how people get around!">
+              Everything arrives by ferry, seaplane, or private boat. Washington State Ferries serve Lopez, Shaw, Orcas, and San Juan from Anacortes — the islands’ living arteries.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== HISTORY ==================== -->
+    <section class="section history-section" id="history">
+      <div class="section-header">
+        <p class="section-kicker">History</p>
+        <h2 class="section-title" data-adult="Deep time to a pig war" data-kid="A war… over a pig?">Deep time to a pig war</h2>
+        <p class="section-lede" data-adult="Coast Salish peoples have lived with these tides for thousands of years. Empires later drew lines through channels they barely knew — until a single shot nearly made history absurd." data-kid="People have lived here for thousands of years. Then two countries almost fought a war because someone shot a pig!">
+          Coast Salish peoples have lived with these tides for thousands of years. Empires later drew lines through channels they barely knew — until a single shot nearly made history absurd.
+        </p>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <div class="timeline-track" aria-hidden="true">
+          <div class="timeline-progress" id="timeline-progress"></div>
+        </div>
+        <div class="timeline-events" id="timeline-events">
+          <!-- Injected by timeline.js -->
+        </div>
+      </div>
+
+      <div class="pig-war" id="pig-war">
+        <div class="pig-war-visual">
+          <div class="pig-illustration" aria-hidden="true">
+            <svg viewBox="0 0 320 200" class="pig-svg">
+              <defs>
+                <linearGradient id="pigGround" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#8b9a6b"/>
+                  <stop offset="100%" stop-color="#5c6b3a"/>
+                </linearGradient>
+              </defs>
+              <ellipse cx="160" cy="175" rx="140" ry="18" fill="url(#pigGround)" opacity=".5"/>
+              <!-- American flag pole -->
+              <rect x="40" y="40" width="4" height="120" fill="#5c4033"/>
+              <rect x="44" y="40" width="40" height="24" fill="#3d5a80"/>
+              <rect x="44" y="48" width="40" height="4" fill="#e8e4d9"/>
+              <rect x="44" y="56" width="40" height="4" fill="#c45c4a"/>
+              <!-- British flag pole -->
+              <rect x="270" y="50" width="4" height="110" fill="#5c4033"/>
+              <rect x="274" y="50" width="36" height="22" fill="#1a3a6b"/>
+              <path d="M274 50 L310 72 M310 50 L274 72" stroke="#e8e4d9" stroke-width="2"/>
+              <path d="M292 50 V72 M274 61 H310" stroke="#c45c4a" stroke-width="2.5"/>
+              <!-- Pig -->
+              <g class="pig-body" transform="translate(140,100)">
+                <ellipse cx="20" cy="30" rx="36" ry="22" fill="#e8a0a8"/>
+                <ellipse cx="-10" cy="28" rx="14" ry="12" fill="#e8a0a8"/>
+                <circle cx="-16" cy="24" r="3" fill="#2a2a2a"/>
+                <ellipse cx="-20" cy="32" rx="6" ry="4" fill="#d08088"/>
+                <ellipse cx="8" cy="50" rx="5" ry="8" fill="#e8a0a8"/>
+                <ellipse cx="32" cy="50" rx="5" ry="8" fill="#e8a0a8"/>
+                <path d="M50 25 Q60 10 55 5" fill="none" stroke="#e8a0a8" stroke-width="6" stroke-linecap="round"/>
+                <circle cx="55" cy="5" r="5" fill="#e8a0a8"/>
+              </g>
+              <!-- Farmer silhouette -->
+              <g transform="translate(90,90)" opacity=".7">
+                <circle cx="0" cy="0" r="10" fill="#2c3e50"/>
+                <rect x="-8" y="10" width="16" height="28" rx="3" fill="#2c3e50"/>
+                <line x1="8" y1="20" x2="28" y2="10" stroke="#5c4033" stroke-width="3" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div class="pig-war-story">
+          <p class="eyebrow">1859 · San Juan Island</p>
+          <h3 data-adult="The Pig War" data-kid="The Silly Pig War">The Pig War</h3>
+          <div class="story-body" data-adult="When American settler Lyman Cutlar shot a British Hudson’s Bay Company pig rooting in his potato patch, two empires nearly went to war over who owned the San Juans. Soldiers camped at opposite ends of the island for 12 years — American Camp and English Camp — without firing another shot. In 1872, Kaiser Wilhelm I of Germany arbitrated: the border would run through Haro Strait. The islands became American. The pig, history’s most consequential casualty, remains the only fatality." data-kid="A farmer shot a pig that was eating his potatoes. The pig belonged to a British company. America and Britain both said the islands were theirs! Soldiers lived on opposite ends of San Juan Island for 12 years but never fought. A German emperor decided America would keep the islands. The pig was the only one who got hurt!">
+            When American settler Lyman Cutlar shot a British Hudson’s Bay Company pig rooting in his potato patch, two empires nearly went to war over who owned the San Juans. Soldiers camped at opposite ends of the island for 12 years — American Camp and English Camp — without firing another shot. In 1872, Kaiser Wilhelm I of Germany arbitrated: the border would run through Haro Strait. The islands became American. The pig, history’s most consequential casualty, remains the only fatality.
+          </div>
+          <div class="pig-war-facts">
+            <div class="mini-fact"><strong>0</strong><span>human casualties</span></div>
+            <div class="mini-fact"><strong>12</strong><span>years of joint occupation</span></div>
+            <div class="mini-fact"><strong>1872</strong><span>border settled</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHALES ==================== -->
+    <section class="section whales-section" id="whales">
+      <div class="section-header light">
+        <p class="section-kicker">Whale traffic</p>
+        <h2 class="section-title" data-adult="The residents of these waters" data-kid="Meet the orcas!">The residents of these waters</h2>
+        <p class="section-lede" data-adult="Two cultures of killer whale share the Salish Sea: fish-eating Southern Residents — critically endangered, tightly bound family pods — and thriving mammal-eating Bigg’s (transient) orcas. Press play to watch a year’s traffic through these channels." data-kid="Two kinds of orcas swim here! Some eat fish (they’re in trouble and need our help). Others eat seals and are doing great. Press play to watch them swim!">
+          Two cultures of killer whale share the Salish Sea: fish-eating Southern Residents — critically endangered, tightly bound family pods — and thriving mammal-eating Bigg’s (transient) orcas. Press play to watch a year’s traffic through these channels.
+        </p>
+      </div>
+
+      <div class="whale-sim" id="whale-sim">
+        <div class="whale-sim-canvas-wrap">
+          <canvas id="whale-canvas" width="1200" height="640" aria-label="Animated map of whale movement through the San Juan Islands"></canvas>
+          <div class="whale-sim-overlay">
+            <div class="sim-controls">
+              <button type="button" class="sim-btn" id="sim-play" aria-label="Play simulation">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+              </button>
+              <button type="button" class="sim-btn" id="sim-pause" aria-label="Pause" hidden>
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M6 5h4v14H6zm8 0h4v14h-4z" fill="currentColor"/></svg>
+              </button>
+              <div class="sim-month" id="sim-month">January</div>
+              <input type="range" id="sim-scrub" min="0" max="11" value="0" step="1" aria-label="Month of year" />
+              <div class="sim-speed">
+                <label for="sim-speed">Speed</label>
+                <select id="sim-speed">
+                  <option value="0.5">0.5×</option>
+                  <option value="1" selected>1×</option>
+                  <option value="2">2×</option>
+                  <option value="4">4×</option>
+                </select>
+              </div>
+            </div>
+            <div class="sim-legend">
+              <span class="leg leg-j"><i></i> J pod</span>
+              <span class="leg leg-k"><i></i> K pod</span>
+              <span class="leg leg-l"><i></i> L pod</span>
+              <span class="leg leg-biggs"><i></i> Bigg’s</span>
+              <span class="leg leg-ship"><i></i> Shipping</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="whale-pods">
+          <article class="pod-card" data-pod="j">
+            <div class="pod-header">
+              <span class="pod-badge j">J</span>
+              <div>
+                <h3>J Pod</h3>
+                <p class="pod-meta">Southern Resident · ~25 whales</p>
+              </div>
+            </div>
+            <p data-adult="Often the most frequently sighted of the three Southern Resident pods in inland waters. Led through matrilines — grandmothers and mothers hold ecological knowledge of salmon runs." data-kid="J pod visits often! Grandmothers lead the family and teach everyone where to find fish.">
+              Often the most frequently sighted of the three Southern Resident pods in inland waters. Led through matrilines — grandmothers and mothers hold ecological knowledge of salmon runs.
+            </p>
+            <button type="button" class="text-btn" data-focus-pod="j">Highlight on map →</button>
+          </article>
+          <article class="pod-card" data-pod="k">
+            <div class="pod-header">
+              <span class="pod-badge k">K</span>
+              <div>
+                <h3>K Pod</h3>
+                <p class="pod-meta">Southern Resident · ~16 whales</p>
+              </div>
+            </div>
+            <p data-adult="Smallest of the three pods. Like all Southern Residents, they specialize almost entirely on Chinook salmon — a diet that has become a crisis as runs decline." data-kid="K pod is the smallest family. They love Chinook salmon best of all.">
+              Smallest of the three pods. Like all Southern Residents, they specialize almost entirely on Chinook salmon — a diet that has become a crisis as runs decline.
+            </p>
+            <button type="button" class="text-btn" data-focus-pod="k">Highlight on map →</button>
+          </article>
+          <article class="pod-card" data-pod="l">
+            <div class="pod-header">
+              <span class="pod-badge l">L</span>
+              <div>
+                <h3>L Pod</h3>
+                <p class="pod-meta">Southern Resident · ~32 whales</p>
+              </div>
+            </div>
+            <p data-adult="Largest Southern Resident pod. They range widely, sometimes remaining offshore for longer stretches, then sweeping into the San Juans when salmon pulse through Haro Strait." data-kid="L pod is the biggest family. Sometimes they swim far out in the ocean, then come back when the salmon do.">
+              Largest Southern Resident pod. They range widely, sometimes remaining offshore for longer stretches, then sweeping into the San Juans when salmon pulse through Haro Strait.
+            </p>
+            <button type="button" class="text-btn" data-focus-pod="l">Highlight on map →</button>
+          </article>
+          <article class="pod-card biggs" data-pod="biggs">
+            <div class="pod-header">
+              <span class="pod-badge biggs">B</span>
+              <div>
+                <h3>Bigg’s (Transients)</h3>
+                <p class="pod-meta">Mammal-eaters · thriving</p>
+              </div>
+            </div>
+            <p data-adult="Culturally and genetically distinct from Residents. They hunt seals, sea lions, and porpoises in quiet, stealthy groups. Population is increasing — a rare bright line in marine mammal conservation." data-kid="Bigg’s orcas eat seals and sea lions. They sneak quietly when they hunt. Their numbers are growing!">
+              Culturally and genetically distinct from Residents. They hunt seals, sea lions, and porpoises in quiet, stealthy groups. Population is increasing — a rare bright line in marine mammal conservation.
+            </p>
+            <button type="button" class="text-btn" data-focus-pod="biggs">Highlight on map →</button>
+          </article>
+        </div>
+
+        <div class="whale-pressure">
+          <h3 data-adult="Why Southern Residents struggle" data-kid="Why the fish-eating orcas need help">Why Southern Residents struggle</h3>
+          <div class="pressure-grid">
+            <div class="pressure-card">
+              <div class="pressure-icon">🐟</div>
+              <h4>Prey</h4>
+              <p data-adult="Chinook salmon abundance has fallen across much of their range. Fewer calories mean longer gaps between successful hunts — especially hard on pregnant females and calves." data-kid="There aren’t enough big salmon left for them to eat."></p>
+            </div>
+            <div class="pressure-card">
+              <div class="pressure-icon">🔊</div>
+              <h4>Noise</h4>
+              <p data-adult="Vessel noise masks echolocation. Southern Residents hunt by sound in murky water; engines can drown the clicks that find fish." data-kid="Boat noise makes it hard for orcas to “see” with sound."></p>
+            </div>
+            <div class="pressure-card">
+              <div class="pressure-icon">☠️</div>
+              <h4>Toxins</h4>
+              <p data-adult="PCBs and other persistent pollutants build up in blubber. When whales go hungry, fat burns and toxins flood the bloodstream — a cruel feedback loop." data-kid="Old chemicals hide in their fat and make them sick when food is scarce."></p>
+            </div>
+            <div class="pressure-card">
+              <div class="pressure-icon">🛥</div>
+              <h4>Traffic</h4>
+              <p data-adult="Haro Strait is a superhighway for cargo and tankers. Collision risk and chronic disturbance stack on top of prey and noise stress." data-kid="Big ships and whale-watch boats share the same roads the whales use."></p>
+            </div>
+          </div>
+          <p class="whale-watch-tip" data-adult="<strong>Watching well:</strong> Lime Kiln Point State Park is one of the best shore-based orca lookouts on Earth. Give whales space on the water — slow down, stay wide, and let them choose the encounter." data-kid="<strong>Whale watching tip:</strong> Lime Kiln Point is a great place to spot orcas from shore. If you’re on a boat, give whales lots of room!">
+            <strong>Watching well:</strong> Lime Kiln Point State Park is one of the best shore-based orca lookouts on Earth. Give whales space on the water — slow down, stay wide, and let them choose the encounter.
+          </p>
+        </div>
+
+        <div class="sightings-panel" id="sightings-panel">
+          <div class="sightings-header">
+            <div>
+              <p class="eyebrow">Live reports</p>
+              <h3 data-adult="Whale sighting feed" data-kid="Where were whales seen?">Whale sighting feed</h3>
+            </div>
+            <div class="sightings-actions">
+              <button type="button" class="btn btn-ghost btn-sm" id="sightings-refresh">Refresh feed</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="sightings-open-on">Orca Network ↗</button>
+            </div>
+          </div>
+          <p class="sightings-status" id="sightings-status" data-kind="info">Loading sightings…</p>
+          <p class="sightings-blurb" data-adult="Pins combine a stylized seasonal traffic model with parsed Orca Network monthly reports (place names + coordinates when present). Run <code>python3 server.py</code> for the live feed. Click a card to fly the map. Positions are approximate — whales move fast." data-kid="These pins show where people reported whales. Tap one to zoom the map. Whales swim quickly, so the spot is only a clue!">
+            Pins combine a stylized seasonal traffic model with parsed Orca Network monthly reports (place names + coordinates when present). Run <code>python3 server.py</code> for the live feed. Click a card to fly the map. Positions are approximate — whales move fast.
+          </p>
+          <div class="sightings-list" id="sightings-list" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== LIME KILN ==================== -->
+    <section class="section lime-kiln-section" id="lime-kiln">
+      <div class="section-header">
+        <p class="section-kicker">Place study</p>
+        <h2 class="section-title" data-adult="Lime Kiln Point" data-kid="Whale Watch Park!">Lime Kiln Point</h2>
+        <p class="section-lede" data-adult="On the west shore of San Juan Island, Haro Strait runs deep and close to land. Lime Kiln Point State Park — still home to an active 1919 light and historic lime kilns — is one of the finest shore-based orca lookouts on the planet." data-kid="Stand on the rocks at Lime Kiln and you might see orcas swim past — no boat needed! There’s a real lighthouse here too.">
+          On the west shore of San Juan Island, Haro Strait runs deep and close to land. Lime Kiln Point State Park — still home to an active 1919 light and historic lime kilns — is one of the finest shore-based orca lookouts on the planet.
+        </p>
+      </div>
+
+      <div class="lime-kiln-layout">
+        <div class="lime-kiln-gallery" id="lime-kiln-gallery">
+          <!-- Photo panels injected by main.js -->
+        </div>
+        <aside class="lime-kiln-facts">
+          <div class="lk-fact-card">
+            <h4>Why whales pass here</h4>
+            <p data-adult="Haro Strait is a primary corridor for Southern Residents following Chinook and for Bigg’s orcas hunting seals. Depth and currents squeeze wildlife near the headlands." data-kid="The water is deep right next to shore, so whales often swim close enough to see from the rocks."></p>
+          </div>
+          <div class="lk-fact-card">
+            <h4>The light &amp; the kilns</h4>
+            <p data-adult="Lime kilns operated here from the 1860s, burning island limestone for mortar and plaster. The lighthouse was established in 1914–1919 and remains an active navigational aid." data-kid="People once burned limestone in big ovens (kilns) here. The lighthouse still helps ships find their way."></p>
+          </div>
+          <div class="lk-fact-card">
+            <h4>Visit well</h4>
+            <p data-adult="Day-use park on West Side Road. Bring binoculars, patience, and quiet. Summer weekends are busy; mornings and shoulder seasons reward the early riser." data-kid="Bring binoculars and a snack. Sit quietly — whales might appear when you least expect them!"></p>
+          </div>
+          <button type="button" class="btn btn-primary" data-fly-lime-kiln>Show on live map</button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== WILDLIFE ==================== -->
+    <section class="section wildlife-section" id="wildlife">
+      <div class="section-header">
+        <p class="section-kicker">Field guide</p>
+        <h2 class="section-title" data-adult="Who lives here" data-kid="Animal friends of the islands">Who lives here</h2>
+        <p class="section-lede" data-adult="From kelp forests to Garry oak meadows, the islands host an extraordinary cast. Filter by habitat or type — click any species for a deeper look." data-kid="Tap an animal to meet it! Use the buttons to find birds, mammals, and more.">
+          From kelp forests to Garry oak meadows, the islands host an extraordinary cast. Filter by habitat or type — click any species for a deeper look.
+        </p>
+      </div>
+
+      <div class="wildlife-filters" id="wildlife-filters" role="group" aria-label="Filter wildlife">
+        <button type="button" class="filter-btn active" data-filter="all">All</button>
+        <button type="button" class="filter-btn" data-filter="mammal">Mammals</button>
+        <button type="button" class="filter-btn" data-filter="bird">Birds</button>
+        <button type="button" class="filter-btn" data-filter="marine">Marine life</button>
+        <button type="button" class="filter-btn" data-filter="plant">Plants</button>
+      </div>
+
+      <div class="wildlife-grid" id="wildlife-grid">
+        <!-- Injected by wildlife.js -->
+      </div>
+
+      <div class="wildlife-modal" id="wildlife-modal" hidden role="dialog" aria-modal="true" aria-labelledby="wm-title">
+        <div class="wm-backdrop" data-close-modal></div>
+        <div class="wm-card">
+          <button type="button" class="wm-close" data-close-modal aria-label="Close">×</button>
+          <img class="wm-photo" id="wm-photo" alt="" hidden />
+          <div class="wm-emoji" id="wm-emoji"></div>
+          <p class="wm-type" id="wm-type"></p>
+          <h3 id="wm-title"></h3>
+          <p class="wm-latin" id="wm-latin"></p>
+          <p class="wm-body" id="wm-body"></p>
+          <div class="wm-tags" id="wm-tags"></div>
+          <p class="wm-fun" id="wm-fun"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ECOLOGY ==================== -->
+    <section class="section ecology-section" id="ecology">
+      <div class="section-header">
+        <p class="section-kicker">Ecology</p>
+        <h2 class="section-title" data-adult="A vertical world" data-kid="From treetops to the deep">A vertical world</h2>
+        <p class="section-lede" data-adult="Hover or tap each layer of this living cross-section — from madrona canopy to deep channels — to see how energy and life move through the islands." data-kid="Tap each layer of the island sandwich to see who lives where!">
+          Hover or tap each layer of this living cross-section — from madrona canopy to deep channels — to see how energy and life move through the islands.
+        </p>
+      </div>
+
+      <div class="ecology-cross" id="ecology-cross">
+        <div class="cross-visual" id="cross-visual">
+          <!-- Built in ecology.js / static HTML -->
+          <svg viewBox="0 0 900 520" class="cross-svg" role="img" aria-label="Ecological cross-section of a San Juan island">
+            <defs>
+              <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7eb8d4"/>
+                <stop offset="100%" stop-color="#c5e4f0"/>
+              </linearGradient>
+              <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3a7ca5"/>
+                <stop offset="40%" stop-color="#1f4e6b"/>
+                <stop offset="100%" stop-color="#0d2433"/>
+              </linearGradient>
+              <linearGradient id="landGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#6b8f4e"/>
+                <stop offset="50%" stop-color="#4a6741"/>
+                <stop offset="100%" stop-color="#3d4f35"/>
+              </linearGradient>
+            </defs>
+            <!-- Sky -->
+            <rect class="eco-layer" data-layer="canopy" x="0" y="0" width="900" height="140" fill="url(#skyGrad)"/>
+            <!-- Sun -->
+            <circle cx="780" cy="50" r="28" fill="#f4d58d" opacity=".9"/>
+            <!-- Canopy trees -->
+            <g class="eco-layer trees" data-layer="canopy">
+              <path d="M80 140 L100 60 L120 140 Z" fill="#2d5a3d"/>
+              <path d="M140 140 L165 40 L190 140 Z" fill="#3a6b48"/>
+              <path d="M200 140 L220 70 L240 140 Z" fill="#2d5a3d"/>
+              <path d="M250 140 L280 30 L310 140 Z" fill="#3d7a4a"/>
+              <path d="M320 140 L345 55 L370 140 Z" fill="#2d5a3d"/>
+              <ellipse cx="400" cy="100" rx="25" ry="40" fill="#c45c26"/>
+              <rect x="395" y="120" width="10" height="20" fill="#5c4033"/>
+              <path d="M430 140 L450 50 L470 140 Z" fill="#3a6b48"/>
+              <path d="M480 140 L510 35 L540 140 Z" fill="#2d5a3d"/>
+              <path d="M550 140 L570 75 L590 140 Z" fill="#3a6b48"/>
+            </g>
+            <!-- Land / forest floor -->
+            <path class="eco-layer" data-layer="forest" d="M0 140 Q200 120 350 135 T600 140 L600 220 L0 220 Z" fill="url(#landGrad)"/>
+            <!-- Intertidal rocky shore -->
+            <path class="eco-layer" data-layer="intertidal" d="M600 140 L750 160 L900 155 L900 240 L600 240 Z" fill="#8a7f72"/>
+            <path class="eco-layer" data-layer="intertidal" d="M620 180 Q640 170 660 185 T700 180 T740 190" fill="none" stroke="#6b635a" stroke-width="3"/>
+            <!-- Water surface -->
+            <path class="eco-layer" data-layer="kelp" d="M0 220 Q150 210 300 225 T600 220 L900 240 L900 520 L0 520 Z" fill="url(#waterGrad)"/>
+            <!-- Kelp -->
+            <g class="eco-layer kelp-fronds" data-layer="kelp">
+              <path d="M100 230 Q110 300 95 380 Q80 450 105 500" fill="none" stroke="#2d6b4a" stroke-width="8" stroke-linecap="round"/>
+              <path d="M180 235 Q200 320 170 400 Q150 470 185 510" fill="none" stroke="#3a8a5c" stroke-width="6" stroke-linecap="round"/>
+              <path d="M280 228 Q290 310 275 390 Q260 460 290 505" fill="none" stroke="#2d6b4a" stroke-width="7" stroke-linecap="round"/>
+              <path d="M400 232 Q420 300 390 380 Q370 450 410 500" fill="none" stroke="#3a8a5c" stroke-width="5" stroke-linecap="round"/>
+              <path d="M520 230 Q535 320 510 400 Q490 470 530 510" fill="none" stroke="#2d6b4a" stroke-width="6" stroke-linecap="round"/>
+              <!-- kelp bulbs -->
+              <circle cx="100" cy="250" r="6" fill="#4a9a6a"/><circle cx="95" cy="300" r="5" fill="#4a9a6a"/>
+              <circle cx="180" cy="270" r="5" fill="#5aaa7a"/><circle cx="175" cy="340" r="6" fill="#5aaa7a"/>
+              <circle cx="280" cy="260" r="5" fill="#4a9a6a"/>
+            </g>
+            <!-- Deep channel creatures hints -->
+            <g class="eco-layer" data-layer="deep" opacity=".6">
+              <ellipse cx="700" cy="400" rx="40" ry="12" fill="#1a3a4a"/>
+              <ellipse cx="750" cy="450" rx="25" ry="8" fill="#1a3a4a"/>
+              <path d="M200 420 Q220 410 240 420" fill="none" stroke="#4a8a9a" stroke-width="2"/>
+            </g>
+            <!-- Eagle -->
+            <g class="eco-layer" data-layer="canopy" transform="translate(600,40)">
+              <path d="M0 10 Q20 0 40 10 Q20 5 0 10" fill="#1a1a1a"/>
+              <circle cx="20" cy="8" r="3" fill="#f4d58d"/>
+            </g>
+            <!-- Seal on rock -->
+            <g class="eco-layer" data-layer="intertidal" transform="translate(680,175)">
+              <ellipse cx="0" cy="0" rx="18" ry="8" fill="#6b635a"/>
+              <circle cx="-12" cy="-4" r="5" fill="#6b635a"/>
+            </g>
+            <!-- Interactive hit areas (invisible) -->
+            <rect class="hit" data-layer="canopy" x="0" y="0" width="600" height="140" fill="transparent"/>
+            <rect class="hit" data-layer="forest" x="0" y="140" width="600" height="80" fill="transparent"/>
+            <rect class="hit" data-layer="intertidal" x="600" y="140" width="300" height="100" fill="transparent"/>
+            <rect class="hit" data-layer="kelp" x="0" y="220" width="900" height="150" fill="transparent"/>
+            <rect class="hit" data-layer="deep" x="0" y="370" width="900" height="150" fill="transparent"/>
+          </svg>
+          <div class="layer-labels">
+            <button type="button" class="layer-label" data-layer="canopy" style="top:8%">Canopy</button>
+            <button type="button" class="layer-label" data-layer="forest" style="top:28%">Forest floor</button>
+            <button type="button" class="layer-label" data-layer="intertidal" style="top:28%;left:72%">Intertidal</button>
+            <button type="button" class="layer-label" data-layer="kelp" style="top:52%">Kelp forest</button>
+            <button type="button" class="layer-label" data-layer="deep" style="top:78%">Deep channel</button>
+          </div>
+        </div>
+        <aside class="cross-panel" id="cross-panel">
+          <p class="eyebrow">Select a layer</p>
+          <h3 id="cross-title">Island cross-section</h3>
+          <p id="cross-body" data-adult="Click any band of the diagram — canopy, forest, shore, kelp, or deep water — to learn who thrives there and how the layers connect." data-kid="Click a layer to meet the plants and animals that live there!">
+            Click any band of the diagram — canopy, forest, shore, kelp, or deep water — to learn who thrives there and how the layers connect.
+          </p>
+          <ul id="cross-species" class="cross-species"></ul>
+        </aside>
+      </div>
+
+      <div class="ecology-extras">
+        <div class="extra-card">
+          <h4>Keystone: Bull kelp</h4>
+          <p data-adult="Nereocystis luetkeana forms towering underwater forests that shelter juvenile fish, dampen waves, and feed urchins — who, unchecked, can clear-cut the canopy. Sea otters historically kept urchins in check; their local absence still echoes." data-kid="Kelp is like a tall underwater tree. Lots of baby fish hide in it!"></p>
+        </div>
+        <div class="extra-card">
+          <h4>Keystone: Beavers returning</h4>
+          <p data-adult="Before the fur trade, beaver ponds held much of the islands’ freshwater. Hundreds of old dam remnants remain. Beavers are recolonizing — bringing wetlands, amphibians, and bird diversity with them." data-kid="Beavers used to build ponds all over the islands. They’re starting to come back!">
+          </p>
+        </div>
+        <div class="extra-card">
+          <h4>Missing: Sea otters</h4>
+          <p data-adult="Hunted out by the early 20th century. A few wander in from the Olympic coast, but the San Juans still lack a resident population — leaving urchin-kelp dynamics unbalanced." data-kid="Sea otters used to live here. People hunted them long ago, and they haven’t fully returned."></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== EXPLORE ==================== -->
+    <section class="section explore-section" id="explore">
+      <div class="section-header">
+        <p class="section-kicker">Exploration</p>
+        <h2 class="section-title" data-adult="Four islands, four personalities" data-kid="Pick an island adventure">Four islands, four personalities</h2>
+        <p class="section-lede" data-adult="Ferry-served islands each carry a distinct culture of place. Step into one." data-kid="Each big island has its own personality. Which will you visit?">
+          Ferry-served islands each carry a distinct culture of place. Step into one.
+        </p>
+      </div>
+
+      <div class="explore-tabs" id="explore-tabs" role="tablist">
+        <button type="button" role="tab" class="explore-tab active" aria-selected="true" data-tab="san-juan">San Juan</button>
+        <button type="button" role="tab" class="explore-tab" aria-selected="false" data-tab="orcas">Orcas</button>
+        <button type="button" role="tab" class="explore-tab" aria-selected="false" data-tab="lopez">Lopez</button>
+        <button type="button" role="tab" class="explore-tab" aria-selected="false" data-tab="shaw">Shaw</button>
+      </div>
+
+      <div class="explore-panels" id="explore-panels">
+        <!-- Injected / static content below -->
+      </div>
+    </section>
+
+    <!-- ==================== KID SCAVENGER HUNT ==================== -->
+    <section class="section scavenger-section" id="scavenger">
+      <div class="section-header">
+        <p class="section-kicker">Family activity</p>
+        <h2 class="section-title" data-adult="Island scavenger hunt" data-kid="Can you find them all?">Island scavenger hunt</h2>
+        <p class="section-lede" data-adult="A printable checklist for ferry decks, trails, and shoreline walks. Check items off digitally, or print the sheet for the car and backpack." data-kid="Print this page or check boxes here. How many island treasures can your family find?">
+          A printable checklist for ferry decks, trails, and shoreline walks. Check items off digitally, or print the sheet for the car and backpack.
+        </p>
+      </div>
+
+      <div class="scavenger-sheet" id="scavenger-sheet">
+        <div class="scavenger-toolbar no-print">
+          <span class="scavenger-count" id="scavenger-count">0 / 12 found</span>
+          <div class="scavenger-actions">
+            <button type="button" class="btn btn-primary" id="scavenger-print">Print sheet</button>
+            <button type="button" class="btn btn-ghost" id="scavenger-reset">Reset checks</button>
+          </div>
+        </div>
+        <header class="scavenger-print-header">
+          <h3>San Juan Islands · Kid Scavenger Hunt</h3>
+          <p>Name: ______________________ &nbsp; Date: ______________ &nbsp; Island: ______________</p>
+        </header>
+        <div class="scavenger-grid" id="scavenger-grid"></div>
+        <footer class="scavenger-print-footer">
+          <p>Tip: Give wildlife space. Never chase seals, birds, or deer. Whales are a bonus — celebrate if you see one from shore!</p>
+          <p class="scav-score">My score: _____ / 12 &nbsp;·&nbsp; Favorite find: ________________</p>
+        </footer>
+      </div>
+    </section>
+
+    <!-- ==================== DISCOVER / QUIZ ==================== -->
+    <section class="section discover-section" id="discover">
+      <div class="section-header">
+        <p class="section-kicker">Discover</p>
+        <h2 class="section-title" data-adult="Test your island sense" data-kid="Island quiz time!">Test your island sense</h2>
+        <p class="section-lede" data-adult="A short quiz for curious minds of any age. No grades — only better questions." data-kid="How much did you learn? Take the quiz!">
+          A short quiz for curious minds of any age. No grades — only better questions.
+        </p>
+      </div>
+
+      <div class="quiz" id="quiz">
+        <div class="quiz-progress">
+          <div class="quiz-bar" id="quiz-bar"></div>
+          <span class="quiz-count" id="quiz-count">1 / 6</span>
+        </div>
+        <div class="quiz-body" id="quiz-body">
+          <!-- Injected by main/quiz -->
+        </div>
+      </div>
+
+      <div class="sources">
+        <h3>Sources &amp; further exploration</h3>
+        <ul>
+          <li><a href="https://www.whaleresearch.com/" target="_blank" rel="noopener">Center for Whale Research</a> — Southern Resident monitoring since 1976</li>
+          <li><a href="https://www.fws.gov/refuge/san-juan-islands" target="_blank" rel="noopener">San Juan Islands National Wildlife Refuge</a></li>
+          <li><a href="https://www.nps.gov/sajh/" target="_blank" rel="noopener">San Juan Island National Historical Park</a> — American &amp; English Camps</li>
+          <li><a href="https://www.seadocsociety.org/" target="_blank" rel="noopener">SeaDoc Society</a> — Salish Sea science</li>
+          <li><a href="https://depts.washington.edu/fhl/" target="_blank" rel="noopener">Friday Harbor Laboratories</a> — UW marine research</li>
+          <li><a href="https://www.visitsanjuans.com/" target="_blank" rel="noopener">Visit San Juans</a> — travel &amp; stewardship</li>
+          <li><a href="https://orcanetwork.org/" target="_blank" rel="noopener">Orca Network</a> — public whale sighting network (Salish Sea)</li>
+          <li><a href="https://www.parks.wa.gov/528/Lime-Kiln-Point" target="_blank" rel="noopener">Lime Kiln Point State Park</a> — WA State Parks</li>
+        </ul>
+        <p class="disclaimer">This is an educational interactive inspired by long-form journalistic features. Wildlife population figures change; consult primary sources for current census data. Southern Resident orca counts are approximate and fluctuate with births and losses. Whale-report pins are approximate and may fall back to sample data when live fetch is blocked. Photos sourced for internal educational use. Formline motif is an abstract homage, not tribal art.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <strong>San Juan Islands</strong>
+        <span>An interactive exploration</span>
+      </div>
+      <p>Built for curious travelers, families, and anyone who loves the Salish Sea. Not affiliated with any official tourism, park agency, or Orca Network.</p>
+      <p class="footer-meta">Typography: Cormorant Garamond &amp; DM Sans · Maps: Leaflet/OSM + custom SVG · Whale traffic: canvas model + sighting overlays</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/data.js"></script>
+  <script src="js/geo.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/livemap.js"></script>
+  <script src="js/whales.js"></script>
+  <script src="js/sightings.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/wildlife.js"></script>
+  <script src="js/ecology.js"></script>
+  <script src="js/explore.js"></script>
+  <script src="js/scavenger.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.querySelector("[data-fly-lime-kiln]")?.addEventListener("click", () => {
+      document.querySelector('[data-map-view="live"]')?.click();
+      document.getElementById("map")?.scrollIntoView({ behavior: "smooth" });
+      const p = SJI.GEO?.places?.["lime-kiln"];
+      if (p) setTimeout(() => SJI.livemap?.flyTo?.(p.lat, p.lng, 13), 400);
+    });
+  </script>
+</body>
+</html>
