@@ -578,8 +578,10 @@
   stroke-width: 2.4px;
 }
 
-.explore-spots li { border-bottom: 1px dashed rgba(43, 58, 66, 0.25); align-items: start; }
-.explore-spots .spot-icon {
+.explore-spots li,
+.explore-eats-list li { border-bottom: 1px dashed rgba(43, 58, 66, 0.25); align-items: start; }
+.explore-spots .spot-icon,
+.explore-eats-list .spot-icon {
   width: 1.9rem;
   height: 1.9rem;
   display: grid;
@@ -589,8 +591,22 @@
   background: var(--chart-water);
   border: 1px solid rgba(43, 58, 66, 0.32);
   margin-top: 0.1rem;
+  flex-shrink: 0;
 }
-.explore-spots .spot-icon .icon { width: 1.05rem; height: 1.05rem; }
+.explore-spots .spot-icon .icon,
+.explore-eats-list .spot-icon .icon { width: 1.05rem; height: 1.05rem; }
+.spot-tip {
+  background: var(--chart-water, #dcebe7);
+  border-left-color: var(--sea-mid);
+}
+.halfday-card {
+  background-image: var(--grain), linear-gradient(180deg, #fffdf9, #f6f1e6);
+  border-color: rgba(43, 58, 66, 0.28);
+  box-shadow: 0 1px 0 rgba(43, 58, 66, 0.06), 0 6px 14px rgba(8, 24, 36, 0.06);
+}
+.halfday-card:hover {
+  box-shadow: 0 2px 0 rgba(43, 58, 66, 0.05), 0 10px 20px rgba(8, 24, 36, 0.1);
+}
 
 /* --- Postcard tip --- */
 .explore-postcard {

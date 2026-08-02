@@ -29,7 +29,7 @@ Then visit [http://127.0.0.1:8080](http://127.0.0.1:8080).
 | **Lime Kiln** | Photo panels of the lighthouse and west-side lookout |
 | **Wildlife** | Filterable field guide with **real photos** and detail modals |
 | **Ecology** | Interactive vertical cross-section (canopy → deep channel) |
-| **Tidepools** | Rocky-shore explorer — click creatures & tidal zones + etiquette tips |
+| **Tidepools** | Rocky-shore explorer — click creatures & zones · **live NOAA tide forecast** (Roche Harbor 9449834) · best shores incl. Granny’s Cove · etiquette tips |
 | **Explore** | Ferry-island deep dives with place photography |
 | **Scavenger hunt** | Printable San Juan Island checklist (tidepools, Lime Kiln, Pig War camps; persists in `localStorage`) |
 | **Discover** | Sixteen-question quiz |

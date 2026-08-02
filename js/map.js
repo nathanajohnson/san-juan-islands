@@ -130,7 +130,10 @@
     { id: "english-camp", kind: "camp", label: "English Camp", dx: -7, dy: -6, anchor: "end" },
     { id: "mt-constitution", kind: "peak", label: "Mt Constitution 2409", dx: 9, dy: 3, anchor: "start" },
     { id: "spencer-spit", kind: "camp", label: "Spencer Spit", dx: 9, dy: 3, anchor: "start" },
-    { id: "eastsound", kind: "anchor", label: "Eastsound", dx: 0, dy: -9, anchor: "middle" }
+    { id: "eastsound", kind: "anchor", label: "Eastsound", dx: 0, dy: -9, anchor: "middle" },
+    { id: "grannys-cove", kind: "tide", label: "Granny’s Cove", dx: -6, dy: 12, anchor: "end" },
+    { id: "cattle-point", kind: "light", label: "Cattle Pt", dx: 8, dy: 4, anchor: "start" },
+    { id: "south-beach", kind: "tide", label: "South Beach", dx: 0, dy: 13, anchor: "middle" }
   ];
 
   function placeSymbol(kind) {
@@ -139,6 +142,8 @@
     if (kind === "anchor")
       return `<g class="pm-anchor"><path d="M0 -3.4 V2.6 M-2.6 0.4 C-1.4 2.8 1.4 2.8 2.6 0.4 M-1.8 -1.6 H1.8"/><circle cx="0" cy="-4.4" r="1"/></g>`;
     if (kind === "peak") return `<path class="pm-peak" d="M-3.4 2.4 L0 -3.4 L3.4 2.4 Z"/>`;
+    if (kind === "tide")
+      return `<g class="pm-tide"><ellipse cx="0" cy="1.2" rx="3.6" ry="1.6" class="pm-pool"/><path d="M-2.8 -0.4 Q-1.4 -2.4 0 -0.6 Q1.4 -2.4 2.8 -0.4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><circle cx="-1.1" cy="1" r="0.55"/><circle cx="1.2" cy="1.35" r="0.45"/></g>`;
     return `<path class="pm-camp" d="M-3 2.6 L0 -3 L3 2.6 M-1.2 2.6 L0 0.4 L1.2 2.6"/>`;
   }
 

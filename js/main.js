@@ -174,7 +174,7 @@
 
   /* ---------- Scroll reveals ---------- */
   function setupReveal() {
-    const els = $$(".section-header, .map-workspace, .pig-war, .whale-sim, .wildlife-filters, .wildlife-grid, .ecology-cross, .ecology-extras, .tidepool-workspace, .tidepool-tips, .explore-tabs, .quiz, .sources, .context-card, .pod-card, .pressure-card, .extra-card, .sightings-panel, .lime-kiln-layout, .scavenger-sheet");
+    const els = $$(".section-header, .map-workspace, .pig-war, .whale-sim, .wildlife-filters, .wildlife-grid, .ecology-cross, .ecology-extras, .tide-live, .tidepool-workspace, .tidepool-tips, .explore-tabs, .quiz, .sources, .context-card, .pod-card, .pressure-card, .extra-card, .sightings-panel, .lime-kiln-layout, .scavenger-sheet");
     els.forEach((el) => {
       if (!el.classList.contains("reveal")) el.classList.add("reveal");
     });

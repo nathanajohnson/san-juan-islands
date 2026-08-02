@@ -1798,9 +1798,59 @@
       <div class="section-header">
         <p class="section-kicker">Shore life</p>
         <h2 class="section-title" data-adult="When the sea peels back" data-kid="Magic pools at low tide!">When the sea peels back</h2>
-        <p class="section-lede" data-adult="Twice a day the Salish Sea withdraws from rocky shores, leaving residual pools and zonation bands packed with life. Tap a creature or tidal zone — then practice the gentle arts of looking without leaving a mark." data-kid="When the ocean goes out, secret pools appear! Tap the sea stars and anemones to meet them — look with your eyes, not your hands.">
-          Twice a day the Salish Sea withdraws from rocky shores, leaving residual pools and zonation bands packed with life. Tap a creature or tidal zone — then practice the gentle arts of looking without leaving a mark.
+        <p class="section-lede" data-adult="Twice a day the Salish Sea withdraws from rocky shores, leaving residual pools and zonation bands packed with life. Check the live NOAA forecast below, aim for Granny’s Cove or other rocky shores on a low tide, then tap a creature or zone — and look without leaving a mark." data-kid="When the ocean goes out, secret pools appear! Check the tide clock first, then visit Granny’s Cove. Tap sea stars and anemones — look with your eyes, not your hands.">
+          Twice a day the Salish Sea withdraws from rocky shores, leaving residual pools and zonation bands packed with life. Check the live NOAA forecast below, aim for Granny’s Cove or other rocky shores on a low tide, then tap a creature or zone — and look without leaving a mark.
         </p>
+      </div>
+
+      <!-- Live NOAA tide forecast + best spots -->
+      <div class="tide-live" id="tide-live">
+        <div class="tide-forecast" id="tide-forecast" aria-live="polite">
+          <div class="tide-forecast-head">
+            <div>
+              <p class="eyebrow">Live tides</p>
+              <h3 class="tide-forecast-title" data-adult="When to go tidepooling" data-kid="Tide clock for pool explorers">When to go tidepooling</h3>
+              <p class="tide-station" id="tide-station">
+                NOAA station <span id="tide-station-id">9449834</span> · Roche Harbor, San Juan Island
+              </p>
+            </div>
+            <div class="tide-now" id="tide-now">
+              <span class="tide-now-label">Loading forecast…</span>
+            </div>
+          </div>
+          <div class="tide-table-wrap">
+            <table class="tide-table" id="tide-table">
+              <thead>
+                <tr>
+                  <th scope="col">Day</th>
+                  <th scope="col">Tide</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">Height</th>
+                  <th scope="col">Pool tip</th>
+                </tr>
+              </thead>
+              <tbody id="tide-table-body">
+                <tr><td colspan="5" class="tide-loading">Fetching NOAA predictions…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tide-footnote" id="tide-footnote">
+            Predictions from
+            <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9449834" target="_blank" rel="noopener noreferrer">NOAA Tides &amp; Currents</a>
+            (MLLW, local time). Heights are approximate for planning — leave the rocks before the flood.
+          </p>
+        </div>
+
+        <div class="tide-spots" id="tide-spots">
+          <div class="tide-spots-head">
+            <p class="eyebrow">Field guide</p>
+            <h3 class="tide-spots-title" data-adult="Best tide pools on San Juan Island" data-kid="Where to find the best pools">Best tide pools on San Juan Island</h3>
+            <p class="tide-spots-lede" data-adult="National Park Service rangers point to Granny’s Cove at American Camp as the island’s best tidepooling. These public shores reward a well-timed low tide." data-kid="Park rangers say Granny’s Cove is the best! Here are the top rocky beaches for looking at sea stars and anemones.">
+              National Park Service rangers point to Granny’s Cove at American Camp as the island’s best tidepooling. These public shores reward a well-timed low tide.
+            </p>
+          </div>
+          <div class="tide-spots-grid" id="tide-spots-grid" role="list"></div>
+        </div>
       </div>
 
       <div class="tidepool-workspace">
@@ -2254,8 +2304,8 @@
           <div class="tp-tip-card">
             <span class="tp-tip-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-tide"/></svg></span>
             <h4>Mind the tide</h4>
-            <p data-adult="Minus tides are best and brief. Know the schedule, keep an eye on the water, and never get cut off by a rising flood." data-kid="The ocean comes back! Always know when the tide turns and leave extra time to walk back.">
-              Minus tides are best and brief. Know the schedule, keep an eye on the water, and never get cut off by a rising flood.
+            <p data-adult="Minus tides are best and brief. Use the live NOAA forecast above, keep an eye on the water, and never get cut off by a rising flood." data-kid="The ocean comes back! Check the tide clock above, watch the water, and leave extra time to walk back.">
+              Minus tides are best and brief. Use the live NOAA forecast above, keep an eye on the water, and never get cut off by a rising flood.
             </p>
           </div>
         </div>
@@ -2397,7 +2447,8 @@
         <ul>
           <li><a href="https://www.whaleresearch.com/" target="_blank" rel="noopener">Center for Whale Research</a> — Southern Resident monitoring since 1976</li>
           <li><a href="https://www.fws.gov/refuge/san-juan-islands" target="_blank" rel="noopener">San Juan Islands National Wildlife Refuge</a></li>
-          <li><a href="https://www.nps.gov/sajh/" target="_blank" rel="noopener">San Juan Island National Historical Park</a> — American &amp; English Camps</li>
+          <li><a href="https://www.nps.gov/sajh/" target="_blank" rel="noopener">San Juan Island National Historical Park</a> — American &amp; English Camps; <a href="https://www.nps.gov/sajh/planyourvisit/tide-pooling.htm" target="_blank" rel="noopener">tide pooling at Granny’s Cove</a></li>
+          <li><a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9449834" target="_blank" rel="noopener">NOAA Tides &amp; Currents</a> — Roche Harbor station 9449834 predictions</li>
           <li><a href="https://www.seadocsociety.org/" target="_blank" rel="noopener">SeaDoc Society</a> — Salish Sea science</li>
           <li><a href="https://depts.washington.edu/fhl/" target="_blank" rel="noopener">Friday Harbor Laboratories</a> — UW marine research</li>
           <li><a href="https://www.visitsanjuans.com/" target="_blank" rel="noopener">Visit San Juans</a> — travel &amp; stewardship</li>

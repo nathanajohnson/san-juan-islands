@@ -48,7 +48,7 @@ SJI.GEO = {
       lat: 48.4625,
       lng: -122.9870,
       name: "American Camp",
-      note: "Pig War · prairie & Cattle Point"
+      note: "Pig War · prairie · trail to Granny’s Cove pools"
     },
     "english-camp": {
       lat: 48.5870,
@@ -79,6 +79,24 @@ SJI.GEO = {
       lng: -122.9060,
       name: "Eastsound",
       note: "Orcas Island village"
+    },
+    "grannys-cove": {
+      lat: 48.4578,
+      lng: -123.007,
+      name: "Granny’s Cove",
+      note: "Best tidepools on San Juan Island · American Camp"
+    },
+    "cattle-point": {
+      lat: 48.4503,
+      lng: -122.9636,
+      name: "Cattle Point",
+      note: "Lighthouse · rocky tide shelves"
+    },
+    "south-beach": {
+      lat: 48.4545,
+      lng: -122.978,
+      name: "South Beach",
+      note: "American Camp · low-tide shore"
     }
   },
 
@@ -103,7 +121,13 @@ SJI.GEO = {
     "boundary pass": [48.72, -123.15],
     "rosario strait": [48.55, -122.75],
     rosario: [48.55, -122.75],
-    "cattle point": [48.45, -122.96],
+    "cattle point": [48.4503, -122.9636],
+    "granny's cove": [48.4578, -123.007],
+    "grannys cove": [48.4578, -123.007],
+    "grandma's cove": [48.4578, -123.007],
+    "grandmas cove": [48.4578, -123.007],
+    "south beach": [48.4545, -122.978],
+    "deadman bay": [48.512, -123.148],
     "american camp": [48.4625, -122.987],
     "english camp": [48.587, -123.148],
     "spieden island": [48.64, -123.12],

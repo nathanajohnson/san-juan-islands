@@ -10,11 +10,71 @@
     "🐋": "orca", "🏛": "cannon", "🔬": "microscope", "🌅": "lighthouse",
     "⛰": "peak", "🏞": "camp", "🛍": "marker", "🌲": "fir",
     "🚲": "compass", "🏖": "wave", "🪨": "rock", "🦅": "eagle",
-    "⛴": "ferry", "⛺": "camp", "🌌": "sparkle"
+    "⛴": "ferry", "⛺": "camp", "🌌": "sparkle",
+    "☕": "droplet", "⚓": "anchor", "🌊": "wave"
   };
   function spotIcon(raw) {
     const key = String(raw || "").replace(/[︎️]/g, "");
     return SJI.icon(EMOJI_ICON[key] || "marker");
+  }
+
+  function spotsList(spots) {
+    return `<ul class="explore-spots">
+      ${(spots || []).map((s) => `
+        <li>
+          <span class="spot-icon">${spotIcon(s.icon)}</span>
+          <div>
+            <strong>${s.title}</strong>
+            <span class="spot-note">${s.note}</span>
+            ${s.tip ? `<p class="spot-tip"><span class="spot-tip-label">Plan</span> ${s.tip}</p>` : ""}
+          </div>
+        </li>
+      `).join("")}
+    </ul>`;
+  }
+
+  function eatsBlock(eats) {
+    if (!eats || !eats.length) return "";
+    return `
+    <div class="explore-eats">
+      <h4 class="explore-subhead">${SJI.icon("anchor", "icon-sm")} Where to eat</h4>
+      <ul class="explore-eats-list">
+        ${eats.map((e) => `
+          <li>
+            <span class="spot-icon">${spotIcon(e.icon || "🛍")}</span>
+            <div>
+              <strong>${e.title}</strong>
+              <span class="eat-meta">${[e.where, e.kind].filter(Boolean).join(" · ")}</span>
+              <span class="spot-note">${e.note}</span>
+            </div>
+          </li>
+        `).join("")}
+      </ul>
+    </div>`;
+  }
+
+  function halfDaysBlock(trips) {
+    if (!trips || !trips.length) return "";
+    return `
+    <div class="explore-halfdays">
+      <h4 class="explore-subhead">${SJI.icon("compass", "icon-sm")} Half-day trips</h4>
+      <div class="halfday-grid">
+        ${trips.map((t) => `
+          <article class="halfday-card">
+            <header class="halfday-head">
+              <h5>${t.title}</h5>
+              <div class="halfday-meta">
+                ${t.duration ? `<span class="halfday-chip">${t.duration}</span>` : ""}
+                ${t.bestFor ? `<span class="halfday-chip halfday-chip--soft">${t.bestFor}</span>` : ""}
+              </div>
+            </header>
+            <ol class="halfday-steps">
+              ${(t.steps || []).map((step) => `<li>${step}</li>`).join("")}
+            </ol>
+          </article>
+        `).join("")}
+      </div>
+    </div>`;
   }
 
   /* Island path bounding boxes in the shared 640×460 chart space */
@@ -146,8 +206,10 @@
     const panels = document.getElementById("explore-panels");
     if (!panels || !SJI.EXPLORE) return;
 
-    panels.innerHTML = Object.entries(SJI.EXPLORE).map(([id, data], i) => `
-      <div class="explore-panel ${i === 0 ? "active" : ""}" role="tabpanel" id="panel-${id}" data-panel="${id}" ${i === 0 ? "" : "hidden"}>
+    panels.innerHTML = Object.entries(SJI.EXPLORE).map(([id, data], i) => {
+      const rich = !!(data.eats?.length || data.halfDays?.length || data.spots?.some((s) => s.tip));
+      return `
+      <div class="explore-panel ${i === 0 ? "active" : ""} ${rich ? "explore-panel--rich" : ""}" role="tabpanel" id="panel-${id}" data-panel="${id}" ${i === 0 ? "" : "hidden"}>
         <div class="explore-visual">
           ${topoChart(id)}
         </div>
@@ -158,21 +220,14 @@
             <span class="adult-text">${data.body}</span>
             <span class="kid-text" hidden>${data.bodyKid}</span>
           </p>
-          <ul class="explore-spots">
-            ${data.spots.map((s) => `
-              <li>
-                <span class="spot-icon">${spotIcon(s.icon)}</span>
-                <div>
-                  <strong>${s.title}</strong>
-                  <span>${s.note}</span>
-                </div>
-              </li>
-            `).join("")}
-          </ul>
+          <h4 class="explore-subhead">${SJI.icon("binoculars", "icon-sm")} Places to explore</h4>
+          ${spotsList(data.spots)}
+          ${eatsBlock(data.eats)}
           ${postcard(id, data)}
         </div>
-      </div>
-    `).join("");
+        ${data.halfDays?.length ? `<div class="explore-plan">${halfDaysBlock(data.halfDays)}</div>` : ""}
+      </div>`;
+    }).join("");
 
     document.querySelectorAll(".explore-tab").forEach((tab) => {
       /* Island-silhouette chip art (once) */

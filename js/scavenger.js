@@ -11,7 +11,7 @@
     { id: "ferry", icon: "ferry", label: "Washington State Ferry", hint: "At Friday Harbor terminal" },
     { id: "lighthouse", icon: "lighthouse", label: "A lighthouse", hint: "Lime Kiln or Cattle Point" },
     { id: "ochre-star", icon: "seastar", label: "Ochre sea star", hint: "Purple or orange on low-tide rocks" },
-    { id: "anemone", icon: "anemone", label: "Sea anemone", hint: "Soft “flower” in a tidepool" },
+    { id: "anemone", icon: "anemone", label: "Sea anemone", hint: "Soft “flower” in a pool — try Granny’s Cove" },
     { id: "hermit", icon: "crab", label: "Hermit crab", hint: "Shell with legs — check a pool" },
     { id: "barnacle", icon: "barnacle", label: "Barnacle bed", hint: "White volcano crusts high on rock" },
     { id: "rockweed", icon: "seaweed", label: "Rockweed", hint: "Rubbery olive seaweed on mid-shore rocks" },

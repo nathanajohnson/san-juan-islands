@@ -169,6 +169,9 @@
 .map-svg-wrap .pm-anchor circle { fill: none; stroke: var(--chart-ink); stroke-width: 0.9; }
 .map-svg-wrap .pm-peak { fill: none; stroke: #6b4f2a; stroke-width: 1; }
 .map-svg-wrap .pm-camp { fill: none; stroke: var(--wsf-green); stroke-width: 1; stroke-linecap: round; }
+.map-svg-wrap .pm-tide { color: var(--sea-deep); }
+.map-svg-wrap .pm-tide .pm-pool { fill: rgba(91, 163, 196, 0.45); stroke: var(--sea-deep); stroke-width: 0.9; }
+.map-svg-wrap .pm-tide circle { fill: var(--sea-deep); }
 .map-svg-wrap .pm-label {
   font-family: var(--font-mono);
   font-size: 5.6px;
@@ -444,6 +447,8 @@
 .place-pin--camp { color: var(--wsf-green); border-color: var(--wsf-green); }
 .place-pin--peak { color: var(--sea-mid); }
 .place-pin--ferry { color: var(--wsf-green); }
+.place-pin--seastar,
+.place-pin--tide { color: var(--sea-deep); border-color: var(--sea-bright); background: linear-gradient(180deg, #e8f4f6, #d4e8ec); }
 
 /* Whale sighting pins: orca-fin glyph + soft pulse */
 .sight-marker {

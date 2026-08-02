@@ -1278,6 +1278,285 @@ body.kid-mode .timeline-event .kid-badge { display: inline; }
 
 /* ========== TIDEPOOLS ========== */
 .tidepool-section { background: var(--paper); }
+
+/* Live NOAA forecast + best spots */
+.tide-live {
+  max-width: var(--max-wide);
+  margin: 0 auto 2rem;
+  padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+.tide-forecast,
+.tide-spots {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 1.35rem 1.5rem 1.25rem;
+}
+.tide-forecast-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+.tide-forecast .eyebrow,
+.tide-spots .eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sea-bright);
+  margin: 0 0 0.35rem;
+}
+.tide-forecast-title,
+.tide-spots-title {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  color: var(--sea-deep);
+  margin: 0 0 0.25rem;
+  line-height: 1.2;
+}
+.tide-station {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--ink-mute);
+}
+.tide-station #tide-station-id {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+.tide-now {
+  background: var(--sea-mist);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--sea-bright);
+  min-width: min(100%, 16rem);
+  max-width: 22rem;
+}
+.tide-phase {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sea-deep);
+  margin-bottom: 0.25rem;
+}
+.tide-now-label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+.tide-now-label strong { color: var(--sea-deep); }
+.tide-now-link {
+  display: inline-block;
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--sea-deep);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(43, 90, 110, 0.35);
+}
+.tide-now-link:hover { border-bottom-color: var(--sea-deep); }
+
+.tide-table-wrap {
+  overflow-x: auto;
+  margin: 0 -0.25rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(43, 58, 66, 0.1);
+}
+.tide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  min-width: 28rem;
+}
+.tide-table th {
+  text-align: left;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding: 0.55rem 0.75rem;
+  background: var(--paper-warm, #f7f3ea);
+  border-bottom: 1px solid rgba(43, 58, 66, 0.1);
+}
+.tide-table td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid rgba(43, 58, 66, 0.06);
+  color: var(--ink-soft);
+  vertical-align: middle;
+}
+.tide-table tr:last-child td { border-bottom: none; }
+.tide-row--past { opacity: 0.45; }
+.tide-row--low td { background: rgba(91, 163, 196, 0.06); }
+.tide-row--prime td {
+  background: rgba(212, 168, 75, 0.14);
+}
+.tide-row--prime .tide-height,
+.tide-row--prime .tide-tip {
+  color: var(--sea-deep);
+  font-weight: 600;
+}
+.tide-kind {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+}
+.tide-kind--low {
+  background: rgba(91, 163, 196, 0.22);
+  color: var(--sea-deep);
+}
+.tide-kind--high {
+  background: rgba(43, 58, 66, 0.08);
+  color: var(--ink-soft);
+}
+.tide-height {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.tide-tip { font-size: 0.8rem; }
+.tide-loading,
+.tide-error {
+  text-align: center;
+  color: var(--ink-mute);
+  padding: 1.25rem 0.75rem !important;
+}
+.tide-error a { color: var(--sea-deep); font-weight: 600; }
+.tide-footnote {
+  margin: 0.85rem 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+  line-height: 1.45;
+}
+.tide-footnote a {
+  color: var(--sea-deep);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(43, 90, 110, 0.3);
+}
+
+.tide-spots-head { margin-bottom: 1rem; }
+.tide-spots-lede {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.tide-spots-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 28rem;
+  overflow-y: auto;
+  padding-right: 0.15rem;
+}
+.tide-spot-card {
+  background: var(--paper-warm, #f7f3ea);
+  border-radius: var(--radius);
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(43, 58, 66, 0.06);
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.tide-spot-card--best {
+  background: linear-gradient(135deg, rgba(91, 163, 196, 0.12), rgba(212, 168, 75, 0.12));
+  border-color: rgba(91, 163, 196, 0.35);
+  box-shadow: 0 2px 12px rgba(10, 31, 46, 0.05);
+}
+.tide-spot-top {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+.tide-spot-icon {
+  flex-shrink: 0;
+  width: 2.1rem;
+  height: 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: white;
+  color: var(--sea-deep);
+  box-shadow: 0 1px 4px rgba(10, 31, 46, 0.08);
+}
+.tide-spot-icon .icon { width: 1.2rem; height: 1.2rem; }
+.tide-spot-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a5f14;
+  background: rgba(212, 168, 75, 0.28);
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  margin-bottom: 0.2rem;
+}
+.tide-spot-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--sea-deep);
+  line-height: 1.2;
+}
+.tide-spot-area {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  color: var(--ink-mute);
+}
+.tide-spot-body {
+  margin: 0 0 0.45rem;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+.tide-spot-tips {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--sea-deep);
+  padding: 0.4rem 0.55rem;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 6px;
+  border-left: 2px solid var(--sea-bright);
+}
+.tide-spot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.tide-spot-actions a,
+.tide-spot-actions button.tide-spot-map {
+  color: var(--sea-deep);
+  text-decoration: none;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(43, 90, 110, 0.3);
+}
+.tide-spot-actions a:hover,
+.tide-spot-actions button.tide-spot-map:hover { border-bottom-color: var(--sea-deep); }
+
 .tidepool-workspace {
   max-width: var(--max-wide);
   margin: 0 auto 2rem;
@@ -1582,7 +1861,8 @@ body.kid-mode .timeline-event .kid-badge { display: inline; }
 }
 .explore-spots .spot-icon { font-size: 1.25rem; }
 .explore-spots strong { display: block; color: var(--sea-deep); font-size: 0.95rem; }
-.explore-spots span { font-size: 0.85rem; color: var(--ink-mute); }
+.explore-spots .spot-note,
+.explore-spots span { font-size: 0.85rem; color: var(--ink-mute); display: block; }
 .explore-tip {
   background: var(--sea-mist);
   border-radius: 8px;
@@ -1590,6 +1870,154 @@ body.kid-mode .timeline-event .kid-badge { display: inline; }
   font-size: 0.9rem;
   color: var(--sea-mid);
   margin: 0;
+}
+
+/* Richer San Juan excursion layout */
+.explore-panel--rich {
+  grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1.35fr);
+}
+.explore-panel--rich .explore-plan {
+  grid-column: 1 / -1;
+  margin-top: 0.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(43, 58, 66, 0.22);
+}
+.explore-subhead {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.35rem 0 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sea-mid);
+}
+.explore-subhead .icon,
+.explore-subhead .icon-sm {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+  color: var(--madrona);
+}
+.spot-tip {
+  margin: 0.4rem 0 0;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  background: var(--sea-mist, #e8f2ef);
+  border-left: 3px solid var(--sea-mid, #2a6f6a);
+  border-radius: 0 6px 6px 0;
+}
+.spot-tip-label {
+  display: inline-block;
+  margin-right: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sea-mid);
+}
+.explore-eats { margin: 0 0 1.35rem; }
+.explore-eats-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.explore-eats-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--sand);
+}
+.explore-eats-list strong {
+  display: block;
+  color: var(--sea-deep);
+  font-size: 0.95rem;
+}
+.eat-meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--madrona);
+  margin: 0.1rem 0 0.2rem;
+}
+.explore-eats-list .spot-note {
+  font-size: 0.85rem;
+  color: var(--ink-mute);
+  display: block;
+}
+.explore-halfdays { margin: 0 0 1.35rem; }
+.halfday-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+.halfday-card {
+  background: linear-gradient(180deg, #fffdf9, #f6f1e6);
+  border: 1px solid rgba(43, 58, 66, 0.22);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 1px 0 rgba(43, 58, 66, 0.06);
+}
+.halfday-head h5 {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--sea-deep);
+  line-height: 1.25;
+}
+.halfday-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.55rem;
+}
+.halfday-chip {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sea-deep);
+  background: rgba(42, 111, 106, 0.12);
+  border: 1px solid rgba(42, 111, 106, 0.22);
+}
+.halfday-chip--soft {
+  color: var(--ink-soft);
+  background: rgba(43, 58, 66, 0.06);
+  border-color: rgba(43, 58, 66, 0.14);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+}
+.halfday-steps {
+  margin: 0;
+  padding: 0 0 0 1.15rem;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+.halfday-steps li { margin: 0.28rem 0; }
+.halfday-steps li::marker { color: var(--madrona); font-weight: 700; }
+
+@media (min-width: 1100px) {
+  .explore-panel--rich .halfday-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 900px) {
+  .explore-panel--rich {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ========== QUIZ ========== */
@@ -1759,6 +2187,8 @@ body.kid-mode .hero-title .italic { color: #f4d58d; }
   .pressure-grid { grid-template-columns: 1fr 1fr; }
   .ecology-cross { grid-template-columns: 1fr; }
   .tidepool-layout { grid-template-columns: 1fr; }
+  .tide-live { grid-template-columns: 1fr; }
+  .tide-spots-grid { max-height: none; }
   .tp-tips-grid { grid-template-columns: 1fr 1fr; }
   .pig-war { grid-template-columns: 1fr; }
   .explore-panel { grid-template-columns: 1fr; }

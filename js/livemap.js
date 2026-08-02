@@ -66,7 +66,12 @@
       map,
       refreshSightings,
       selectIsland,
+      setLayer: toggleLiveLayer,
       flyTo: (lat, lng, z = 12) => map.flyTo([lat, lng], z, { duration: 1.2 }),
+      focus: (lat, lng, z = 13) => {
+        toggleLiveLayer("places");
+        map.flyTo([lat, lng], z, { duration: 1.2 });
+      },
       setBasemap
     };
   }
@@ -144,7 +149,10 @@
     "mt-constitution": "peak",
     "friday-harbor": "ferry",
     eastsound: "anchor",
-    "spencer-spit": "camp"
+    "spencer-spit": "camp",
+    "grannys-cove": "seastar",
+    "cattle-point": "lighthouse",
+    "south-beach": "tide"
   };
 
   function placeIcon(id) {
@@ -196,8 +204,12 @@
     layers.places = L.layerGroup();
     Object.entries(SJI.GEO.places).forEach(([id, p]) => {
       const m = L.marker([p.lat, p.lng], { icon: placeIcon(id), title: p.name });
+      const spot = SJI.TIDE_SPOTS?.find((s) => s.id === id || (id === "lime-kiln" && s.id === "lime-kiln-pools"));
+      const extra = spot
+        ? `<br><a class="place-tide-link" href="#tidepool" style="color:var(--sea-deep);font-weight:600">Tidepools · open forecast →</a>`
+        : "";
       m.bindPopup(
-        `<strong>${p.name}</strong><br><span style="opacity:.85">${p.note}</span>`
+        `<strong>${p.name}</strong><br><span style="opacity:.85">${p.note}</span>${extra}`
       );
       layers.places.addLayer(m);
     });

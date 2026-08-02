@@ -87,7 +87,8 @@ SJI.ISLANDS = {
       "Lime Kiln Point State Park — shore-based orca watching",
       "San Juan Island National Historical Park",
       "Friday Harbor Laboratories (UW)",
-      "Cattle Point Lighthouse & prairie"
+      "Cattle Point Lighthouse & prairie",
+      "Granny’s Cove — best island tidepooling (American Camp)"
     ],
     path: "M168 268 C175 248 195 238 218 236 C245 234 268 248 282 268 C295 290 298 318 292 345 C285 372 265 390 240 398 C212 406 185 395 172 372 C158 348 155 310 160 288 C162 278 165 272 168 268 Z"
   },
@@ -695,6 +696,72 @@ SJI.ECOLOGY = {
   }
 };
 
+/**
+ * NOAA tide station for San Juan Island predictions (NPS tide-pooling guide).
+ * Roche Harbor · station 9449834 · https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9449834
+ */
+SJI.TIDE_STATION = {
+  id: "9449834",
+  name: "Roche Harbor, San Juan Island",
+  datum: "MLLW",
+  units: "english",
+  noaaUrl: "https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9449834",
+  days: 3
+};
+
+/**
+ * Best public tide-pool shores on San Juan Island.
+ * Coordinates approximate for education; always confirm access & tide tables.
+ */
+SJI.TIDE_SPOTS = [
+  {
+    id: "grannys-cove",
+    name: "Granny’s Cove",
+    alsoKnownAs: "Grandma’s Cove",
+    area: "American Camp · San Juan Island NHP",
+    lat: 48.4578,
+    lng: -123.007,
+    best: true,
+    body: "The National Park Service calls this the best tidepooling on San Juan Island. Rocky benches hold anemones, sculpins, mussels, shore crabs, barnacles, and seaweeds; sea glass sometimes turns up on the pocket beach. Park at the American Camp Visitor Center and take the short trail (about a mile round-trip) past the redoubt to the cove. Minus tides open the richest pools.",
+    bodyKid: "Park rangers say this is the best tidepool beach on the island! Look for sea flowers (anemones), tiny fish, and barnacles. Walk the trail from American Camp — go at low tide!",
+    tips: "Wear grippy shoes; rocks are slippery. No dogs on tidal rocks. Leave rocks and animals where they are.",
+    link: "https://www.nps.gov/sajh/planyourvisit/tide-pooling.htm"
+  },
+  {
+    id: "cattle-point",
+    name: "Cattle Point",
+    area: "Southeast tip · American Camp vicinity",
+    lat: 48.4503,
+    lng: -122.9636,
+    best: false,
+    body: "Basalt and sandstone shelves below the lighthouse and prairie expose classic zonation on big minus tides. Pair a prairie walk with careful rock exploration — wave exposure can be higher than at Granny’s Cove.",
+    bodyKid: "Rocks under the lighthouse that fill with pools when the ocean goes out. Hold a grown-up’s hand — waves can splash high!",
+    tips: "Check wind and swell; the Strait can throw sneaker waves. Stay off fragile mussel beds."
+  },
+  {
+    id: "south-beach",
+    name: "South Beach",
+    area: "American Camp · Strait of Juan de Fuca",
+    lat: 48.4545,
+    lng: -122.978,
+    best: false,
+    body: "A long driftwood shore with rocky pockets and easy American Camp access. Not as pool-dense as Granny’s Cove, but a fine low-tide ramble for barnacles, rockweed, and shorebirds working the strand.",
+    bodyKid: "A big beach with logs and rocky edges. Look for barnacles and seaweed when the water is low.",
+    tips: "Great for a family stroll; best pools are still at Granny’s Cove a short trail away."
+  },
+  {
+    id: "lime-kiln-pools",
+    name: "Lime Kiln & Deadman Bay",
+    area: "West side · Haro Strait",
+    lat: 48.512,
+    lng: -123.148,
+    best: false,
+    body: "West-side basalt meets deep water. Tidepools and crevices appear at low water near Lime Kiln Point State Park and neighboring Deadman Bay Preserve — often combined with shore-based whale watching. Access trails and park hours apply.",
+    bodyKid: "West-side rocks where you might see sea stars and seals — and sometimes orcas far out in the strait!",
+    tips: "Park hours and trail rules matter. Give hauled-out seals wide space."
+  }
+];
+
 /** Rocky shore / tidepool explorer */
 SJI.TIDEPOOL = {
   zones: {
@@ -862,15 +929,164 @@ SJI.EXPLORE = {
   "san-juan": {
     name: "San Juan Island",
     nick: "Where whales meet history",
-    body: "Circle the island and you pass from prairie at American Camp to the deep-water amphitheater of Lime Kiln, then the formal gardens of English Camp. Friday Harbor is the social and scientific hub — ferries, labs, galleries, and ice cream in equal measure.",
+    body: "Circle the island and you pass from prairie at American Camp to the deep-water amphitheater of Lime Kiln, then the formal gardens of English Camp. Friday Harbor is the social and scientific hub — ferries, labs, galleries, and ice cream in equal measure. Plan half-days by shore: west for whales, south for prairie and tidepools, north for Roche Harbor and Pig War gardens.",
     bodyKid: "See orcas from shore, visit two old army camps from the Pig War, and eat ice cream in Friday Harbor!",
     spots: [
-      { icon: "🐋", title: "Lime Kiln Point", note: "Best land-based whale watching on the West Coast" },
-      { icon: "🏛️", title: "American & English Camps", note: "Pig War history in a national historical park" },
-      { icon: "🔬", title: "Friday Harbor Labs", note: "University of Washington marine science" },
-      { icon: "🌅", title: "Cattle Point", note: "Lighthouse, prairie, and Strait views" }
+      {
+        icon: "🐋",
+        title: "Lime Kiln Point State Park",
+        note: "Best land-based whale watching on the West Coast — Haro Strait deepens right offshore.",
+        tip: "Allow 1–2 hrs. Discover Pass required; park is day-use. Peak orca odds roughly May–Sept, mornings and late afternoon. Bring binoculars and layers — west-side fog is common. Restrooms and a small interpretive center on site; the light is an active aid to navigation, not a climbable tower."
+      },
+      {
+        icon: "🏛️",
+        title: "American Camp (NPS)",
+        note: "South-end Pig War site: open prairie, redoubt earthworks, and Strait views.",
+        tip: "Free entry. Visitor center and short films when staffed. Combine with Cattle Point and Granny’s Cove on the same south loop (~half day). Trails are exposed — sun, wind, and little shade. Dogs on leash; stay off fragile prairie wildflowers in spring."
+      },
+      {
+        icon: "🏛️",
+        title: "English Camp (NPS)",
+        note: "British garrison gardens, blockhouse, and Garrison Bay calm.",
+        tip: "Free; about 20–25 min drive from Friday Harbor. Formal parade ground and officers’ garden are the postcard shot. Pair with Roche Harbor (10 min) for lunch or sculpture-park stroll. Kayaks launch nearby in Garrison Bay when weather is quiet."
+      },
+      {
+        icon: "🔬",
+        title: "Friday Harbor & UW Labs",
+        note: "Ferry town hub — shops, Whale Museum, and University of Washington marine science campus.",
+        tip: "Labs are a working research campus; public access is limited (occasional open houses/tours). Walk the waterfront, visit The Whale Museum (tickets; great for kids), and allow buffer for summer ferry lines. Street parking fills by late morning in peak season."
+      },
+      {
+        icon: "🌅",
+        title: "Cattle Point",
+        note: "Lighthouse, Garry oak prairie, and wide Strait of Juan de Fuca horizons.",
+        tip: "End of the American Camp road; short walks to the light and shoreline. Often windier than the rest of the island — hold onto hats. Excellent sunset if clear; no services past the park. Combine with American Camp trails rather than a separate drive."
+      },
+      {
+        icon: "🪨",
+        title: "Granny’s Cove",
+        note: "American Camp’s star tidepooling shore when a minus tide is on the chart.",
+        tip: "Check NOAA tide tables (aim for a negative low). Wear grippy shoes; rocks are slick. Leave animals and rocks in place. Short trail from the American Camp area — best as a morning outing timed to the low, then warm up inland."
+      },
+      {
+        icon: "🏞",
+        title: "San Juan County Park",
+        note: "West-side campground and day-use bluffs — second-best shore whale perch after Lime Kiln.",
+        tip: "Camping books early in summer. Day visitors get cliff-top views of Haro Strait shipping and occasional orcas. Sunset favorite. Restrooms; limited shade. About 15 min north of Lime Kiln along West Side Road."
+      },
+      {
+        icon: "🛍",
+        title: "Roche Harbor",
+        note: "Historic resort village, lime-kiln ruins, marina, and open-air sculpture park.",
+        tip: "About 25–30 min from Friday Harbor (north end). Free sculpture park walk is excellent even if you’re not lodging. Resort dining and a general store; summer weekends get busy with boats. Easy add-on after English Camp."
+      },
+      {
+        icon: "🌲",
+        title: "Pelindaba Lavender Farm",
+        note: "Fragrant fields, farm shop, and island-made lavender goods (peak bloom mid-summer).",
+        tip: "West-central island; pair with Lime Kiln or a west-side loop. Bloom is roughly July; shop and grounds still worth a stop off-season for gifts and a stretch break. Confirm seasonal hours before you detour."
+      },
+      {
+        icon: "🦅",
+        title: "The Whale Museum",
+        note: "Friday Harbor’s essential natural-history stop — orca culture, soundscapes, and science.",
+        tip: "Allow 45–75 min. Ideal rainy-day or ferry-wait activity. Complements a Lime Kiln morning: see the science, then (or first) watch the strait. Check current hours and admission; gift shop is strong for kids’ books and ID guides."
+      }
     ],
-    tip: "Summer weekends book out — reserve ferries early, or sail midweek for quieter roads."
+    eats: [
+      {
+        icon: "🛍",
+        title: "The Market Chef",
+        where: "Friday Harbor",
+        kind: "Lunch · picnic",
+        note: "Beloved deli for sandwiches, soups, and island provisions — perfect to pack for Lime Kiln or American Camp."
+      },
+      {
+        icon: "🌊",
+        title: "Downriggers",
+        where: "Friday Harbor waterfront",
+        kind: "Seafood · views",
+        note: "Classic harbor-view seafood and cocktails; book ahead in summer if you want a window table after the ferry."
+      },
+      {
+        icon: "🏛",
+        title: "Duck Soup Inn",
+        where: "West side (seasonal)",
+        kind: "Dinner · destination",
+        note: "Longtime island special-occasion restaurant in a woodsy setting. Confirm open nights and reserve; not a walk-in plan."
+      },
+      {
+        icon: "⚓",
+        title: "Roche Harbor dining",
+        where: "Roche Harbor Resort",
+        kind: "Lunch or dinner",
+        note: "Several options at the historic resort (casual to sit-down dining). Handy after English Camp or the sculpture park."
+      },
+      {
+        icon: "☕",
+        title: "Bakery San Juan / cafés",
+        where: "Friday Harbor",
+        kind: "Breakfast · coffee",
+        note: "Start early with pastry and coffee before a west-side whale watch — parking and ferries both favor the early bird."
+      },
+      {
+        icon: "🌲",
+        title: "San Juan Island Brewing Co.",
+        where: "Friday Harbor",
+        kind: "Casual · local",
+        note: "Relaxed post-hike pints and pub fare. Good regroup spot after Cattle Point wind or a County Park sunset."
+      }
+    ],
+    halfDays: [
+      {
+        title: "Westside whales & harbor lunch",
+        duration: "4–5 hours",
+        bestFor: "First visit · summer",
+        steps: [
+          "Early coffee in Friday Harbor, then drive West Side Road to Lime Kiln (1–2 hrs on the bluff).",
+          "Continue north to San Juan County Park overlook for a second Haro Strait scan.",
+          "Optional 20-min stop at Pelindaba if lavender is in season.",
+          "Lunch in Friday Harbor (Market Chef to-go or Downriggers on the water).",
+          "Buffer time for the Whale Museum or ferry line before sailing."
+        ]
+      },
+      {
+        title: "Pig War south loop",
+        duration: "3–5 hours",
+        bestFor: "History · open sky · families",
+        steps: [
+          "American Camp visitor center and prairie trails / redoubt.",
+          "Time Granny’s Cove to a minus low tide if tidepooling is the goal.",
+          "Cattle Point lighthouse walk and Strait views.",
+          "Picnic from Market Chef on the prairie, or return to Friday Harbor for a late lunch.",
+          "If energy remains, swing north later for English Camp gardens (or save for another half-day)."
+        ]
+      },
+      {
+        title: "English Camp & Roche Harbor",
+        duration: "3–4 hours",
+        bestFor: "Gardens · photos · easy pace",
+        steps: [
+          "Drive to English Camp; stroll parade ground, blockhouse, and formal garden.",
+          "Short hop to Roche Harbor: sculpture park loop and marina boardwalk.",
+          "Lunch or early dinner at the resort; browse the general store.",
+          "Return via island roads with a possible County Park or Lime Kiln sunset if west-side weather is clear."
+        ]
+      },
+      {
+        title: "Friday Harbor town half-day",
+        duration: "3–4 hours",
+        bestFor: "Ferry day · rain plan · no long drives",
+        steps: [
+          "Whale Museum (45–75 min) for orca context and kid-friendly exhibits.",
+          "Waterfront walk, galleries, and bookshops; coffee and bakery stop.",
+          "Lunch on Spring Street or the harbor (Downriggers, cafés, or brewery).",
+          "Optional kayak or whale-watch charter from town (book ahead in season).",
+          "Ice cream and ferry queue — leave more time than you think on summer weekends."
+        ]
+      }
+    ],
+    tip: "Summer weekends book out — reserve Washington State Ferries early (or sail midweek). One car is enough for the whole island loop; gas up in Friday Harbor. Cell service drops on the west and south ends — download maps offline."
   },
   "orcas": {
     name: "Orcas Island",
