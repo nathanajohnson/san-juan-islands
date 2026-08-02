@@ -12,6 +12,11 @@ SJI.GEO = {
     [48.35, -123.25], // SW
     [48.82, -122.65]  // NE
   ],
+  // Tighter frame on the archipelago itself (live "chart" view)
+  boundsTight: [
+    [48.41, -123.2], // SW
+    [48.72, -122.74] // NE
+  ],
 
   islands: {
     "san-juan": { lat: 48.53, lng: -123.08, name: "San Juan Island" },

@@ -1,0 +1,532 @@
+/* css/sections/scenes.css — "Chart & Current" scenes-section styles. Owned by the scenes agent. */
+
+/* ============ Tidepool painterly scene ============ */
+.tp-visual {
+  background: #0f4459;
+  border-radius: 10px;
+  border: 1px solid rgba(43, 58, 66, 0.35);
+  box-shadow: var(--shadow-ink);
+}
+
+/* Ambient motion — breathing anemones, swaying weed, shimmering water */
+.tp-anem {
+  transform-box: fill-box;
+  transform-origin: 50% 65%;
+  animation: tpBreathe 9s ease-in-out infinite;
+}
+.tp-anem-b { animation-delay: -3s; animation-duration: 11s; }
+.tp-anem-c { animation-delay: -6s; animation-duration: 13s; }
+@keyframes tpBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+}
+.tp-weed { animation: tpWeedSway 10s ease-in-out infinite alternate; }
+.tp-weed-b { animation-duration: 13s; animation-delay: -5s; }
+@keyframes tpWeedSway {
+  from { transform: rotate(-2deg); }
+  to { transform: rotate(2.4deg); }
+}
+.tp-rays { animation: tpRays 14s ease-in-out infinite alternate; }
+@keyframes tpRays {
+  from { opacity: 0.35; }
+  to { opacity: 0.85; }
+}
+.tp-shimmer { animation: tpShimmer 8s ease-in-out infinite alternate; }
+@keyframes tpShimmer {
+  from { opacity: 0.5; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(4px); }
+}
+.tp-swell { animation: tpShimmer 12s ease-in-out infinite alternate-reverse; }
+.tp-dart { animation: tpDart 16s ease-in-out infinite; }
+@keyframes tpDart {
+  0%, 42%, 100% { transform: translate(0, 0); opacity: 0.7; }
+  48% { transform: translate(-38px, 10px); opacity: 0.7; }
+  52% { transform: translate(-44px, 12px); opacity: 0; }
+  60% { transform: translate(20px, -4px); opacity: 0; }
+  66% { transform: translate(14px, -6px); opacity: 0.7; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tp-anem, .tp-anem-b, .tp-anem-c, .tp-weed, .tp-weed-b,
+  .tp-rays, .tp-shimmer, .tp-swell, .tp-dart { animation: none; }
+}
+
+/* Zone bands stay quiet until active */
+.tp-svg .tp-zone-band.active {
+  opacity: 0.3 !important;
+  fill: #5ba3c4;
+}
+.tp-svg .tp-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: #f2e9d8;
+  paint-order: stroke;
+  stroke: rgba(10, 31, 46, 0.85);
+  stroke-width: 3px;
+}
+
+/* ============ Creature chips → specimen labels ============ */
+.tp-creature-list { gap: 0.5rem; }
+.tp-chip {
+  position: relative;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #faf4e4, var(--chart-paper));
+  background-image: var(--grain), linear-gradient(180deg, #faf4e4, var(--chart-paper));
+  border: 1px solid rgba(43, 58, 66, 0.4);
+  box-shadow: 0 1px 0 rgba(43, 58, 66, 0.15), 0 2px 5px rgba(43, 58, 66, 0.12);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--chart-ink);
+  padding: 0.38rem 0.7rem 0.38rem 1.15rem;
+}
+/* punched tag hole */
+.tp-chip::before {
+  content: "";
+  position: absolute;
+  left: 6px; top: 50%;
+  transform: translateY(-50%);
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1.2px rgba(43, 58, 66, 0.55);
+}
+.tp-chip:hover {
+  border-color: var(--cedar);
+  color: var(--cedar);
+  transform: translateY(-1px);
+}
+.tp-chip.active {
+  background: linear-gradient(180deg, var(--chart-ink), var(--char));
+  border-color: var(--char);
+  color: var(--chart-paper);
+  box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.55), 0 2px 6px rgba(8, 24, 36, 0.3);
+}
+.tp-chip-emoji { display: inline-flex; }
+.tp-chip-emoji .icon { width: 1.05rem; height: 1.05rem; color: var(--cedar); }
+.tp-chip.active .tp-chip-emoji .icon { color: var(--prairie); }
+
+/* Panel head icon */
+.tp-emoji {
+  width: 2.6rem; height: 2.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1.5px solid rgba(43, 58, 66, 0.35);
+  background: var(--chart-water);
+  color: var(--sea-mid);
+}
+.tp-emoji .icon { width: 1.5rem; height: 1.5rem; }
+
+/* ============ Fun fact → field-journal annotation ============ */
+.tp-fun {
+  background: #f3ead2;
+  background-image: var(--grain), linear-gradient(180deg, #f7efdc, #efe4c6);
+  border: 1px dashed rgba(143, 74, 46, 0.55);
+  border-left: 3px solid var(--cedar);
+  border-radius: 3px;
+  font-style: italic;
+  color: #4a3a22;
+  position: relative;
+}
+.tp-fun::before { background: var(--cedar); }
+.tp-fun::after {
+  content: "FIELD NOTE";
+  position: absolute;
+  top: -0.62rem;
+  right: 0.7rem;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--cedar);
+  background: var(--white);
+  padding: 0.05rem 0.4rem;
+  border: 1px solid rgba(143, 74, 46, 0.4);
+  border-radius: 2px;
+}
+
+/* ============ Tighten the seam to the etiquette block ============ */
+.tidepool-workspace { margin-bottom: 0.75rem; }
+.tidepool-tips { padding-top: 1.9rem; position: relative; }
+.tidepool-tips::before {
+  content: "";
+  position: absolute;
+  top: 0.4rem; left: 50%;
+  transform: translateX(-50%);
+  width: min(420px, 80%);
+  height: 8px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='8'><path d='M0 4 Q7 0.5 14 4 T28 4' fill='none' stroke='%238f4a2e' stroke-opacity='0.5' stroke-width='1.3'/></svg>");
+  background-repeat: repeat-x;
+}
+.tp-tips-title { margin-bottom: 1rem; }
+.tp-tip-card {
+  background-image: var(--grain), linear-gradient(180deg, #fbf7ec, var(--chart-paper));
+  border: 1px solid rgba(43, 58, 66, 0.16);
+  border-top: 3px solid var(--sea-bright);
+}
+.tp-tip-icon { color: var(--cedar); }
+
+/* Panel gets manifest paper */
+.tp-panel {
+  background: linear-gradient(180deg, #fbf7ec, var(--chart-paper));
+  background-image: var(--grain), linear-gradient(180deg, #fbf7ec, var(--chart-paper));
+  border: 1px solid rgba(43, 58, 66, 0.22);
+  box-shadow: var(--shadow-ink);
+}
+
+/* ============ Tidepool: engraved zonation tabs ============ */
+.tp-zone-tag { cursor: pointer; outline: none; }
+.tp-zone-tag .tp-tag-plate {
+  fill: rgba(10, 26, 36, 0.45);
+  stroke: rgba(242, 233, 216, 0.3);
+  stroke-width: 1;
+  transition: fill 0.2s, stroke 0.2s;
+}
+.tp-zone-tag .tp-tag-rule { stroke: rgba(242, 233, 216, 0.35); stroke-width: 1; }
+.tp-zone-tag text { fill: rgba(242, 233, 216, 0.78); pointer-events: none; }
+.tp-zone-tag:hover .tp-tag-plate,
+.tp-zone-tag:focus-visible .tp-tag-plate { fill: rgba(201, 162, 39, 0.3); }
+.tp-zone-tag.active .tp-tag-plate { fill: rgba(201, 162, 39, 0.42); stroke: #c9a227; }
+.tp-zone-tag.active text { fill: #f2e9d8; }
+
+/* ============ Tidepool: click ripples ============ */
+.tp-ripple-ring {
+  fill: none;
+  stroke: #cfe9e4;
+  stroke-width: 1.6;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tpRipple 1.6s cubic-bezier(0.2, 0.6, 0.35, 1) forwards;
+}
+.tp-ripple-ring.tp-r1 { animation-delay: 0.18s; stroke-width: 1.3; }
+.tp-ripple-ring.tp-r2 { animation-delay: 0.36s; stroke-width: 1; }
+@keyframes tpRipple {
+  0% { opacity: 0; transform: scale(0.4); }
+  12% { opacity: 0.8; }
+  100% { opacity: 0; transform: scale(4.6); }
+}
+
+/* ============ Tidepool: zone resident list ============ */
+.tp-residents-label { color: var(--cedar); margin: 0.9rem 0 0.4rem; }
+.tp-residents { list-style: none; padding: 0; margin: 0 0 0.5rem; }
+.tp-residents li { border-bottom: 1px dashed rgba(43, 58, 66, 0.25); }
+.tp-resident {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: 0.45rem 0.1rem;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--chart-ink);
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s, transform 0.15s;
+}
+.tp-resident:hover { color: var(--cedar); transform: translateX(3px); }
+.tp-resident-icon {
+  display: inline-flex;
+  width: 1.6rem;
+  height: 1.6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--chart-water);
+  border: 1px solid rgba(43, 58, 66, 0.25);
+  color: var(--sea-mid);
+  flex: none;
+}
+.tp-resident-icon .icon { width: 0.95rem; height: 0.95rem; }
+
+/* ============ Tidepool: sculpin dart & hermit scuttle ============ */
+.tp-sculpin.darting { animation: tpSculpinDart 1.3s cubic-bezier(0.3, 0.7, 0.2, 1) both; }
+@keyframes tpSculpinDart {
+  0% { transform: translate(0, 0); opacity: 1; }
+  22% { transform: translate(-58px, 22px); opacity: 0.3; }
+  55% { transform: translate(-66px, 26px); opacity: 0.18; }
+  100% { transform: translate(0, 0); opacity: 1; }
+}
+.tp-hermit { animation: tpScuttle 18s ease-in-out infinite; }
+@keyframes tpScuttle {
+  0%, 34%, 100% { transform: translate(0, 0); }
+  40% { transform: translate(-14px, 4px); }
+  46% { transform: translate(-11px, 3px); }
+  62% { transform: translate(-13px, 4px); }
+  70% { transform: translate(3px, -1px); }
+  76% { transform: translate(0, 0); }
+}
+
+/* ============ Ecology painterly transect ============ */
+/* The frame stretches to the panel's height; a fathom-scale chart footer
+   fills the margin below the painting so there is no bare void. */
+.ecology-cross { align-items: stretch; }
+.cross-visual {
+  background: #0a1b26;
+  border: 1px solid rgba(43, 58, 66, 0.35);
+  box-shadow: var(--shadow-ink);
+  display: flex;
+  flex-direction: column;
+}
+.cross-scene { position: relative; flex: none; }
+.cross-svg { display: block; }
+
+/* Chart-margin footer: fathom ruler + engraved captions on the dark stock */
+.cross-scale {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.8rem 1.15rem 0.9rem;
+  border-top: 1px solid rgba(242, 233, 216, 0.16);
+  min-height: 2.6rem;
+}
+.cross-scale-row,
+.cross-scale-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+.cross-scale-cap {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(123, 166, 188, 0.85);
+  white-space: nowrap;
+}
+.cross-scale-cap--dim { color: rgba(91, 125, 148, 0.75); }
+.cross-scale-ruler { display: block; width: min(560px, 100%); margin: 0 auto; height: auto; }
+.cross-scale-wave {
+  flex: 1;
+  height: 6px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='6'><path d='M0 3 Q6 0.5 12 3 T24 3' fill='none' stroke='%235b7d94' stroke-opacity='0.45' stroke-width='1'/></svg>");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/* Cloud drift over the transect sky */
+.eco-cloud { animation: ecoCloudDrift 46s ease-in-out infinite alternate; }
+.eco-cloud-b { animation-duration: 58s; animation-delay: -20s; }
+.eco-cloud-c { animation-duration: 38s; animation-delay: -9s; }
+@keyframes ecoCloudDrift {
+  from { transform: translateX(-16px); }
+  to { transform: translateX(22px); }
+}
+.cross-visual.layer-active .eco-layer {
+  opacity: 0.32;
+  filter: saturate(0.6) brightness(0.78);
+}
+.cross-visual.layer-active .eco-layer.active-layer {
+  opacity: 1;
+  filter: saturate(1.06) brightness(1.1);
+}
+
+/* Layer labels → engraved brass-edged tabs */
+.layer-label {
+  background: linear-gradient(180deg, rgba(18, 24, 29, 0.86), rgba(8, 24, 36, 0.92));
+  border: 1px solid rgba(242, 233, 216, 0.4);
+  border-left: 3px solid var(--brass);
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--chart-paper);
+  padding: 0.3rem 0.62rem;
+  box-shadow: 0 2px 6px rgba(4, 12, 18, 0.5);
+}
+.layer-label:hover,
+.layer-label.active {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--char);
+}
+
+/* Ambient motion — fog drifts, eagle circles, kelp sways, orca passes */
+.eco-fog { animation: ecoFog 24s ease-in-out infinite alternate; }
+@keyframes ecoFog {
+  from { transform: translateX(-26px); }
+  to { transform: translateX(30px); }
+}
+.eco-eagle { animation: ecoEagleDrift 22s ease-in-out infinite alternate; }
+@keyframes ecoEagleDrift {
+  from { transform: translateX(-64px); }
+  to { transform: translateX(88px); }
+}
+.eco-eagle-bob { animation: ecoEagleBob 8.5s ease-in-out infinite alternate; }
+@keyframes ecoEagleBob {
+  from { transform: translateY(-7px); }
+  to { transform: translateY(6px); }
+}
+.eco-kelp {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: ecoSway 11s ease-in-out infinite alternate;
+}
+.eco-k2 { animation-duration: 14s; animation-delay: -5s; }
+.eco-k3 { animation-duration: 12s; animation-delay: -8s; }
+.eco-k4 { animation-duration: 15s; animation-delay: -3s; }
+.eco-k5 { animation-duration: 10s; animation-delay: -6s; }
+.eco-k6 { animation-duration: 13s; animation-delay: -9s; }
+@keyframes ecoSway {
+  from { transform: rotate(-1.6deg); }
+  to { transform: rotate(2deg); }
+}
+.eco-fish { animation: ecoFish 20s ease-in-out infinite alternate; }
+@keyframes ecoFish {
+  from { transform: translate(-48px, 2px); }
+  to { transform: translate(64px, -14px); }
+}
+.eco-seal-swim { animation: ecoSealSwim 18s ease-in-out infinite alternate; }
+@keyframes ecoSealSwim {
+  from { transform: translate(26px, -6px); }
+  to { transform: translate(-38px, 10px); }
+}
+.eco-orca { animation: ecoOrcaPass 24s linear infinite; }
+@keyframes ecoOrcaPass {
+  0% { transform: translateX(-420px); }
+  55% { transform: translateX(880px); }
+  100% { transform: translateX(880px); }
+}
+.eco-rays { animation: ecoRays 16s ease-in-out infinite alternate; }
+@keyframes ecoRays {
+  from { opacity: 0.35; }
+  to { opacity: 0.85; }
+}
+.eco-shimmer { animation: ecoShimmer 9s ease-in-out infinite alternate; }
+@keyframes ecoShimmer {
+  from { transform: translateX(-6px); opacity: 0.45; }
+  to { transform: translateX(6px); opacity: 0.8; }
+}
+
+/* ============ Ecology panel — manifest paper, legend, featured card ============ */
+.cross-panel {
+  background: linear-gradient(180deg, #fbf7ec, var(--chart-paper));
+  background-image: var(--grain), linear-gradient(180deg, #fbf7ec, var(--chart-paper));
+  border: 1px solid rgba(43, 58, 66, 0.22);
+  box-shadow: var(--shadow-ink);
+}
+.cross-photo-wrap {
+  margin: 0 0 1rem;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(43, 58, 66, 0.3);
+  box-shadow: 0 2px 8px rgba(8, 24, 36, 0.18);
+}
+.cross-photo-wrap img { display: block; width: 100%; height: 130px; object-fit: cover; }
+.cross-species li { border-bottom: 1px dashed rgba(43, 58, 66, 0.25); }
+.cross-species .sp-icon {
+  display: inline-flex;
+  width: 1.7rem;
+  height: 1.7rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--chart-water);
+  border: 1px solid rgba(43, 58, 66, 0.25);
+  color: var(--sea-mid);
+  flex: none;
+}
+.cross-species .sp-icon .icon { width: 1rem; height: 1rem; }
+
+.cross-default { margin-top: 0.35rem; }
+.cross-legend { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 1rem; }
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(43, 58, 66, 0.25);
+  border-radius: 3px;
+  padding: 0.32rem 0.55rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--chart-ink);
+  transition: transform 0.18s var(--ease), border-color 0.18s, background 0.18s;
+}
+.legend-row:hover {
+  border-color: var(--cedar);
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateX(3px);
+}
+.legend-swatch {
+  width: 30px;
+  height: 16px;
+  border-radius: 2px;
+  border: 1px solid rgba(18, 24, 29, 0.35);
+  flex: none;
+}
+.legend-swatch--canopy { background: linear-gradient(180deg, #8fb6cc 34%, #2f6347 34%); }
+.legend-swatch--forest { background: linear-gradient(180deg, #4e6b3d 30%, #463626 30%); }
+.legend-swatch--intertidal { background: linear-gradient(180deg, #8d7c65 45%, #4c6a52 45%); }
+.legend-swatch--kelp { background: linear-gradient(180deg, #3f88a6, #155066); }
+.legend-swatch--deep { background: linear-gradient(180deg, #0f3b54, #081824); }
+.legend-name { flex: 1; text-align: left; }
+.legend-note { font-size: 0.55rem; color: var(--ink-mute); }
+
+.cross-featured {
+  margin: 0;
+  display: flex;
+  align-items: stretch;
+  border: 1px solid rgba(43, 58, 66, 0.25);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(8, 24, 36, 0.12);
+}
+.cross-featured img { display: block; width: 118px; min-height: 100%; object-fit: cover; flex: none; }
+.cross-featured figcaption { padding: 0.6rem 0.75rem 0.7rem; }
+.cross-featured .chart-label { display: block; color: var(--cedar); margin-bottom: 0.15rem; }
+.cross-featured strong { font-family: var(--font-display); font-size: 1.1rem; color: var(--sea-deep); }
+.cross-featured p { margin: 0.3rem 0 0; font-size: 0.8rem; color: var(--ink-soft); }
+
+/* ============ Keystone cards → chart-card stock ============ */
+.ecology-extras .extra-card {
+  position: relative;
+  background: linear-gradient(180deg, #fbf7ec, var(--chart-paper));
+  background-image: var(--grain), linear-gradient(180deg, #fbf7ec, var(--chart-paper));
+  border: 1px solid rgba(43, 58, 66, 0.22);
+  border-left: 1px solid rgba(43, 58, 66, 0.22);
+  border-radius: 6px;
+  box-shadow: var(--shadow-ink);
+  padding: 1.3rem 1.4rem 1.25rem;
+}
+.ecology-extras .extra-card::before,
+.ecology-extras .extra-card::after {
+  content: "";
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid rgba(143, 74, 46, 0.45);
+  pointer-events: none;
+}
+.ecology-extras .extra-card::before { top: 7px; left: 7px; border-right: none; border-bottom: none; }
+.ecology-extras .extra-card::after { bottom: 7px; right: 7px; border-left: none; border-top: none; }
+.ecology-extras .extra-card h4 {
+  color: var(--sea-deep);
+  padding-bottom: 0.45rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px dashed rgba(43, 58, 66, 0.28);
+}
+
+/* Freeze every ambient under reduced motion (functional feedback stays) */
+@media (prefers-reduced-motion: reduce) {
+  .eco-fog, .eco-eagle, .eco-eagle-bob, .eco-kelp, .eco-fish, .eco-seal-swim,
+  .eco-orca, .eco-rays, .eco-shimmer, .eco-cloud, .tp-hermit, .tp-gulls,
+  .tp-sculpin.darting, .tp-ripple-ring { animation: none; }
+}

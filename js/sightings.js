@@ -19,9 +19,20 @@
       location: "Haro Strait · west of Lime Kiln",
       when: "Sample",
       note: "Typical summer mammal-hunter track along the west side of San Juan Island.",
+      report:
+        "Typical summer mammal-hunter track along the west side of San Juan Island near Lime Kiln Point. Bigg’s groups often work seal haul-outs on the reefs while freighters pass offshore in Haro Strait.",
+      media: [
+        {
+          type: "youtube",
+          url: "https://www.youtube.com/watch?v=0jmC_rrbWFA",
+          label: "Sample: orca video",
+          youtubeId: "0jmC_rrbWFA"
+        }
+      ],
       lat: 48.52,
       lng: -123.16,
-      source: "Sample (offline fallback)"
+      source: "Sample (offline fallback)",
+      sourceUrl: "https://orcanetwork.org/"
     },
     {
       id: "fb2",
@@ -31,9 +42,19 @@
       location: "Haro Strait",
       when: "Sample",
       note: "Residents pulse through inland waters with Chinook runs — highly variable year to year.",
+      report:
+        "Southern Residents (J pod) pulse through inland waters with Chinook runs — highly variable year to year. Hydrophone networks sometimes catch calls when the whales pass Orcasound stations in Haro Strait.",
+      media: [
+        {
+          type: "audio",
+          url: "https://live.orcasound.net/",
+          label: "Orcasound hydrophones"
+        }
+      ],
       lat: 48.56,
       lng: -123.17,
-      source: "Sample (offline fallback)"
+      source: "Sample (offline fallback)",
+      sourceUrl: "https://orcanetwork.org/"
     },
     {
       id: "fb3",
@@ -43,9 +64,13 @@
       location: "Rosario Strait",
       when: "Sample",
       note: "Transients often work seal haul-outs along Rosario.",
+      report:
+        "Transients often work seal haul-outs along Rosario Strait between the ferry islands and the mainland. Sightings here are common in shoulder seasons when harbor seals pup on outer rocks.",
+      media: [],
       lat: 48.55,
       lng: -122.78,
-      source: "Sample (offline fallback)"
+      source: "Sample (offline fallback)",
+      sourceUrl: "https://orcanetwork.org/"
     },
     {
       id: "fb4",
@@ -55,9 +80,13 @@
       location: "Boundary Pass",
       when: "Sample",
       note: "Humpbacks have returned to the Salish Sea in growing numbers since the 2000s.",
+      report:
+        "Humpbacks have returned to the Salish Sea in growing numbers since the 2000s. Boundary Pass is a frequent corridor; flukes and blows are the usual cues for shore and vessel observers.",
+      media: [],
       lat: 48.72,
       lng: -123.12,
-      source: "Sample (offline fallback)"
+      source: "Sample (offline fallback)",
+      sourceUrl: "https://orcanetwork.org/"
     },
     {
       id: "fb5",
@@ -67,9 +96,13 @@
       location: "San Juan Channel",
       when: "Sample",
       note: "Small groups frequent quieter channels between the ferry islands.",
+      report:
+        "Small groups of harbor porpoise frequent quieter channels between the ferry islands. They surface briefly and are easy to miss without binoculars.",
+      media: [],
       lat: 48.58,
       lng: -122.98,
-      source: "Sample (offline fallback)"
+      source: "Sample (offline fallback)",
+      sourceUrl: "https://orcanetwork.org/"
     },
     {
       id: "fb6",
@@ -79,9 +112,13 @@
       location: "Turn Point · Stuart Island",
       when: "Sample",
       note: "Sharp turn at Boundary Pass / Haro — busy for ships and whales alike.",
+      report:
+        "Sharp turn at Boundary Pass / Haro near Turn Point Light — busy for ships and whales alike. A classic lookout when Bigg’s groups track around Stuart Island.",
+      media: [],
       lat: 48.69,
       lng: -123.22,
-      source: "Sample (offline fallback)"
+      source: "Sample (offline fallback)",
+      sourceUrl: "https://orcanetwork.org/"
     },
     {
       id: "fb7",
@@ -91,9 +128,13 @@
       location: "Off Cattle Point",
       when: "Sample",
       note: "Minkes are solitary and often overlooked near the south end of San Juan Island.",
+      report:
+        "Minkes are solitary and often overlooked near the south end of San Juan Island off Cattle Point. A single arched back and small dorsal fin is the typical sighting.",
+      media: [],
       lat: 48.45,
       lng: -122.97,
-      source: "Sample (offline fallback)"
+      source: "Sample (offline fallback)",
+      sourceUrl: "https://orcanetwork.org/"
     },
     {
       id: "fb8",
@@ -103,9 +144,13 @@
       location: "South of Lopez · Strait of Juan de Fuca",
       when: "Sample",
       note: "L pod ranges widely; inland visits cluster when salmon move.",
+      report:
+        "L pod ranges widely; inland visits cluster when salmon move. South of Lopez toward the Strait of Juan de Fuca is a common corridor for residents on longer loops.",
+      media: [],
       lat: 48.42,
       lng: -122.88,
-      source: "Sample (offline fallback)"
+      source: "Sample (offline fallback)",
+      sourceUrl: "https://orcanetwork.org/"
     }
   ];
 
@@ -133,6 +178,7 @@
   let current = [];
   let live = false;
   let lastSource = "";
+  let lastSourceUrl = "";
 
   function setStatus(msg, kind) {
     const el = STATUS_EL();
@@ -357,15 +403,22 @@
   function applyData(data) {
     current = data.sightings.map((s, i) => ({
       ...s,
-      id: s.id || `live-${i}`
+      id: s.id || `live-${i}`,
+      report: s.report || s.note || "",
+      media: Array.isArray(s.media) ? s.media : [],
+      sourceUrl: s.sourceUrl || data.sourceUrl || ""
     }));
     live = !!data.live;
     lastSource = data.source || data.sourceUrl || "";
+    lastSourceUrl = data.sourceUrl || "";
     const when = data.refreshed
       ? new Date(data.refreshed).toLocaleTimeString()
       : new Date().toLocaleTimeString();
+    const withMedia = current.filter((s) => s.media?.length).length;
     setStatus(
-      `Live feed · ${current.length} reports from Orca Network (${lastSource}) · ${when}`,
+      `Live feed · ${current.length} reports from Orca Network (${lastSource})` +
+        (withMedia ? ` · ${withMedia} with media links` : "") +
+        ` · ${when}`,
       "live"
     );
     apply();
@@ -375,6 +428,7 @@
     current = FALLBACK.map((s) => ({ ...s }));
     live = false;
     lastSource = "";
+    lastSourceUrl = "https://orcanetwork.org/";
     setStatus(
       reason ||
         "Sample sightings only — start with `python3 server.py` for a live Orca Network feed (CORS blocks browser-only fetch).",
@@ -389,6 +443,24 @@
     SJI.whales?.setSightings?.(current);
   }
 
+  function iconForKind(kind) {
+    if (kind === "resident" || kind === "biggs") return "orca-fin";
+    if (kind === "humpback" || kind === "gray" || kind === "minke") return "orca";
+    return "binoculars";
+  }
+
+  function mediaBadge(s) {
+    const media = s.media || [];
+    if (!media.length) return "";
+    const types = new Set(media.map((m) => m.type));
+    const bits = [];
+    if (types.has("youtube") || types.has("video") || types.has("vimeo")) bits.push("Video");
+    if (types.has("photos") || types.has("image")) bits.push("Photos");
+    if (types.has("audio")) bits.push("Audio");
+    if (!bits.length) bits.push("Media");
+    return `<span class="sc-media-badge">${bits.join(" · ")}</span>`;
+  }
+
   function renderList() {
     const el = LIST_EL();
     if (!el) return;
@@ -399,12 +471,17 @@
     el.innerHTML = current
       .map(
         (s) => `
-      <article class="sighting-card kind-${s.kind || "other"}" data-id="${s.id}" tabindex="0" role="button">
-        <div class="sc-dot" aria-hidden="true"></div>
+      <article class="sighting-card kind-${s.kind || "other"}" data-id="${s.id}" tabindex="0" role="button"
+        aria-label="Open report: ${escapeHtml(s.species)}">
+        <div class="sc-ico" aria-hidden="true"><svg class="icon"><use href="#i-${iconForKind(s.kind)}"/></svg></div>
         <div class="sc-body">
           <h4>${escapeHtml(s.species)}${s.group ? ` · ${escapeHtml(s.group)}` : ""}</h4>
           <p class="sc-meta">${escapeHtml(s.when || "")} · ${escapeHtml(s.location || "Salish Sea")}</p>
           <p class="sc-note">${escapeHtml(s.note || "")}</p>
+          <div class="sc-card-foot">
+            ${mediaBadge(s)}
+            <span class="sc-open-hint">View full report</span>
+          </div>
         </div>
       </article>`
       )
@@ -413,11 +490,8 @@
     el.querySelectorAll(".sighting-card").forEach((card) => {
       const go = () => {
         const s = current.find((x) => x.id === card.dataset.id);
-        if (!s || s.lat == null) return;
-        SJI.livemap?.flyTo?.(s.lat, s.lng, 11);
-        document.querySelector('[data-map-view="live"]')?.click();
-        document.getElementById("map")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        SJI.whales?.pulseSighting?.(s);
+        if (!s) return;
+        openReport(s);
       };
       card.addEventListener("click", go);
       card.addEventListener("keydown", (e) => {
@@ -427,6 +501,143 @@
         }
       });
     });
+  }
+
+  function mediaLabel(m) {
+    if (m.label && !/^https?:/i.test(m.label)) return m.label;
+    const map = {
+      youtube: "YouTube video",
+      vimeo: "Vimeo video",
+      video: "Video",
+      photos: "Photos",
+      image: "Photo",
+      audio: "Hydrophone / audio",
+      link: "Related link"
+    };
+    return map[m.type] || "Media";
+  }
+
+  function renderMedia(media) {
+    if (!media?.length) return "";
+    const blocks = media.map((m) => {
+      if (m.type === "youtube" && (m.youtubeId || /youtu/.test(m.url))) {
+        const id =
+          m.youtubeId ||
+          (m.url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/) || [])[1];
+        if (id) {
+          return `
+            <div class="sm-embed">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/${escapeHtml(id)}"
+                title="${escapeHtml(mediaLabel(m))}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen loading="lazy"></iframe>
+            </div>
+            <a class="sm-media-link" href="${escapeHtml(m.url)}" target="_blank" rel="noopener">
+              Open on YouTube ↗
+            </a>`;
+        }
+      }
+      if (m.type === "image") {
+        return `
+          <figure class="sm-figure">
+            <img src="${escapeHtml(m.url)}" alt="" loading="lazy" />
+            <figcaption>${escapeHtml(mediaLabel(m))}</figcaption>
+          </figure>`;
+      }
+      const icon =
+        m.type === "audio" ? "♪" :
+        m.type === "photos" || m.type === "image" ? "▣" :
+        m.type === "video" || m.type === "youtube" || m.type === "vimeo" ? "▶" : "↗";
+      return `
+        <a class="sm-media-card type-${escapeHtml(m.type || "link")}"
+           href="${escapeHtml(m.url)}" target="_blank" rel="noopener">
+          <span class="sm-media-ico" aria-hidden="true">${icon}</span>
+          <span>
+            <strong>${escapeHtml(mediaLabel(m))}</strong>
+            <span class="sm-media-host">${escapeHtml(hostOf(m.url))}</span>
+          </span>
+        </a>`;
+    });
+    return `<h4 class="sm-media-head">Linked media</h4>${blocks.join("")}`;
+  }
+
+  function hostOf(url) {
+    try {
+      return new URL(url).hostname.replace(/^www\./, "");
+    } catch {
+      return "external link";
+    }
+  }
+
+  function openReport(s) {
+    const modal = document.getElementById("sighting-modal");
+    if (!modal) return;
+
+    document.getElementById("sm-eyebrow").textContent = s.source || "Whale report";
+    document.getElementById("sm-title").textContent =
+      s.species + (s.group ? ` · ${s.group}` : "");
+    document.getElementById("sm-meta").textContent = [
+      s.when,
+      s.location || "Salish Sea",
+      s.lat != null ? `${Number(s.lat).toFixed(3)}°, ${Number(s.lng).toFixed(3)}°` : ""
+    ]
+      .filter(Boolean)
+      .join(" · ");
+
+    const body = document.getElementById("sm-body");
+    const report = (s.report || s.note || "").trim();
+    body.innerHTML = report
+      ? `<p>${escapeHtml(report)}</p>`
+      : `<p class="sm-empty">No full text was available for this pin.</p>`;
+
+    const mediaEl = document.getElementById("sm-media");
+    const mediaHtml = renderMedia(s.media || []);
+    if (mediaHtml) {
+      mediaEl.hidden = false;
+      mediaEl.innerHTML = mediaHtml;
+    } else {
+      mediaEl.hidden = true;
+      mediaEl.innerHTML = "";
+    }
+
+    const actions = document.getElementById("sm-actions");
+    const src = s.sourceUrl || lastSourceUrl;
+    actions.innerHTML = `
+      ${
+        s.lat != null
+          ? `<button type="button" class="btn btn-primary btn-sm" id="sm-fly">Show on map</button>`
+          : ""
+      }
+      ${
+        src
+          ? `<a class="btn btn-ghost btn-sm" href="${escapeHtml(src)}" target="_blank" rel="noopener">Orca Network page ↗</a>`
+          : ""
+      }
+      <button type="button" class="btn btn-ghost btn-sm" data-close-sighting>Close</button>
+    `;
+
+    actions.querySelector("#sm-fly")?.addEventListener("click", () => {
+      closeReport();
+      SJI.livemap?.flyTo?.(s.lat, s.lng, 11);
+      document.querySelector('[data-map-view="live"]')?.click();
+      document.getElementById("map")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      SJI.whales?.pulseSighting?.(s);
+    });
+    actions.querySelectorAll("[data-close-sighting]").forEach((el) => {
+      el.addEventListener("click", closeReport);
+    });
+
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    modal.querySelector(".sm-close")?.focus();
+  }
+
+  function closeReport() {
+    const modal = document.getElementById("sighting-modal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    document.body.style.overflow = "";
   }
 
   function escapeHtml(str) {
@@ -467,7 +678,15 @@
   function init() {
     document.getElementById("sightings-refresh")?.addEventListener("click", () => refresh(true));
     document.getElementById("sightings-open-on")?.addEventListener("click", () => {
-      window.open("https://orcanetwork.org/", "_blank", "noopener");
+      window.open(lastSourceUrl || "https://orcanetwork.org/", "_blank", "noopener");
+    });
+
+    const modal = document.getElementById("sighting-modal");
+    modal?.querySelectorAll("[data-close-sighting]").forEach((el) => {
+      el.addEventListener("click", closeReport);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeReport();
     });
 
     // Show samples immediately, then upgrade to live
@@ -479,6 +698,8 @@
   SJI.sightings = {
     init,
     refresh,
+    openReport,
+    closeReport,
     getAll: () => current,
     isLive: () => live,
     source: () => lastSource

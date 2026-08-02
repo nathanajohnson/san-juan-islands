@@ -13,7 +13,6 @@
     shipping: null,
     protected: null
   };
-  let formlineOverlay = null;
   let basemapTiles = null;
   let googleTiles = null;
 
@@ -32,11 +31,12 @@
       scrollWheelZoom: false,
       attributionControl: true
     });
-    map.fitBounds(SJI.GEO.bounds, { padding: [20, 20] });
+    map.fitBounds(SJI.GEO.boundsTight || SJI.GEO.bounds, { padding: [8, 8] });
+    map.attributionControl.setPrefix(false);
 
-    // Accurate basemap (Carto dark matter — good contrast for sea)
+    // Light basemap (Carto light_all) — warmed to chart paper via CSS filter
     basemapTiles = L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
       {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
@@ -104,15 +104,12 @@
   }
 
   function addFormlineOverlay() {
-    // Image overlay of formline pattern across the archipelago bounds
-    const bounds = L.latLngBounds(SJI.GEO.bounds);
-    formlineOverlay = L.imageOverlay("assets/patterns/formline.svg", bounds, {
-      opacity: 0.22,
-      interactive: false,
-      className: "formline-overlay"
-    }).addTo(map);
+    // The formline motif now themes the chart FRAME ornament (subtle), never the water.
+    const stack = document.querySelector(".map-canvas-stack");
+    const cb = document.getElementById("toggle-formline");
+    if (stack) stack.classList.toggle("formline-frame", !cb || cb.checked);
 
-    // Also a subtle SVG pane for wave/salmon motifs at fixed corners
+    // Disclaimer chip stays visible whenever the motif is available
     const FormlineControl = L.Control.extend({
       options: { position: "bottomleft" },
       onAdd() {
@@ -125,12 +122,38 @@
     map.addControl(new FormlineControl());
   }
 
-  function islandIcon(selected) {
+  function islandIcon(id, selected) {
+    const name = (SJI.GEO.islands[id]?.name || id).replace(" Island", "");
     return L.divIcon({
       className: "isle-marker" + (selected ? " selected" : ""),
-      html: `<span class="isle-dot"></span>`,
-      iconSize: [18, 18],
-      iconAnchor: [9, 9]
+      html: `<span class="isle-glyph"><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path class="ip-land" d="M4 14.5 C5.5 10 9 7.8 13 8.6 C17 9.4 19.6 11.6 20 14.5 Z"/>
+          <path class="ip-wave" d="M3 17.5 H21"/>
+        </svg></span><span class="isle-name">${name}</span>`,
+      iconSize: [90, 52],
+      iconAnchor: [45, 16]
+    });
+  }
+
+  // Chart-glyph markers for named places
+  const PLACE_GLYPHS = {
+    "lime-kiln": "lighthouse",
+    "turn-point": "lighthouse",
+    "american-camp": "camp",
+    "english-camp": "camp",
+    "mt-constitution": "peak",
+    "friday-harbor": "ferry",
+    eastsound: "anchor",
+    "spencer-spit": "camp"
+  };
+
+  function placeIcon(id) {
+    const glyph = PLACE_GLYPHS[id] || "marker";
+    return L.divIcon({
+      className: "place-marker",
+      html: `<span class="place-pin place-pin--${glyph}"><svg class="icon" aria-hidden="true"><use href="#i-${glyph}"/></svg></span>`,
+      iconSize: [24, 24],
+      iconAnchor: [12, 12]
     });
   }
 
@@ -138,10 +161,20 @@
     layers.islands = L.layerGroup().addTo(map);
     Object.entries(SJI.GEO.islands).forEach(([id, g]) => {
       const m = L.marker([g.lat, g.lng], {
-        icon: islandIcon(false),
+        icon: islandIcon(id, false),
         title: g.name
       });
-      m.bindTooltip(g.name, { direction: "top", offset: [0, -8] });
+      // Paper-stock popup so the island's name always shows at the click site
+      const isle = SJI.ISLANDS?.[id];
+      m.bindPopup(
+        `<div class="isle-popup">
+          <p class="ipp-kicker">Ship&rsquo;s manifest</p>
+          <span class="ipp-name">${g.name}</span>
+          ${isle?.nick ? `<span class="ipp-nick">${isle.nick}</span>` : ""}
+          ${isle ? `<span class="ipp-meta">${isle.area}${isle.town ? " · " + isle.town : ""}</span>` : ""}
+        </div>`,
+        { offset: [0, -6] }
+      );
       m.on("click", () => {
         selectIsland(id);
         if (SJI.map?.select) SJI.map.select(id);
@@ -153,7 +186,7 @@
 
   function selectIsland(id) {
     layers.islands?.eachLayer((m) => {
-      m.setIcon(islandIcon(m._sjiId === id));
+      m.setIcon(islandIcon(m._sjiId, m._sjiId === id));
     });
     const g = SJI.GEO.islands[id];
     if (g) map.panTo([g.lat, g.lng], { animate: true });
@@ -162,13 +195,7 @@
   function addPlaceMarkers() {
     layers.places = L.layerGroup();
     Object.entries(SJI.GEO.places).forEach(([id, p]) => {
-      const m = L.circleMarker([p.lat, p.lng], {
-        radius: 6,
-        color: "#d4a84b",
-        fillColor: "#f4d58d",
-        fillOpacity: 0.9,
-        weight: 2
-      });
+      const m = L.marker([p.lat, p.lng], { icon: placeIcon(id), title: p.name });
       m.bindPopup(
         `<strong>${p.name}</strong><br><span style="opacity:.85">${p.note}</span>`
       );
@@ -229,21 +256,16 @@
     layers.sightings.clearLayers();
     (list || []).forEach((s) => {
       if (s.lat == null || s.lng == null) return;
-      const color =
-        s.kind === "resident"
-          ? "#5ba3c4"
-          : s.kind === "biggs"
-            ? "#c45c6a"
-            : s.kind === "gray"
-              ? "#a8b8c8"
-              : "#7eb87a";
-      const m = L.circleMarker([s.lat, s.lng], {
-        radius: 8,
-        color: "#fff",
-        fillColor: color,
-        fillOpacity: 0.9,
-        weight: 2,
-        className: "sighting-marker"
+      const kind = ["resident", "biggs", "gray", "humpback", "minke"].includes(s.kind)
+        ? s.kind
+        : "other";
+      const m = L.marker([s.lat, s.lng], {
+        icon: L.divIcon({
+          className: `sight-marker sight-${kind}`,
+          html: `<span class="sight-pulse"></span><svg class="icon" aria-hidden="true"><use href="#i-orca-fin"/></svg>`,
+          iconSize: [26, 26],
+          iconAnchor: [13, 13]
+        })
       });
       const when = s.when || s.date || "Recent";
       m.bindPopup(
@@ -271,7 +293,14 @@
         if (view === "live") {
           if (leafletWrap) leafletWrap.hidden = false;
           if (svgWrap) svgWrap.hidden = true;
-          setTimeout(() => map?.invalidateSize(), 100);
+          setTimeout(() => {
+            map?.invalidateSize();
+            // First reveal: Leaflet booted while hidden, so re-fit the bounds
+            if (map && !map._sjiFitted) {
+              map.fitBounds(SJI.GEO.boundsTight || SJI.GEO.bounds, { padding: [8, 8] });
+              map._sjiFitted = true;
+            }
+          }, 120);
         } else {
           if (leafletWrap) leafletWrap.hidden = true;
           if (svgWrap) svgWrap.hidden = false;
@@ -299,9 +328,9 @@
     });
 
     document.getElementById("toggle-formline")?.addEventListener("change", (e) => {
-      if (!formlineOverlay) return;
-      if (e.target.checked) formlineOverlay.addTo(map);
-      else map.removeLayer(formlineOverlay);
+      document
+        .querySelector(".map-canvas-stack")
+        ?.classList.toggle("formline-frame", e.target.checked);
     });
 
     document.getElementById("toggle-sightings")?.addEventListener("change", (e) => {

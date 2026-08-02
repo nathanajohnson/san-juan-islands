@@ -1,0 +1,389 @@
+/* css/sections/whales.css — "Chart & Current" whales-section styles. Owned by the whales agent. */
+
+/* ---- Section rhythm: no dead band above the chart ---- */
+.whales-section { padding-top: 3.5rem; }
+.whales-section .section-header { margin-bottom: 1.75rem; }
+
+/* ---- Canvas fills its chart frame (no dead side bars, no letterbox) ---- */
+#whale-canvas {
+  max-height: none;
+  object-fit: fill;
+  aspect-ratio: 1200 / 640;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.whale-sim-canvas-wrap {
+  background: #050e19;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  box-shadow: 0 0 0 1px rgba(8, 24, 36, 0.8), 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+/* Corner ticks like a chart margin */
+.whale-sim-canvas-wrap::before,
+.whale-sim-canvas-wrap::after {
+  content: "";
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 1.5px solid rgba(201, 162, 39, 0.5);
+  pointer-events: none;
+  z-index: 5;
+}
+.whale-sim-canvas-wrap::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.whale-sim-canvas-wrap::after { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+
+/* ---- Instrument HUD ---- */
+.whale-sim-overlay {
+  padding: 1rem 1.4rem 0.9rem;
+  background: linear-gradient(transparent, rgba(4, 10, 17, 0.88) 38%, rgba(4, 10, 17, 0.96));
+  border-top: 1px solid rgba(201, 162, 39, 0.28);
+}
+.sim-controls { gap: 0.9rem; }
+.sim-btn {
+  background: linear-gradient(180deg, #e5c65c, var(--brass) 55%, #9c7d1d);
+  color: var(--char);
+  border: 1px solid rgba(18, 24, 29, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 220, 0.5),
+    0 0 0 3px rgba(201, 162, 39, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+.sim-btn:hover {
+  background: linear-gradient(180deg, #f0d472, #d4ad33);
+  transform: scale(1.06);
+}
+/* .sim-btn's display:flex must not defeat the hidden attribute */
+.sim-btn[hidden] { display: none !important; }
+
+/* Month: engraved dial readout */
+.sim-month-dial {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.12rem;
+  padding: 0.3rem 0.75rem 0.35rem;
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  border-radius: 7px;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(8, 24, 36, 0.4) 40%, rgba(8, 24, 36, 0.65));
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.65),
+    inset 0 -1px 0 rgba(201, 162, 39, 0.18),
+    0 1px 0 rgba(201, 162, 39, 0.14);
+  position: relative;
+}
+.sim-month-dial::before {
+  content: "";
+  position: absolute;
+  top: -4px; left: 50%;
+  width: 2px; height: 6px;
+  margin-left: -1px;
+  background: var(--brass);
+  border-radius: 1px;
+  box-shadow: 0 0 4px rgba(201, 162, 39, 0.8);
+}
+.sim-month-dial .dial-label {
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(201, 162, 39, 0.8);
+}
+.sim-month {
+  font-family: var(--font-mono);
+  color: var(--chart-paper);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  min-width: 6.8rem;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(242, 233, 216, 0.25);
+}
+
+/* Timeline scrub → brass slider on a ticked char rail */
+#sim-scrub {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 170px;
+  height: 18px;
+  background: transparent;
+  cursor: pointer;
+}
+#sim-scrub::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background:
+    repeating-linear-gradient(90deg, rgba(201, 162, 39, 0.55) 0 1px, transparent 1px calc(100% / 11)),
+    linear-gradient(180deg, #060d14, #101d28);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+}
+#sim-scrub::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background:
+    repeating-linear-gradient(90deg, rgba(201, 162, 39, 0.55) 0 1px, transparent 1px calc(100% / 11)),
+    linear-gradient(180deg, #060d14, #101d28);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+}
+#sim-scrub::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px; height: 15px;
+  margin-top: -5.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f0dd8f, var(--brass) 62%, #8f741c);
+  border: 1px solid rgba(18, 24, 29, 0.8);
+  box-shadow: 0 0 6px rgba(201, 162, 39, 0.6);
+}
+#sim-scrub::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f0dd8f, var(--brass) 62%, #8f741c);
+  border: 1px solid rgba(18, 24, 29, 0.8);
+  box-shadow: 0 0 6px rgba(201, 162, 39, 0.6);
+}
+#sim-scrub:focus-visible { outline: 2px solid var(--sea-light); outline-offset: 3px; }
+
+/* Ship's-telegraph speed selector */
+.sim-speed {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(8, 24, 36, 0.65);
+}
+.sim-speed-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(201, 162, 39, 0.85);
+  padding: 0 0.55rem;
+}
+.speed-btn {
+  border: none;
+  border-left: 1px solid rgba(201, 162, 39, 0.25);
+  background: transparent;
+  color: var(--sea-foam);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.4rem 0.55rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.speed-btn:hover { background: rgba(201, 162, 39, 0.15); color: var(--chart-paper); }
+.speed-btn.active {
+  background: linear-gradient(180deg, #e5c65c, var(--brass));
+  color: var(--char);
+  font-weight: 600;
+}
+.speed-btn:focus-visible { outline: 2px solid var(--sea-light); outline-offset: -2px; }
+
+/* Presence readout chip (moved off the canvas) */
+.sim-presence {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.32rem 0.7rem;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: 6px;
+  background: rgba(8, 24, 36, 0.65);
+}
+.sim-presence .chart-label { color: rgba(201, 162, 39, 0.85); font-size: 0.58rem; }
+.sim-presence .sp-vals {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--sea-foam);
+  white-space: nowrap;
+}
+
+/* Legend: dorsal-fin chips, not dots */
+.leg i { display: none; }
+.leg {
+  padding: 0.22rem 0.55rem 0.22rem 0.4rem;
+  border: 1px solid rgba(220, 235, 231, 0.14);
+  border-radius: 999px;
+  background: rgba(8, 24, 36, 0.55);
+}
+.leg .icon { width: 1.15rem; height: 1.15rem; }
+.leg-j { color: var(--j-pod); border-color: rgba(91, 163, 196, 0.4); }
+.leg-k { color: var(--k-pod); border-color: rgba(126, 184, 122, 0.4); }
+.leg-l { color: var(--l-pod); border-color: rgba(196, 163, 90, 0.4); }
+.leg-biggs { color: var(--biggs); border-color: rgba(196, 92, 106, 0.4); }
+.leg-ship { color: var(--ship); border-color: rgba(138, 154, 170, 0.4); }
+.leg-j .icon, .leg-k .icon, .leg-l .icon, .leg-biggs .icon, .leg-ship .icon { color: inherit; }
+
+/* On narrow screens the HUD sits below the chart instead of covering it */
+@media (max-width: 720px) {
+  .whale-sim-overlay {
+    position: static;
+    background: rgba(4, 10, 17, 0.96);
+  }
+  .sim-month { min-width: 5.4rem; font-size: 0.7rem; }
+  #sim-scrub { width: 120px; }
+}
+
+/* ---- Pod cards: fin-glyph badges + saddle-patch artwork + hover lift ---- */
+.pod-card {
+  position: relative;
+  overflow: hidden;
+}
+.pod-card:hover, .pod-card.focused {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+}
+.pod-card > p, .pod-card .pod-header, .pod-card .text-btn { position: relative; z-index: 1; }
+.pod-art {
+  position: absolute;
+  right: -12px;
+  bottom: -8px;
+  width: 150px;
+  height: auto;
+  opacity: 0.16;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease, ease), transform 0.3s var(--ease, ease);
+  z-index: 0;
+}
+.pod-card[data-pod="j"] .pod-art { color: var(--j-pod); }
+.pod-card[data-pod="k"] .pod-art { color: var(--k-pod); }
+.pod-card[data-pod="l"] .pod-art { color: var(--l-pod); }
+.pod-card[data-pod="biggs"] .pod-art { color: var(--biggs); }
+.pod-card:hover .pod-art, .pod-card.focused .pod-art {
+  opacity: 0.3;
+  transform: translateY(-3px);
+}
+.pod-art .pa-body, .pod-art .pa-fin { fill: currentColor; }
+.pod-art .pa-saddle { fill: #d8e4e2; opacity: 0.85; }
+.pod-art .pa-wave { fill: currentColor; opacity: 0.3; }
+
+.pod-badge {
+  position: relative;
+  background: rgba(8, 24, 36, 0.6) !important;
+  border: 1.5px solid currentColor;
+  overflow: visible;
+}
+.pod-badge .icon { width: 22px; height: 22px; }
+.pod-badge.j { color: var(--j-pod); }
+.pod-badge.k { color: var(--k-pod); }
+.pod-badge.l { color: var(--l-pod); }
+.pod-badge.biggs { color: var(--biggs); }
+.pod-badge b {
+  position: absolute;
+  right: -5px; bottom: -5px;
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  background: var(--char);
+  border: 1px solid currentColor;
+  color: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ---- Pressure cards: illustrated chart-card backgrounds ---- */
+.whale-pressure {
+  border: 1px solid rgba(201, 162, 39, 0.18);
+}
+.pressure-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(220, 235, 231, 0.09);
+  border-radius: 10px;
+  background: rgba(4, 12, 20, 0.45);
+  transition: border-color 0.25s, transform 0.25s;
+}
+.pressure-card:hover { border-color: rgba(201, 162, 39, 0.35); transform: translateY(-3px); }
+.pressure-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* Prey: salmon-warm bloom */
+.whales-section .pressure-card:nth-child(1)::before {
+  background: radial-gradient(120% 90% at 85% 12%, rgba(224, 122, 95, 0.16), transparent 55%);
+}
+/* Noise: sonar rings radiating from above */
+.whales-section .pressure-card:nth-child(2)::before {
+  background: repeating-radial-gradient(circle at 50% -40%,
+    transparent 0 15px, rgba(91, 163, 196, 0.09) 15px 16.5px);
+}
+/* Toxins: sediment settling at the bottom */
+.whales-section .pressure-card:nth-child(3)::before {
+  background: radial-gradient(130% 80% at 50% 108%, rgba(217, 180, 91, 0.15), transparent 60%);
+}
+/* Traffic: slanted shipping lanes */
+.whales-section .pressure-card:nth-child(4)::before {
+  background: repeating-linear-gradient(115deg,
+    transparent 0 17px, rgba(138, 154, 170, 0.09) 17px 18.5px);
+}
+.pressure-card h4, .pressure-card p { position: relative; }
+.pressure-icon {
+  position: relative;
+  width: 52px; height: 52px;
+  margin: 0 auto 0.7rem;
+  border-radius: 50%;
+  border: 1.3px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 24, 36, 0.6);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.08), inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+.pressure-icon .icon { width: 26px; height: 26px; }
+
+/* ---- Sighting feed: field-journal cards with species icons ---- */
+.sightings-panel {
+  background: rgba(242, 233, 216, 0.05);
+  border: 1px solid rgba(201, 162, 39, 0.22);
+}
+.sighting-card {
+  background: rgba(4, 12, 20, 0.5);
+  border: 1px solid rgba(220, 235, 231, 0.1);
+  border-left: 3px solid var(--sea-light);
+  border-radius: 6px;
+  position: relative;
+}
+.sighting-card::after {
+  content: "";
+  position: absolute;
+  right: 8px; top: 8px;
+  width: 9px; height: 9px;
+  border: 1.2px solid rgba(201, 162, 39, 0.4);
+  border-left: none; border-bottom: none;
+}
+.sighting-card:hover, .sighting-card:focus-visible {
+  border-color: rgba(201, 162, 39, 0.45);
+  border-left-color: var(--brass);
+}
+.sc-ico {
+  width: 30px; height: 30px;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  border-radius: 50%;
+  border: 1.2px solid currentColor;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--sea-light);
+  background: rgba(8, 24, 36, 0.6);
+}
+.sc-ico .icon { width: 17px; height: 17px; }
+.kind-resident .sc-ico { color: var(--j-pod); }
+.kind-biggs .sc-ico { color: var(--biggs); }
+.kind-humpback .sc-ico { color: var(--kelp-light); }
+.kind-gray .sc-ico, .kind-minke .sc-ico { color: var(--ship); }
+.kind-other .sc-ico { color: var(--l-pod); }
+.kind-resident { border-left-color: var(--j-pod); }
+.kind-biggs { border-left-color: var(--biggs); }
+.kind-humpback { border-left-color: var(--kelp-light); }
+.kind-gray, .kind-minke { border-left-color: var(--ship); }
+.kind-other { border-left-color: var(--l-pod); }
+.sc-meta {
+  border-bottom: 1px dashed rgba(220, 235, 231, 0.18);
+  padding-bottom: 0.3rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pod-card:hover, .pod-card.focused,
+  .pressure-card:hover { transform: none; }
+}

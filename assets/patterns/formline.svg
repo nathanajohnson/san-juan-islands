@@ -1,22 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-  <!-- Abstract formline-inspired pattern: ovoids, U-forms, wave lines — educational homage, not tribal crest -->
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <!-- Abstract formline-inspired ornament band: ovoids, U-forms, crescents, trigons, wave runs.
+       Educational homage to Coast Salish design language — NOT a tribal crest, not official
+       Indigenous art, not affiliated with any Nation. Geometry only; no crest figures. -->
   <defs>
-    <pattern id="formline" width="200" height="200" patternUnits="userSpaceOnUse">
-      <rect width="200" height="200" fill="none"/>
-      <!-- ovoid -->
-      <ellipse cx="50" cy="50" rx="28" ry="18" fill="none" stroke="#c4a35a" stroke-width="2.5" opacity="0.35"/>
-      <ellipse cx="50" cy="50" rx="12" ry="8" fill="#c4a35a" opacity="0.2"/>
-      <!-- U-form -->
-      <path d="M100 30 Q100 70 130 70 Q100 70 100 110" fill="none" stroke="#5ba3c4" stroke-width="2.5" opacity="0.3" stroke-linecap="round"/>
-      <!-- wave / salmon spine suggestion -->
-      <path d="M20 140 Q50 120 80 140 T140 140 T200 140" fill="none" stroke="#2d6b4a" stroke-width="2" opacity="0.25"/>
-      <path d="M10 170 Q40 155 70 170 T130 170 T190 170" fill="none" stroke="#a8d5e5" stroke-width="1.5" opacity="0.2"/>
-      <!-- small ovoid cluster -->
-      <ellipse cx="160" cy="80" rx="16" ry="11" fill="none" stroke="#c45c26" stroke-width="2" opacity="0.28"/>
-      <circle cx="160" cy="80" r="4" fill="#c45c26" opacity="0.25"/>
-      <!-- crescent -->
-      <path d="M30 100 A18 18 0 1 1 30 120" fill="none" stroke="#d4a84b" stroke-width="2" opacity="0.22"/>
+    <pattern id="formline" width="400" height="400" patternUnits="userSpaceOnUse">
+      <rect width="400" height="400" fill="none"/>
+
+      <!-- Row 1: ovoid run with inner ovoids and flanking trigons -->
+      <g opacity="0.32">
+        <ellipse cx="70" cy="60" rx="34" ry="21" fill="none" stroke="#8f4a2e" stroke-width="3"/>
+        <ellipse cx="70" cy="62" rx="18" ry="10" fill="none" stroke="#8f4a2e" stroke-width="2"/>
+        <ellipse cx="70" cy="63" rx="7" ry="4" fill="#8f4a2e"/>
+        <path d="M118 72 L126 48 L134 72 Z" fill="#8f4a2e" opacity="0.8"/>
+        <ellipse cx="190" cy="60" rx="34" ry="21" fill="none" stroke="#c9a227" stroke-width="3"/>
+        <ellipse cx="190" cy="62" rx="18" ry="10" fill="none" stroke="#c9a227" stroke-width="2"/>
+        <ellipse cx="190" cy="63" rx="7" ry="4" fill="#c9a227"/>
+        <path d="M238 48 L246 72 L254 48 Z" fill="#c9a227" opacity="0.8"/>
+        <ellipse cx="310" cy="60" rx="34" ry="21" fill="none" stroke="#8f4a2e" stroke-width="3"/>
+        <ellipse cx="310" cy="62" rx="18" ry="10" fill="none" stroke="#8f4a2e" stroke-width="2"/>
+        <ellipse cx="310" cy="63" rx="7" ry="4" fill="#8f4a2e"/>
+        <path d="M358 72 L366 48 L374 72 Z" fill="#8f4a2e" opacity="0.8"/>
+      </g>
+
+      <!-- Row 2: nested U-form run, alternating orientation -->
+      <g opacity="0.3" fill="none" stroke-linecap="round">
+        <path d="M40 120 C40 148 52 162 70 162 C88 162 100 148 100 120" stroke="#2a6f8f" stroke-width="3.5"/>
+        <path d="M54 120 C54 140 60 150 70 150 C80 150 86 140 86 120" stroke="#2a6f8f" stroke-width="2.2"/>
+        <path d="M130 162 C130 134 142 120 160 120 C178 120 190 134 190 162" stroke="#e07a5f" stroke-width="3.5"/>
+        <path d="M144 162 C144 142 150 132 160 132 C170 132 176 142 176 162" stroke="#e07a5f" stroke-width="2.2"/>
+        <path d="M220 120 C220 148 232 162 250 162 C268 162 280 148 280 120" stroke="#2a6f8f" stroke-width="3.5"/>
+        <path d="M234 120 C234 140 240 150 250 150 C260 150 266 140 266 120" stroke="#2a6f8f" stroke-width="2.2"/>
+        <path d="M310 162 C310 134 322 120 340 120 C358 120 370 134 370 162" stroke="#e07a5f" stroke-width="3.5"/>
+        <path d="M324 162 C324 142 330 132 340 132 C350 132 356 142 356 162" stroke="#e07a5f" stroke-width="2.2"/>
+      </g>
+
+      <!-- Row 3: crescent pair run -->
+      <g opacity="0.28">
+        <path d="M92 200 A26 26 0 0 0 92 248 A33 33 0 0 1 92 200 Z" fill="#12181d"/>
+        <path d="M148 248 A26 26 0 0 0 148 200 A33 33 0 0 1 148 248 Z" fill="#8f4a2e"/>
+        <path d="M252 200 A26 26 0 0 0 252 248 A33 33 0 0 1 252 200 Z" fill="#8f4a2e"/>
+        <path d="M308 248 A26 26 0 0 0 308 200 A33 33 0 0 1 308 248 Z" fill="#12181d"/>
+      </g>
+
+      <!-- Row 4: double wave run (water) -->
+      <g opacity="0.3" fill="none" stroke-linecap="round">
+        <path d="M0 300 Q25 282 50 300 T100 300 T150 300 T200 300 T250 300 T300 300 T350 300 T400 300" stroke="#2d6b4a" stroke-width="3"/>
+        <path d="M0 318 Q25 304 50 318 T100 318 T150 318 T200 318 T250 318 T300 318 T350 318 T400 318" stroke="#a8d5e5" stroke-width="2"/>
+      </g>
+
+      <!-- Row 5: small ovoid-and-trigon punctuation -->
+      <g opacity="0.3">
+        <ellipse cx="60" cy="366" rx="20" ry="12" fill="none" stroke="#c9a227" stroke-width="2.5"/>
+        <circle cx="60" cy="367" r="4" fill="#c9a227"/>
+        <path d="M120 374 L127 356 L134 374 Z" fill="#2a6f8f"/>
+        <ellipse cx="200" cy="366" rx="20" ry="12" fill="none" stroke="#8f4a2e" stroke-width="2.5"/>
+        <circle cx="200" cy="367" r="4" fill="#8f4a2e"/>
+        <path d="M266 356 L273 374 L280 356 Z" fill="#e07a5f"/>
+        <ellipse cx="340" cy="366" rx="20" ry="12" fill="none" stroke="#c9a227" stroke-width="2.5"/>
+        <circle cx="340" cy="367" r="4" fill="#c9a227"/>
+      </g>
     </pattern>
   </defs>
-  <rect width="200" height="200" fill="url(#formline)"/>
+  <rect width="400" height="400" fill="url(#formline)"/>
 </svg>

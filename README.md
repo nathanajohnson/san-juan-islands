@@ -2,17 +2,22 @@
 
 A feature-rich, New York Times–style interactive website about the San Juan Islands: geography, history (including the Pig War), whale traffic, wildlife, ecology, and island-by-island exploration. Designed for both adults and children via **Kid Mode**.
 
-## Open it (recommended)
+## Live site
+
+**https://nathanajohnson.github.io/san-juan-islands/**
+
+Hosted on GitHub Pages (static). The local Python server below is optional and mainly improves the live whale-sightings feed.
+
+## Open it locally (recommended for whale feed)
 
 ```bash
-cd san-juan-islands-interactive
+cd san-juan-islands
 python3 server.py
 ```
 
 Then visit [http://127.0.0.1:8080](http://127.0.0.1:8080).
 
-`server.py` serves the site **and** proxies Orca Network monthly sighting pages at `/api/sightings` (avoids browser CORS blocks). Plain `python3 -m http.server` works for static pages, but the live whale feed is much more reliable with `server.py`.
-
+`server.py` serves the site **and** proxies Orca Network monthly sighting pages at `/api/sightings` (avoids browser CORS blocks). On GitHub Pages the feed falls back to sample data or public CORS proxies.
 ## What’s inside
 
 | Section | Interaction |
@@ -27,7 +32,9 @@ Then visit [http://127.0.0.1:8080](http://127.0.0.1:8080).
 | **Tidepools** | Rocky-shore explorer — click creatures & tidal zones + etiquette tips |
 | **Explore** | Ferry-island deep dives with place photography |
 | **Scavenger hunt** | Printable San Juan Island checklist (tidepools, Lime Kiln, Pig War camps; persists in `localStorage`) |
-| **Discover** | Six-question quiz |
+| **Discover** | Sixteen-question quiz |
+| **Wildlife sounds** | Play real field-recording clips on each species card |
+| **Whale reports** | Full report text + linked photos / video / hydrophone audio |
 
 **Kid Mode** (header toggle) rewrites key copy for younger readers and is remembered in `localStorage`.
 

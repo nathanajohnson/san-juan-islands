@@ -1,0 +1,47 @@
+San Juan Islands interactive — wildlife audio sources
+=====================================================
+Local educational use only (family demo). Short clips trimmed from
+public field recordings. Prefer NPS / Archive.org / Freesound previews.
+
+Species clip mapping (source → assets/sounds/<id>.mp3)
+
+orca           NPS Natural Sounds — Killer Whale (Glacier Bay)
+               https://www.nps.gov/subjects/sound/sounds-orca.htm
+eagle          NPS Natural Sounds — Bald Eagle (Yellowstone)
+               https://www.nps.gov/subjects/sound/sounds-bald-eagle.htm
+seal           Internet Archive — Animals and Birds Sound Effects
+               “Seal, Cape Fur Barks, Squeals”
+               https://archive.org/details/animals-and-birds-sound-effects
+porpoise       Internet Archive — same pack, “Dolphin, Bottlenose Clicks”
+               (click-train stand-in for Dall’s porpoise echolocation)
+deer           Freesound preview — deer vocalization
+oystercatcher  Freesound preview — oystercatcher / shorebird
+heron          Freesound preview — heron
+fox            Internet Archive — Animals and Birds, “Fox”
+rabbit         Freesound preview — rabbit
+steller        Freesound preview — sea lion
+murrelet       Freesound preview — seabird (murrelets are rarely recorded;
+               closest available small-seabird coastal call)
+salmon         Freesound preview — fish / water splash
+bluebird       NPS Yellowstone — Mountain Bluebird
+               (closest available bluebird field recording)
+hermit         Freesound preview — crab / scuttle
+sculpin        Freesound preview — underwater ambience
+barnacle       Freesound preview — rocky shore waves
+madrona        Freesound preview — forest birds / wind
+kelp           Freesound preview — underwater
+garry-oak      NPS Yellowstone — Dawn Chorus (meadow/oak habitat)
+anemone        NPS Natural Sounds — Ocean (Olympic NP)
+ochre-star     NPS Ocean
+chiton         Freesound rocky waves
+mussel         Freesound rocky waves
+urchin         Freesound underwater
+rockweed       NPS Ocean
+sea-lettuce    Freesound rocky waves
+
+Also downloaded for alternate use (not all mapped):
+- Curtin University orca WAV samples
+- NPS Humpback, Stream, Steller’s Jay, Elk, Squirrel, Western Gull
+- Internet Archive grey whale, hawk, meadowlark, canary, guinea pig
+
+NPS Natural Sounds gallery: https://www.nps.gov/subjects/sound/gallery.htm

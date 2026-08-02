@@ -10,8 +10,356 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/sections/hero.css" />
+  <link rel="stylesheet" href="css/sections/map.css" />
+  <link rel="stylesheet" href="css/sections/history.css" />
+  <link rel="stylesheet" href="css/sections/whales.css" />
+  <link rel="stylesheet" href="css/sections/scenes.css" />
+  <link rel="stylesheet" href="css/sections/polish.css" />
+  <link rel="stylesheet" href="css/sections/polish2.css" />
 </head>
 <body>
+  <!-- Chart & Current icon sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" hidden aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <!-- Chart & Current icon set · 24×24 grid · 1.75 round-cap strokes / solid silhouettes -->
+
+    <symbol id="i-fox" viewBox="0 0 24 24">
+      <path d="M12 20.6 C9.6 20.6 7.6 18.9 6.4 16.2 L4.3 8.8 C4.05 7.9 4.7 7.3 5.5 7.7 L9.1 9.6 C10 9.25 11 9.05 12 9.05 C13 9.05 14 9.25 14.9 9.6 L18.5 7.7 C19.3 7.3 19.95 7.9 19.7 8.8 L17.6 16.2 C16.4 18.9 14.4 20.6 12 20.6 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <circle cx="9.4" cy="13.1" r="1" fill="currentColor"/>
+      <circle cx="14.6" cy="13.1" r="1" fill="currentColor"/>
+      <path d="M10.9 16.6 H13.1 L12 17.9 Z" fill="currentColor" stroke="currentColor" stroke-width="0.8" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-orca-fin" viewBox="0 0 24 24">
+      <path d="M9.4 16.2 C10.2 10.8 11.8 6.7 15.1 4 C14.7 9.3 15.8 13.4 19.2 16.2 Z" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/>
+      <path d="M2.6 19.4 Q4.6 18.1 6.6 19.4 T10.6 19.4 T14.6 19.4 T18.6 19.4 T21.6 19.2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-orca" viewBox="0 0 24 24">
+      <path fill-rule="evenodd" d="M2.3 13.1 C3.9 11.3 6.4 10.2 9.3 9.95 C9.9 7.7 11.1 5.9 12.6 5 C12.9 6.8 12.85 8.5 12.4 10.05 C15.3 10.3 17.9 11.3 19.5 12.8 L21.7 11.4 C21.95 12.8 21.7 14.1 20.9 15.1 C21.2 16.3 21 17.5 20.2 18.6 L18.8 16.2 C16.8 17.5 13.8 18.1 10.9 17.7 C7.4 17.2 4.2 15.6 2.3 13.85 C2.05 13.6 2.05 13.35 2.3 13.1 Z M4.8 12.5 C5.5 11.9 6.7 11.5 7.8 11.5 C8.6 11.5 9 12 8.6 12.5 C8 13.3 6.7 13.7 5.5 13.5 C4.7 13.35 4.4 12.85 4.8 12.5 Z" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-ferry" viewBox="0 0 24 24">
+      <path d="M2.6 14.6 H21.4 L19.6 17.8 H4.4 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M5.8 14.6 L6.6 11.2 H17.4 L18.2 14.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M8.2 11.2 L8.8 8.4 H15.2 L15.8 11.2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M12 8.4 V6.2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <circle cx="9.4" cy="12.9" r="0.8" fill="currentColor"/>
+      <circle cx="12" cy="12.9" r="0.8" fill="currentColor"/>
+      <circle cx="14.6" cy="12.9" r="0.8" fill="currentColor"/>
+      <path d="M2.4 20.6 Q4.4 19.4 6.4 20.6 T10.4 20.6 T14.4 20.6 T18.4 20.6 T21.6 20.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-lighthouse" viewBox="0 0 24 24">
+      <path d="M9.6 20 L10.4 9 H13.6 L14.4 20 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M10.1 13.4 H13.9 M9.85 16.6 H14.15" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M10.4 9 V6.6 H13.6 V9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M9.7 6.6 L12 4.4 L14.3 6.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M7.4 7.8 L4.6 6.9 M16.6 7.8 L19.4 6.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M6.8 20 H17.2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-compass" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <path d="M12 3.4 V5 M12 19 V20.6 M3.4 12 H5 M19 12 H20.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M12 6.4 L13.7 12 H10.3 Z" fill="currentColor"/>
+      <path d="M12 17.6 L10.3 12 H13.7 Z" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-anchor" viewBox="0 0 24 24">
+      <circle cx="12" cy="4.6" r="2" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <path d="M12 6.6 V19.4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M8.6 9.4 H15.4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M5.2 13.6 C5.2 17.2 8.2 19.4 12 19.4 C15.8 19.4 18.8 17.2 18.8 13.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M5.2 13.6 L3.2 12.7 M5.2 13.6 L5.5 15.8 M18.8 13.6 L20.8 12.7 M18.8 13.6 L18.5 15.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-wave" viewBox="0 0 24 24">
+      <path d="M3.4 15.6 C3.4 9.8 7.4 6.2 12.6 6.2 C16.9 6.2 19.9 8.8 19.9 11.9 C19.9 14.4 18 16 15.9 16 C14.1 16 12.9 14.8 12.9 13.3 C12.9 11.9 14 11 15.1 11.3" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M2.4 19.2 Q5.4 17.8 8.4 19.2 T14.4 19.2 T21.4 19.1" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-tide" viewBox="0 0 24 24">
+      <path d="M5 5.4 V18.6 M5 5.4 L3.3 7.3 M5 5.4 L6.7 7.3 M5 18.6 L3.3 16.7 M5 18.6 L6.7 16.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M9.4 8 Q11.4 6.6 13.4 8 T17.4 8 T21 7.9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M9.4 16 Q11.4 14.6 13.4 16 T17.4 16 T21 15.9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-kelp" viewBox="0 0 24 24">
+      <path d="M7.6 21.8 C9.4 17.8 10 13.2 10.1 8.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <circle cx="10.4" cy="6.6" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M12.2 5.8 C14.8 4.3 17.7 4 20.3 5 M12.4 6.9 C15.2 6.7 17.8 7.6 19.6 9.4 M11.9 7.9 C14.1 8.7 15.5 10.4 16.1 12.5 M11.2 4.9 C12 3.3 13.6 2.3 15.5 2.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-seastar" viewBox="0 0 24 24">
+      <path d="M12 2.9 L13.7 8.2 C13.9 8.8 14.4 9.2 15 9.2 L20.6 9.3 L16.1 12.7 C15.6 13.1 15.4 13.7 15.6 14.3 L17.3 19.7 L12.7 16.5 C12.3 16.2 11.7 16.2 11.3 16.5 L6.7 19.7 L8.4 14.3 C8.6 13.7 8.4 13.1 7.9 12.7 L3.4 9.3 L9 9.2 C9.6 9.2 10.1 8.8 10.3 8.2 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <circle cx="12" cy="11.7" r="1" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-anemone" viewBox="0 0 24 24">
+      <path d="M6.6 19.6 C6.6 16.9 9 15.1 12 15.1 C15 15.1 17.4 16.9 17.4 19.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M4.2 19.6 H19.8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M12 14.9 V9.2 M9.5 15.3 L7.7 10.4 M14.5 15.3 L16.3 10.4 M7.7 16.4 L4.9 12.7 M16.3 16.4 L19.1 12.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="12" cy="8" r="0.9" fill="currentColor"/>
+      <circle cx="7.3" cy="9.3" r="0.9" fill="currentColor"/>
+      <circle cx="16.7" cy="9.3" r="0.9" fill="currentColor"/>
+      <circle cx="4.3" cy="11.7" r="0.9" fill="currentColor"/>
+      <circle cx="19.7" cy="11.7" r="0.9" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-urchin" viewBox="0 0 24 24">
+      <circle cx="12" cy="12.6" r="4.1" fill="currentColor"/>
+      <path d="M12 8 V4.4 M12 17.2 V20.8 M7.9 12.6 H4.3 M16.1 12.6 H19.7 M9.1 9.7 L6.6 7.2 M14.9 9.7 L17.4 7.2 M9.1 15.5 L6.6 18 M14.9 15.5 L17.4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-crab" viewBox="0 0 24 24">
+      <ellipse cx="12" cy="15" rx="5.4" ry="3.7" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <path d="M10.3 11.5 V10 M13.7 11.5 V10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="10.3" cy="9.2" r="0.9" fill="currentColor"/>
+      <circle cx="13.7" cy="9.2" r="0.9" fill="currentColor"/>
+      <path d="M7.2 12.9 C5.4 12.1 4.4 10.5 4.4 8.5 M4.4 8.5 L3.2 10.1 M4.4 8.5 L6.2 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16.8 12.9 C18.6 12.1 19.6 10.5 19.6 8.5 M19.6 8.5 L20.8 10.1 M19.6 8.5 L17.8 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M6.9 16.6 L4.3 17.7 M7.6 18 L5.7 19.6 M17.1 16.6 L19.7 17.7 M16.4 18 L18.3 19.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-chiton" viewBox="0 0 24 24">
+      <ellipse cx="12" cy="12" rx="8.4" ry="5.6" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <ellipse cx="12" cy="12" rx="6.2" ry="3.8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M8.3 8.9 C8.9 10.8 8.9 13.2 8.3 15.1 M11 8.3 C11.4 10.6 11.4 13.4 11 15.7 M13.8 8.3 C13.5 10.6 13.5 13.4 13.8 15.7 M16.2 9.2 C15.7 11 15.7 13 16.2 14.8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-mussel" viewBox="0 0 24 24">
+      <path d="M6.6 19.2 C4.9 15 6.6 9.2 11 5.3 C12 4.4 13.3 4.7 13.8 5.9 C16 10.5 15.7 15.7 12.9 18.9 C11 21 8 21 6.6 19.2 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M8.2 17.8 C7.3 14.5 8.4 10.4 11.2 7.2 M10.3 18.9 C9.9 15 11.2 10.6 13.6 7.7" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M15.4 18.7 C16.6 16.1 17.1 13 16.9 9.9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-barnacle" viewBox="0 0 24 24">
+      <path d="M4.8 18.6 C5.8 13.4 8.4 10.2 12 10.2 C15.6 10.2 18.2 13.4 19.2 18.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M2.8 18.6 H21.2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M8.9 18.4 L9.5 11.3 M15.1 18.4 L14.5 11.3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M10.1 10.4 L12 7.6 L13.9 10.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-sculpin" viewBox="0 0 24 24">
+      <path d="M2.9 12.7 C5.4 9.9 9.9 9.2 13.4 10.9 L18.8 9 L17.9 12.7 L18.8 16.4 L13.4 14.5 C9.9 16.2 5.4 15.5 2.9 12.7 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <circle cx="6.3" cy="11.7" r="0.9" fill="currentColor"/>
+      <path d="M8.1 9.9 L8.6 7.8 M10.6 9.7 L11.2 7.6 M13 10.6 L13.9 8.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M8.8 13.4 C9.7 14.7 9.5 16.2 8.5 17.4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-salmon" viewBox="0 0 24 24">
+      <path d="M2.7 13.3 C5.3 10.4 9.6 9.3 13.4 10.1 C15.5 10.5 17.3 11.5 18.4 12.8 L21.4 10.7 C21.9 12.4 21.9 14.5 21.4 16.2 L18.4 14 C17.3 15.3 15.5 16.3 13.4 16.7 C9.6 17.5 5.3 16.3 2.7 13.4 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M11.1 10 L12.4 7.7 L14.2 10.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="5.6" cy="12.6" r="0.9" fill="currentColor"/>
+      <path d="M2.9 13.6 L5.8 14.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <circle cx="10.4" cy="13" r="0.7" fill="currentColor"/>
+      <circle cx="13.6" cy="13.6" r="0.7" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-heron" viewBox="0 0 24 24">
+      <path d="M2.4 7.2 L8.4 8.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M8.4 8.1 C8.6 6.8 9.7 6 11 6.3 C12.3 6.6 13 7.8 12.6 9.1 L11.9 10.9 C11.4 12.2 12.1 13 13.5 13.4 C16.1 14.1 17.9 15.7 17.9 17.5 C17.9 19.6 16.1 21 13.6 21 C11.2 21 9.5 19.7 9.3 17.7 C9.1 15.9 10.3 14.3 12.2 13.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M11.9 6.2 L13.7 5.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <circle cx="10.2" cy="7.7" r="0.8" fill="currentColor"/>
+      <path d="M12.2 21.1 V23.2 M14.6 20.9 V23.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M17.4 18.9 L19.6 20.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-eagle" viewBox="0 0 24 24">
+      <path d="M6.6 18.4 C5.4 13.2 7.5 8 12 7 C15.2 6.3 18 7.6 19 9.7 C20.3 9.8 21.2 10.7 21.1 11.9 C21 13 20.1 13.7 18.9 13.6 L16.9 13.3 C16.1 14.8 14.4 15.7 12.5 15.8 C10.4 15.9 8.4 16.8 6.6 18.4 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18.6 11.5 L20.1 11.9" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      <circle cx="15.6" cy="10.2" r="0.9" fill="currentColor"/>
+      <path d="M8.7 15.4 C10.2 14.6 12 14.2 13.7 14.4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-oystercatcher" viewBox="0 0 24 24">
+      <path d="M8.9 9.5 L2.5 11.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M7.3 8.3 C8.9 6.9 11.3 6.9 12.8 8.2 C15.9 8.5 18.4 10.5 18.9 13.2 C19.4 16.2 17.3 18.6 14.1 18.9 C10.7 19.2 8 17.2 7.6 14.3 C7.3 12.2 8 10.1 9.4 8.9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <circle cx="9.9" cy="9.2" r="0.9" fill="currentColor"/>
+      <path d="M12.3 19 L11.9 22 M15 18.9 L15 22" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-deer" viewBox="0 0 24 24">
+      <path d="M12 20.6 C10 20 8.8 18.2 8.8 16.1 C8.8 13.7 10.1 11.6 12 10.4 C13.9 11.6 15.2 13.7 15.2 16.1 C15.2 18.2 14 20 12 20.6 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M9.2 12.1 C7.7 12.3 6.3 11.8 5.3 10.7 M14.8 12.1 C16.3 12.3 17.7 11.8 18.7 10.7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M10 10 C9 8.6 8.7 6.5 9.4 4.2 M9.1 8 L7 7.3 M9.6 5.9 L7.9 4.9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M14 10 C15 8.6 15.3 6.5 14.6 4.2 M14.9 8 L17 7.3 M14.4 5.9 L16.1 4.9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="10.8" cy="14.6" r="0.8" fill="currentColor"/>
+      <circle cx="13.2" cy="14.6" r="0.8" fill="currentColor"/>
+      <path d="M11.2 17.8 H12.8 L12 18.8 Z" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-rabbit" viewBox="0 0 24 24">
+      <circle cx="12" cy="15.7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <path d="M9.9 11.9 C8.3 9.5 7.9 6.4 9.1 3.7 C10.7 5.6 11.5 8.6 11.3 11.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14.1 11.9 C15.7 9.5 16.1 6.4 14.9 3.7 C13.3 5.6 12.5 8.6 12.7 11.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="10.4" cy="14.9" r="0.8" fill="currentColor"/>
+      <circle cx="13.6" cy="14.9" r="0.8" fill="currentColor"/>
+      <path d="M11.2 16.9 H12.8 L12 17.9 Z" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-sea-lion" viewBox="0 0 24 24">
+      <path d="M3.6 19.4 C3.6 16.5 5.7 14.9 8.3 14.4 C10.8 13.9 12.6 12.6 13.6 10.3 L14.7 7.3 C15.2 6 16.5 5.6 17.5 6.4 L19.3 8 C20 8.6 19.8 9.7 18.9 10.1 L17 10.9 C16.4 13.2 15.6 15.4 16 17.6 L16.4 19.4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2.4 19.5 H21.6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <circle cx="16.5" cy="8.1" r="0.8" fill="currentColor"/>
+      <path d="M10.6 19.3 C10 17.6 10.6 16.1 12 15.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-murrelet" viewBox="0 0 24 24">
+      <path d="M5.9 16.3 C6.5 13.6 8.9 12.1 11.9 12.1 L13.9 12.1 C14.1 10.2 15.4 8.9 17.2 8.9 C18.5 8.9 19.5 9.5 20 10.4 L21.7 10.9 L19.9 11.9 C19.9 13.9 18.4 15.5 16.2 15.9 C15 16.7 13.3 17.1 11.4 17.1" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="17.2" cy="10.5" r="0.8" fill="currentColor"/>
+      <path d="M2.4 18.6 Q4.9 17.3 7.4 18.6 T12.4 18.6 T17.4 18.6 T21.6 18.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-bluebird" viewBox="0 0 24 24">
+      <path d="M8.2 17.5 C6.6 16.3 5.8 14.3 6.2 12.2 C6.6 10 8.4 8.5 10.6 8.5 C11.4 7.1 13 6.3 14.7 6.7 C15.7 6.9 16.5 7.5 17 8.3 L19.6 9.1 L17.4 10.4 C17.5 13 16.2 15.3 13.9 16.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8.2 17.5 L4.8 20.2 M9 16.4 L6.2 18.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="14.8" cy="8.9" r="0.8" fill="currentColor"/>
+      <path d="M10.5 11 C12.2 11.4 13.4 12.6 13.8 14.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-oak-leaf" viewBox="0 0 24 24">
+      <path d="M12 21.6 V17.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M12 17.2 C9.9 17.6 8.5 16.8 8.7 15.1 C6.9 14.9 6.1 13.6 6.9 12.2 C5.5 11.4 5.5 9.9 6.9 9.1 C6.3 7.5 7.3 6.3 9.1 6.6 C9.3 4.8 10.6 3.9 12 4.6 C13.4 3.9 14.7 4.8 14.9 6.6 C16.7 6.3 17.7 7.5 17.1 9.1 C18.5 9.9 18.5 11.4 17.1 12.2 C17.9 13.6 17.1 14.9 15.3 15.1 C15.5 16.8 14.1 17.6 12 17.2 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M12 16.4 V5.6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-madrona-leaf" viewBox="0 0 24 24">
+      <path d="M12 21.2 C12 19.1 11.9 17.8 11.5 16.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M11.8 16.7 C8.7 15.5 7.1 12.3 7.7 8.5 C8.1 5.9 9.9 3.9 12 3 C14.1 3.9 15.9 5.9 16.3 8.5 C16.9 12.3 15.3 15.5 12.2 16.7 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M12 15.4 V4.8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M12 8.1 C13.4 8.7 14.4 9.7 15 10.9 M12 11.3 C10.6 11.9 9.6 12.9 9 14.1" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-seaweed" viewBox="0 0 24 24">
+      <path d="M12 21.6 C11.8 19.4 12.2 17.5 12 15.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M12 15.6 C10.7 14.8 10.1 13.4 10.3 11.6 M10.3 11.6 C9.3 10.8 8.9 9.5 9.1 7.9 M10.3 11.6 C11.1 10.6 11.4 9.3 11.3 7.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M12 15.6 C13.3 14.8 13.9 13.4 13.7 11.6 M13.7 11.6 C12.9 10.5 12.6 9.1 12.9 7.5 M13.7 11.6 C14.8 10.8 15.3 9.5 15.1 7.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="9" cy="6.6" rx="1" ry="1.3" fill="currentColor"/>
+      <ellipse cx="11.4" cy="6.4" rx="1" ry="1.3" fill="currentColor"/>
+      <ellipse cx="12.8" cy="6.2" rx="1" ry="1.3" fill="currentColor"/>
+      <ellipse cx="15.2" cy="6.6" rx="1" ry="1.3" fill="currentColor"/>
+      <path d="M12 18.4 C13.9 18 15.2 16.8 15.6 15.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-binoculars" viewBox="0 0 24 24">
+      <circle cx="7.9" cy="15.6" r="3.6" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <circle cx="16.1" cy="15.6" r="3.6" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <circle cx="12" cy="14.9" r="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <path d="M6 12.3 L7 6.9 C7.2 5.9 8 5.3 9 5.3 C10.1 5.3 10.9 6.1 10.9 7.2 V9.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M18 12.3 L17 6.9 C16.8 5.9 16 5.3 15 5.3 C13.9 5.3 13.1 6.1 13.1 7.2 V9.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-marker" viewBox="0 0 24 24">
+      <path d="M12 21.4 C8.1 16.8 6 13.6 6 10.5 C6 6.9 8.7 4.2 12 4.2 C15.3 4.2 18 6.9 18 10.5 C18 13.6 15.9 16.8 12 21.4 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <circle cx="12" cy="10.4" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="12" cy="10.4" r="0.9" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-camp" viewBox="0 0 24 24">
+      <path d="M4.6 19.6 L13.5 4.9 M19.4 19.6 L10.5 4.9" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M2.8 19.6 H21.2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M9 19.6 C9 16.7 10.3 14.7 12 14.7 C13.7 14.7 15 16.7 15 19.6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </symbol>
+
+    <symbol id="i-flag" viewBox="0 0 24 24">
+      <path d="M6 3.4 V20.6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M6 5 H18.8 L15.7 8.8 L18.8 12.6 H6 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M6 5 L15.7 8.8 L6 12.6" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-cannon" viewBox="0 0 24 24">
+      <path d="M4.6 12.9 C4.4 10.9 5.8 9.4 7.8 9.4 L19.1 9.4 C20.1 9.4 20.8 10.1 20.8 11.1 C20.8 12.1 20.1 12.9 19.1 12.9 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <circle cx="11.2" cy="16.9" r="3" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <path d="M11.2 15.2 V18.6 M9.5 16.9 H12.9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M7.4 13 L9 14.7 M15.4 13 L13.8 14.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M16.9 16 L19.3 18.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-microscope" viewBox="0 0 24 24">
+      <path d="M10.4 4.4 L14.3 11.9" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M9 5.2 L12 3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M13.4 12.6 L15.4 11.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M8.2 14.9 H16.6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M15.2 12.4 C17.5 13.9 18.3 16.4 17.3 18.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M5.6 20.4 H18.4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      <path d="M9.4 17.9 C8.3 18.5 7.5 19.3 7.1 20.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-sonar" viewBox="0 0 24 24">
+      <circle cx="6.4" cy="12" r="1.7" fill="currentColor"/>
+      <path d="M10.2 8.3 C12.2 10.3 12.2 13.7 10.2 15.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M13.4 5.6 C16.8 9 16.8 15 13.4 18.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M16.6 2.9 C21.4 7.7 21.4 16.3 16.6 21.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-ship" viewBox="0 0 24 24">
+      <path d="M2.7 14.8 H21.3 L19.2 18.6 H4.8 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M6.4 14.8 V11.6 H10.2 V14.8 M10.2 14.8 V9.6 H14 V14.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M16.2 14.8 V8.8 H18.7 V14.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M16.9 10.8 H18" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M2.6 21 Q4.6 19.8 6.6 21 T10.6 21 T14.6 21 T18.6 21 T21.4 20.9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-droplet" viewBox="0 0 24 24">
+      <path d="M12 3.6 C9.1 8 6.9 11.4 6.9 14.4 C6.9 17.8 9.1 20.2 12 20.2 C14.9 20.2 17.1 17.8 17.1 14.4 C17.1 11.4 14.9 8 12 3.6 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M9.5 14.4 C9.5 16.2 10.5 17.4 11.9 17.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-star-stamp" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="0.1 3.4" stroke-linecap="round"/>
+      <path d="M12 5.9 L13.5 9.9 L17.8 10.1 L14.4 12.8 L15.6 17 L12 14.6 L8.4 17 L9.6 12.8 L6.2 10.1 L10.5 9.9 Z" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-check-stamp" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <path d="M7.6 12.4 L10.8 15.6 L16.6 8.9" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-arrow" viewBox="0 0 24 24">
+      <path d="M4 12 H19.4 M14.2 6.6 L19.6 12 L14.2 17.4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-chart" viewBox="0 0 24 24">
+      <path d="M3.4 6.4 L9 4.5 L15 6.4 L20.6 4.5 V17.6 L15 19.5 L9 17.6 L3.4 19.5 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M9 4.5 V17.6 M15 6.4 V19.5" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M5.5 14.6 Q7.4 12.4 9.9 13.6 T14.8 12.6 T18.6 10.4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="1.8 2"/>
+    </symbol>
+
+    <symbol id="i-eye" viewBox="0 0 24 24">
+      <path d="M2.8 12 C5.3 8 8.5 6 12 6 C15.5 6 18.7 8 21.2 12 C18.7 16 15.5 18 12 18 C8.5 18 5.3 16 2.8 12 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="12" cy="12" r="1.1" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-boot" viewBox="0 0 24 24">
+      <path d="M5.4 5.4 H10.6 V11.6 C13.4 11.6 14.3 14 17.3 14.6 C19.3 15 20.6 15.9 20.6 17.4 V18.2 H5.4 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M6.8 7.8 H9.2 M6.8 9.8 H9.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M6.4 20.6 H8.4 M10.4 20.6 H12.4 M14.4 20.6 H16.4 M18.4 20.6 H19.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-rock" viewBox="0 0 24 24">
+      <path d="M4.7 18.9 C3.8 16 5.7 13.6 9 13.4 C12.4 13.2 15 15 15 17.2 C15 17.9 14.7 18.5 14.2 18.9 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M16.3 18.9 C16 17.1 17.3 15.8 19.2 16 C20.7 16.2 21.5 17.5 20.9 18.9 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M3 18.9 H21.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M7.3 9.9 C8 6.9 12 6 14.3 8.2 M14.5 5.9 L14.4 8.3 L12 8.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-peak" viewBox="0 0 24 24">
+      <path d="M3.2 19.4 L9.2 7.4 C9.6 6.6 10.6 6.6 11 7.4 L13.1 11.6 L14.9 8.4 C15.3 7.7 16.2 7.7 16.6 8.4 L20.8 19.4 Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M8.2 11.4 L10.1 13.2 L12 11.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2.4 21.4 H21.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-sparkle" viewBox="0 0 24 24">
+      <path d="M12 4 C12.6 8.2 14.8 10.4 19 11 C14.8 11.6 12.6 13.8 12 18 C11.4 13.8 9.2 11.6 5 11 C9.2 10.4 11.4 8.2 12 4 Z" fill="currentColor"/>
+      <path d="M18.6 15.4 C18.9 17.2 19.8 18.1 21.6 18.4 C19.8 18.7 18.9 19.6 18.6 21.4 C18.3 19.6 17.4 18.7 15.6 18.4 C17.4 18.1 18.3 17.2 18.6 15.4 Z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
   <!-- Skip link -->
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -23,10 +371,12 @@
     <div class="header-inner">
       <a href="#hero" class="logo" aria-label="San Juan Islands home">
         <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
-          <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M8 22c3-4 6-2 9-5s5-1 8-4 5 1 7 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M6 26c4-2 8 0 12-2s7 0 10-2 6 1 8 2" fill="none" stroke="currentColor" stroke-width="1" opacity=".5" stroke-linecap="round"/>
-          <circle cx="28" cy="12" r="2" fill="currentColor" opacity=".7"/>
+          <circle cx="20" cy="20" r="17.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="20" cy="20" r="14.6" fill="none" stroke="currentColor" stroke-width="0.7" opacity=".55"/>
+          <path d="M20 2.5 V5.4 M20 34.6 V37.5 M2.5 20 H5.4 M34.6 20 H37.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M15.2 23.4 C16 18.9 17.4 15.4 20.4 13 C20 17.5 21 20.9 24.1 23.4 Z" fill="currentColor"/>
+          <path d="M10.6 26.2 Q12.6 24.9 14.6 26.2 T18.6 26.2 T22.6 26.2 T26.6 26.2 T29.4 26.1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M12.4 29.6 Q14.4 28.5 16.4 29.6 T20.4 29.6 T24.4 29.6 T27.6 29.5" fill="none" stroke="currentColor" stroke-width="1" opacity=".55" stroke-linecap="round"/>
         </svg>
         <span class="logo-text">San Juan Islands</span>
       </a>
@@ -44,7 +394,7 @@
       </nav>
       <div class="header-actions">
         <button type="button" class="kid-toggle" id="kid-toggle" aria-pressed="false" title="Switch to Kid Mode">
-          <span class="kid-icon" aria-hidden="true">🦊</span>
+          <span class="kid-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-fox"/></svg></span>
           <span class="kid-label">Kid Mode</span>
         </button>
         <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">
@@ -58,15 +408,154 @@
     <!-- ==================== HERO ==================== -->
     <section class="hero" id="hero" aria-label="Introduction">
       <div class="hero-canvas" id="hero-canvas" aria-hidden="true"></div>
-      <div class="hero-islands" aria-hidden="true">
-        <svg viewBox="0 0 400 240">
-          <ellipse class="hi-isle" cx="200" cy="140" rx="90" ry="40"/>
-          <ellipse class="hi-isle" cx="100" cy="160" rx="50" ry="22"/>
-          <ellipse class="hi-isle" cx="310" cy="120" rx="70" ry="32"/>
-          <ellipse class="hi-isle" cx="280" cy="180" rx="35" ry="14"/>
-          <g class="hi-orca" transform="translate(80,190)">
-            <ellipse cx="20" cy="0" rx="22" ry="8"/>
-            <path d="M8 -4 L12 -20 L18 -2"/>
+      <div class="hero-scene" aria-hidden="true">
+        <svg viewBox="0 0 1440 810" preserveAspectRatio="xMidYMax slice">
+          <defs>
+            <linearGradient id="hsSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#101a30"/>
+              <stop offset=".24" stop-color="#27334f"/>
+              <stop offset=".42" stop-color="#4b4364"/>
+              <stop offset=".54" stop-color="#7d5570"/>
+              <stop offset=".61" stop-color="#c97a58"/>
+              <stop offset=".645" stop-color="#e8ae67"/>
+            </linearGradient>
+            <linearGradient id="hsWater" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#8a6272"/>
+              <stop offset=".07" stop-color="#3e5570"/>
+              <stop offset=".3" stop-color="#1d3a52"/>
+              <stop offset=".7" stop-color="#0d2337"/>
+              <stop offset="1" stop-color="#071322"/>
+            </linearGradient>
+            <radialGradient id="hsSun" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#f4d58d" stop-opacity=".75"/>
+              <stop offset="1" stop-color="#f4d58d" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="hsFog" x="-40%" y="-200%" width="180%" height="500%">
+              <feGaussianBlur stdDeviation="14"/>
+            </filter>
+          </defs>
+
+          <!-- Stratified dusk sky -->
+          <rect x="0" y="0" width="1440" height="524" fill="url(#hsSky)"/>
+          <g class="hs-stars" fill="#e8f4f8">
+            <circle cx="180" cy="80" r="1.2" opacity=".7"/><circle cx="420" cy="140" r="1" opacity=".5"/>
+            <circle cx="700" cy="60" r="1.4" opacity=".8"/><circle cx="960" cy="120" r="1" opacity=".5"/>
+            <circle cx="1180" cy="70" r="1.2" opacity=".7"/><circle cx="1340" cy="160" r="1" opacity=".45"/>
+            <circle cx="560" cy="200" r="1" opacity=".4"/><circle cx="1060" cy="210" r="1.1" opacity=".45"/>
+          </g>
+          <ellipse cx="1010" cy="512" rx="300" ry="86" fill="url(#hsSun)"/>
+
+          <!-- Olympic range, far & serrated (parallax: far) -->
+          <g class="hs-l-far">
+            <path fill="#4d3f5e" d="M0 524 L0 492 L60 498 L128 470 L176 486 L238 462 L300 480 L368 452 L430 472 L500 448 L565 468 L640 440 L716 462 L800 436 L878 458 L952 442 L1030 464 L1108 446 L1188 466 L1268 452 L1352 470 L1440 458 L1440 524 Z"/>
+            <!-- Nearer mainland shoulder -->
+            <path fill="#3a3352" d="M0 524 L0 505 L90 512 L210 498 L330 514 L470 502 L610 516 L760 506 L900 518 L1050 508 L1200 518 L1330 510 L1440 516 L1440 524 Z"/>
+          </g>
+
+          <!-- Water -->
+          <rect x="0" y="518" width="1440" height="292" fill="url(#hsWater)"/>
+          <!-- Sun glitter lane -->
+          <g class="hs-glitter" stroke="#f0c987" stroke-width="2" stroke-linecap="round" opacity=".5">
+            <path d="M965 538 h64"/><path d="M985 552 h36"/><path d="M955 566 h74"/>
+            <path d="M990 582 h44"/><path d="M968 600 h58"/><path d="M996 622 h30"/>
+          </g>
+          <!-- Water shimmer strokes -->
+          <g class="hs-shimmer" stroke="#7ba6bc" stroke-width="1.4" stroke-linecap="round" opacity=".28">
+            <path d="M110 574 h90"/><path d="M320 604 h70"/><path d="M540 566 h84"/>
+            <path d="M770 592 h64"/><path d="M1210 588 h84"/><path d="M420 648 h96"/>
+            <path d="M900 646 h74"/><path d="M1330 640 h60"/><path d="M180 690 h80"/>
+            <path d="M660 700 h90"/><path d="M1100 692 h70"/>
+          </g>
+
+          <!-- Island silhouettes (parallax: mid) -->
+          <g class="hs-l-mid">
+            <!-- Mt. Constitution / Orcas Island, east -->
+            <path fill="#20344a" d="M905 542 C960 536 1000 506 1044 462 C1076 430 1108 414 1136 412 L1136 400 L1146 400 L1146 412 C1188 416 1230 440 1268 470 C1318 508 1372 532 1440 538 L1440 560 L905 560 Z"/>
+            <!-- Turtleback ridge, center-west: shell hump, neck saddle, head knob -->
+            <path fill="#1a2d3e" d="M150 562 C192 556 218 548 242 536 C260 512 288 486 332 470 C392 450 470 448 528 466 C576 482 608 512 632 538 C646 552 656 557 668 554 C674 538 690 528 706 530 C722 532 732 544 735 556 C758 562 782 564 810 564 L810 576 L150 576 Z"/>
+            <!-- Near forested islet, west -->
+            <path fill="#132435" d="M20 560 L60 552 L74 528 L82 552 L108 546 L120 518 L130 546 L162 540 L176 512 L188 542 L226 548 L250 556 L250 574 L20 574 Z"/>
+          </g>
+
+          <!-- Horizon haze + drifting fog banks -->
+          <ellipse cx="720" cy="526" rx="760" ry="12" fill="#c9d6d4" opacity=".12" filter="url(#hsFog)"/>
+          <g class="hs-fog">
+            <ellipse cx="480" cy="540" rx="330" ry="25" fill="#c9d6d4" opacity=".22" filter="url(#hsFog)"/>
+            <ellipse cx="255" cy="558" rx="235" ry="14" fill="#c9d6d4" opacity=".17" filter="url(#hsFog)"/>
+          </g>
+          <g class="hs-fog hs-fog-b">
+            <ellipse cx="1120" cy="524" rx="290" ry="20" fill="#c9d6d4" opacity=".16" filter="url(#hsFog)"/>
+          </g>
+
+          <!-- Washington State Ferry with wake -->
+          <g class="hs-ferry">
+            <g transform="translate(0,598)">
+              <path d="M-96 12 Q-60 6 -32 9 L-4 12 Z" fill="#dcebe7" opacity=".28"/>
+              <path d="M-96 16 Q-56 11 -30 13.5 L-4 16 Z" fill="#dcebe7" opacity=".16"/>
+              <path d="M-42 8 L46 8 L38 16 L-36 16 Z" fill="#eef0ea"/>
+              <path d="M-42 8 L46 8 L44 10.5 L-41 10.5 Z" fill="#0f5132" opacity=".85"/>
+              <path d="M-30 2 L34 2 L38 8 L-34 8 Z" fill="#e2e6df"/>
+              <path d="M-16 -4 L18 -4 L20 2 L-18 2 Z" fill="#d5dbd2"/>
+              <rect x="-2" y="-9" width="4" height="5" fill="#c6ccc2"/>
+              <g fill="#33506b">
+                <circle cx="-24" cy="5" r="1.1"/><circle cx="-14" cy="5" r="1.1"/><circle cx="-4" cy="5" r="1.1"/>
+                <circle cx="6" cy="5" r="1.1"/><circle cx="16" cy="5" r="1.1"/><circle cx="26" cy="5" r="1.1"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- Surfacing orca fins -->
+          <g class="hs-pod">
+            <g transform="translate(846,636)"><g class="hs-fin hs-fin-a">
+              <ellipse cx="2" cy="7" rx="34" ry="4" fill="#e8c9a0" opacity=".22"/>
+              <path d="M-26 6 C-14 4 -8 2 -2 -1 C2 -14 6 -24 14 -30 C13 -18 15 -8 22 0 C28 3 34 5 40 6 Q6 12 -26 6 Z" fill="#0a1420" stroke="#d9955e" stroke-width="1.2" stroke-opacity=".55"/>
+              <path d="M14 -30 C13 -18 15 -8 22 0" fill="none" stroke="#5c748c" stroke-width="1" opacity=".7"/>
+            </g></g>
+            <g transform="translate(1005,662)"><g class="hs-fin hs-fin-b">
+              <ellipse cx="2" cy="6" rx="26" ry="3.2" fill="#e8c9a0" opacity=".18"/>
+              <path d="M-20 5 C-10 3 -6 2 -2 0 C1 -10 4 -17 10 -22 C9 -13 11 -6 16 0 C21 2 26 4 30 5 Q4 9 -20 5 Z" fill="#0a1420" stroke="#d9955e" stroke-width="1" stroke-opacity=".5"/>
+            </g></g>
+            <g transform="translate(756,690)"><g class="hs-fin hs-fin-c">
+              <ellipse cx="2" cy="5" rx="20" ry="2.6" fill="#e8c9a0" opacity=".15"/>
+              <path d="M-16 4 C-8 2 -5 1 -2 0 C1 -8 3 -13 8 -17 C7 -10 9 -5 13 0 C17 2 20 3 24 4 Q3 7 -16 4 Z" fill="#0a1420" stroke="#d9955e" stroke-width="1" stroke-opacity=".45"/>
+            </g></g>
+          </g>
+
+          <!-- Foreground frame (parallax: fg) -->
+          <g class="hs-l-fg">
+          <g class="hs-kelp" fill="#04101a">
+            <g class="hs-frond" style="transform-origin:1300px 810px">
+              <path d="M1290 810 C1296 740 1284 690 1300 640 C1310 610 1306 586 1296 566 C1312 580 1322 606 1316 640 C1306 694 1318 744 1310 810 Z"/>
+              <ellipse cx="1297" cy="562" rx="9" ry="13"/>
+              <path d="M1300 588 C1322 578 1342 580 1358 592 C1338 590 1320 594 1306 604 Z"/>
+              <path d="M1298 632 C1276 624 1260 628 1248 640 C1266 636 1282 640 1294 650 Z"/>
+            </g>
+            <g class="hs-frond hs-frond-b" style="transform-origin:1392px 810px">
+              <path d="M1384 810 C1390 750 1378 706 1392 662 C1400 636 1396 616 1388 598 C1402 610 1412 634 1406 664 C1396 712 1408 754 1400 810 Z"/>
+              <ellipse cx="1389" cy="594" rx="8" ry="11"/>
+              <path d="M1392 620 C1412 612 1428 614 1440 624 C1424 622 1408 626 1396 634 Z"/>
+            </g>
+            <g class="hs-frond hs-frond-c" style="transform-origin:70px 810px">
+              <path d="M62 810 C68 756 58 718 70 678 C78 654 74 634 66 618 C80 630 90 652 84 680 C74 724 86 762 78 810 Z"/>
+              <ellipse cx="67" cy="614" rx="8" ry="11"/>
+              <path d="M70 644 C90 636 106 638 118 648 C102 646 86 650 74 658 Z"/>
+              <path d="M68 690 C48 682 34 686 24 696 C40 692 54 696 64 706 Z"/>
+            </g>
+          </g>
+
+          <!-- Madrona bough, top right -->
+          <g class="hs-madrona">
+            <path d="M1440 26 C1382 40 1330 68 1296 108 C1272 136 1262 166 1266 196 C1276 168 1294 144 1318 126 C1298 160 1290 194 1296 228 C1302 198 1316 172 1338 152 C1330 184 1332 214 1344 240 C1344 212 1352 186 1370 164 C1394 136 1420 118 1440 110 Z" fill="#0d1520"/>
+            <g fill="#152435">
+              <ellipse cx="1268" cy="206" rx="17" ry="9" transform="rotate(-38 1268 206)"/>
+              <ellipse cx="1286" cy="238" rx="16" ry="8" transform="rotate(-24 1286 238)"/>
+              <ellipse cx="1306" cy="250" rx="15" ry="8" transform="rotate(-10 1306 250)"/>
+              <ellipse cx="1344" cy="252" rx="16" ry="8" transform="rotate(12 1344 252)"/>
+              <ellipse cx="1258" cy="172" rx="14" ry="8" transform="rotate(-52 1258 172)"/>
+              <ellipse cx="1364" cy="230" rx="14" ry="8" transform="rotate(24 1364 230)"/>
+            </g>
+            <path d="M1296 108 C1272 136 1262 166 1266 196 M1318 126 C1298 160 1290 194 1296 228 M1338 152 C1330 184 1332 214 1344 240" fill="none" stroke="#47231a" stroke-width="1.4" opacity=".55"/>
+          </g>
           </g>
         </svg>
       </div>
@@ -95,7 +584,7 @@
           </div>
           <div class="stat">
             <span class="stat-num" data-count="2407">0</span>
-            <span class="stat-label">ft · Mt. Constitution</span>
+            <span class="stat-label">Mt. Constitution · ft</span>
           </div>
           <div class="stat">
             <span class="stat-num" data-count="73">0</span>
@@ -106,9 +595,19 @@
       </div>
       <button type="button" class="scroll-hint" aria-label="Scroll to continue">
         <span>Scroll to explore</span>
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="sh-line" viewBox="0 0 24 66" width="22" height="60" aria-hidden="true">
+          <path class="sh-rope" d="M12 0 V37" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 5"/>
+          <g class="sh-anchor" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="41.5" r="2.4"/>
+            <path d="M12 43.9 V61.5 M7.6 48.4 H16.4"/>
+            <path d="M4.2 55 C5.2 59.6 8 61.8 12 61.8 C16 61.8 18.8 59.6 19.8 55"/>
+            <path d="M4.2 55 L2.6 58 M4.2 55 L7 56.6 M19.8 55 L21.4 58 M19.8 55 L17 56.6"/>
+          </g>
+        </svg>
       </button>
     </section>
+
+    <div class="sj-divider sj-divider--land dv-hero-map" aria-hidden="true"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" opacity=".28" d="M0 50 L90 38 C170 28 250 24 330 32 L430 44 C530 54 610 52 710 42 C790 34 880 28 970 34 L1090 46 C1190 55 1310 53 1440 42 L1440 90 L0 90 Z"/><path fill="currentColor" opacity=".55" d="M0 64 C120 54 220 47 340 53 L480 63 C580 69 680 67 780 57 C880 47 980 45 1090 53 L1240 65 C1310 69 1380 68 1440 62 L1440 90 L0 90 Z"/><path fill="currentColor" d="M0 78 C140 70 260 66 400 72 C540 78 660 80 800 74 C940 68 1080 66 1220 72 C1310 76 1390 78 1440 76 L1440 90 L0 90 Z"/></svg></div>
 
     <!-- ==================== MAP ==================== -->
     <section class="section map-section" id="map">
@@ -123,8 +622,8 @@
       <div class="map-workspace">
         <div class="map-toolbar">
           <div class="map-view-toggle" role="group" aria-label="Map style">
-            <button type="button" class="layer-btn active" data-map-view="live">Live map</button>
-            <button type="button" class="layer-btn" data-map-view="svg">Stylized SVG</button>
+            <button type="button" class="layer-btn active" data-map-view="svg">Chart</button>
+            <button type="button" class="layer-btn" data-map-view="live">Live map</button>
           </div>
           <div class="map-layers" role="group" aria-label="Map layers">
             <button type="button" class="layer-btn active" data-layer="islands">Islands</button>
@@ -159,11 +658,11 @@
 
         <div class="map-stage">
           <div class="map-canvas-stack">
-            <div class="live-map-pane" id="live-map-pane">
+            <div class="live-map-pane" id="live-map-pane" hidden>
               <div id="leaflet-map" class="leaflet-map" role="application" aria-label="Interactive map of the San Juan Islands"></div>
               <div id="google-map-embed" class="google-map-embed" hidden></div>
             </div>
-            <div class="svg-map-pane" id="svg-map-pane" hidden>
+            <div class="svg-map-pane" id="svg-map-pane">
               <div class="map-svg-wrap" id="map-svg-wrap">
                 <!-- SVG map injected by map.js -->
               </div>
@@ -171,11 +670,20 @@
           </div>
           <aside class="map-panel" id="map-panel" aria-live="polite">
             <div class="map-panel-empty">
-              <div class="panel-icon">🗺</div>
+              <p class="legend-head"><svg class="icon" aria-hidden="true"><use href="#i-compass"/></svg>Chart legend</p>
               <h3>Choose an island</h3>
-              <p data-adult="Click any island marker on the live map — or switch to the stylized SVG — to open a field card with people, peaks, and places." data-kid="Tap a green island to open a fun fact card!">
-                Click any island marker on the live map — or switch to the stylized SVG — to open a field card with people, peaks, and places.
+              <p data-adult="Click any island on the chart — or switch to the live map — to open a field card with people, peaks, and places." data-kid="Tap an island on the chart to open a fun fact card!">
+                Click any island on the chart — or switch to the live map — to open a field card with people, peaks, and places.
               </p>
+              <ul class="chart-legend" aria-hidden="true">
+                <li><svg viewBox="0 0 34 18"><path class="cl-isle" d="M5 12 C8 5.5 16 3.5 22 6 C27.5 8 30 11 28.5 13 C21 16 10 16 5 12 Z"/></svg><span>Island — click for its manifest</span></li>
+                <li><svg viewBox="0 0 34 18"><path class="cl-ferry" d="M2 9 H32"/></svg><span>WSF ferry lane</span></li>
+                <li><svg viewBox="0 0 34 18"><path class="cl-whale" d="M2 13 C10 5 24 5 32 11"/></svg><span>Whale corridor</span></li>
+                <li><svg viewBox="0 0 34 18"><rect class="cl-prot" x="4" y="3" width="26" height="12" rx="2"/></svg><span>Protected shore</span></li>
+                <li><svg viewBox="0 0 34 18"><path class="cl-cont" d="M2 12 C10 6 24 6 32 10"/></svg><span>Depth contour · 10 fm</span></li>
+                <li><svg viewBox="0 0 34 18"><text class="cl-snd" x="17" y="13">47</text></svg><span>Sounding, in fathoms</span></li>
+              </ul>
+              <p class="quick-label">Quick bearings</p>
               <ul class="quick-picks">
                 <li><button type="button" data-island="san-juan">San Juan</button></li>
                 <li><button type="button" data-island="orcas">Orcas</button></li>
@@ -211,6 +719,8 @@
       </div>
     </section>
 
+    <div class="sj-divider sj-divider--rule dv-map-history" aria-hidden="true"><svg viewBox="0 0 360 24"><path d="M4 12 H116 M244 12 H356" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55" fill="none"/><circle cx="126" cy="12" r="1.8" fill="currentColor"/><circle cx="234" cy="12" r="1.8" fill="currentColor"/><ellipse cx="148" cy="12" rx="11" ry="7" fill="none" stroke="currentColor" stroke-width="1.75"/><ellipse cx="148" cy="12" rx="4.6" ry="2.8" fill="currentColor"/><path d="M163 16.5 L166.5 7.5 L170 16.5 Z" fill="currentColor"/><path d="M177 6.5 C177 13.5 178.8 16.5 183 16.5 C187.2 16.5 189 13.5 189 6.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M194.5 7.5 L198 16.5 L201.5 7.5 Z" fill="currentColor"/><path d="M212 4.5 A8 8 0 0 0 212 19.5 A10.5 10.5 0 0 1 212 4.5 Z" fill="currentColor"/></svg></div>
+
     <!-- ==================== HISTORY ==================== -->
     <section class="section history-section" id="history">
       <div class="section-header">
@@ -233,40 +743,137 @@
       <div class="pig-war" id="pig-war">
         <div class="pig-war-visual">
           <div class="pig-illustration" aria-hidden="true">
-            <svg viewBox="0 0 320 200" class="pig-svg">
+            <svg viewBox="0 0 360 250" class="pig-svg">
               <defs>
-                <linearGradient id="pigGround" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#8b9a6b"/>
-                  <stop offset="100%" stop-color="#5c6b3a"/>
+                <linearGradient id="pwSky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#c3d8de"/><stop offset="1" stop-color="#ecdfc0"/>
                 </linearGradient>
               </defs>
-              <ellipse cx="160" cy="175" rx="140" ry="18" fill="url(#pigGround)" opacity=".5"/>
-              <!-- American flag pole -->
-              <rect x="40" y="40" width="4" height="120" fill="#5c4033"/>
-              <rect x="44" y="40" width="40" height="24" fill="#3d5a80"/>
-              <rect x="44" y="48" width="40" height="4" fill="#e8e4d9"/>
-              <rect x="44" y="56" width="40" height="4" fill="#c45c4a"/>
-              <!-- British flag pole -->
-              <rect x="270" y="50" width="4" height="110" fill="#5c4033"/>
-              <rect x="274" y="50" width="36" height="22" fill="#1a3a6b"/>
-              <path d="M274 50 L310 72 M310 50 L274 72" stroke="#e8e4d9" stroke-width="2"/>
-              <path d="M292 50 V72 M274 61 H310" stroke="#c45c4a" stroke-width="2.5"/>
-              <!-- Pig -->
-              <g class="pig-body" transform="translate(140,100)">
-                <ellipse cx="20" cy="30" rx="36" ry="22" fill="#e8a0a8"/>
-                <ellipse cx="-10" cy="28" rx="14" ry="12" fill="#e8a0a8"/>
-                <circle cx="-16" cy="24" r="3" fill="#2a2a2a"/>
-                <ellipse cx="-20" cy="32" rx="6" ry="4" fill="#d08088"/>
-                <ellipse cx="8" cy="50" rx="5" ry="8" fill="#e8a0a8"/>
-                <ellipse cx="32" cy="50" rx="5" ry="8" fill="#e8a0a8"/>
-                <path d="M50 25 Q60 10 55 5" fill="none" stroke="#e8a0a8" stroke-width="6" stroke-linecap="round"/>
-                <circle cx="55" cy="5" r="5" fill="#e8a0a8"/>
+              <!-- prairie morning sky over Griffin Bay -->
+              <rect width="360" height="92" fill="url(#pwSky)"/>
+              <path d="M0 80 L46 72 L96 78 L152 68 L214 76 L272 70 L330 76 L360 72 L360 82 L0 82 Z" fill="#7d8fa0" opacity=".65"/>
+              <!-- Griffin Bay -->
+              <rect y="80" width="360" height="16" fill="#9cc0c6"/>
+              <rect y="80" width="360" height="5" fill="#b7d4d6" opacity=".8"/>
+              <g stroke="#e6efec" stroke-width="1" opacity=".55" stroke-linecap="round">
+                <path d="M22 90 h26"/><path d="M126 93 h20"/><path d="M228 89 h24"/><path d="M318 92 h20"/>
               </g>
-              <!-- Farmer silhouette -->
-              <g transform="translate(90,90)" opacity=".7">
-                <circle cx="0" cy="0" r="10" fill="#2c3e50"/>
-                <rect x="-8" y="10" width="16" height="28" rx="3" fill="#2c3e50"/>
-                <line x1="8" y1="20" x2="28" y2="10" stroke="#5c4033" stroke-width="3" stroke-linecap="round"/>
+              <!-- British warship riding at anchor -->
+              <g fill="#33475a">
+                <path d="M158 86 L206 86 L200 92.5 L164 92.5 Z"/>
+                <rect x="167" y="64" width="1.6" height="22"/>
+                <rect x="181" y="60" width="1.6" height="26"/>
+                <rect x="194" y="66" width="1.6" height="20"/>
+                <path d="M162 70 h12 M176 65 h13 M190 71 h11" stroke="#33475a" stroke-width="1.3"/>
+                <path d="M182.6 60 L189 62.6 L182.6 65.2 Z"/>
+              </g>
+              <g stroke="#2b3a42" stroke-width="1.1" stroke-linecap="round" opacity=".55" fill="none">
+                <path d="M84 34 C87 31 90 31 93 34 M93 34 C96 31 99 31 102 34"/>
+                <path d="M270 24 C272.5 21.5 275 21.5 277.5 24 M277.5 24 C280 21.5 282.5 21.5 285 24"/>
+              </g>
+              <!-- rolling prairie meadow -->
+              <path d="M0 94 C60 84 140 82 220 90 C280 96 330 94 360 88 L360 250 L0 250 Z" fill="#a8b478"/>
+              <path d="M0 132 C80 120 180 122 260 132 C310 138 340 136 360 132 L360 250 L0 250 Z" fill="#8b9a6b"/>
+              <path d="M0 196 C90 186 220 188 360 198 L360 250 L0 250 Z" fill="#6d7d4e"/>
+              <!-- distant American Camp, west -->
+              <g stroke="#57503f" stroke-width="1">
+                <path d="M30 116 L42 100 L54 116 Z" fill="#ece4d2"/>
+                <path d="M58 118 L68 104 L78 118 Z" fill="#e2d9c4"/>
+              </g>
+              <g>
+                <rect x="88" y="76" width="1.8" height="40" fill="#5c4033"/>
+                <rect x="89.8" y="76" width="17" height="10.5" fill="#e8e4d9"/>
+                <g fill="#c45c4a">
+                  <rect x="89.8" y="76" width="17" height="1.5"/>
+                  <rect x="89.8" y="79" width="17" height="1.5"/>
+                  <rect x="89.8" y="82" width="17" height="1.5"/>
+                  <rect x="89.8" y="85" width="17" height="1.5"/>
+                </g>
+                <rect x="89.8" y="76" width="6.8" height="4.6" fill="#2b4166"/>
+              </g>
+              <!-- distant English Camp, east -->
+              <g stroke="#57503f" stroke-width="1">
+                <path d="M296 118 L308 102 L320 118 Z" fill="#ece4d2"/>
+                <path d="M324 120 L334 106 L344 120 Z" fill="#e2d9c4"/>
+              </g>
+              <g>
+                <rect x="286" y="78" width="1.8" height="40" fill="#5c4033"/>
+                <g transform="translate(269,78)">
+                  <rect width="17" height="10.5" fill="#1a3a6b"/>
+                  <path d="M0 0 L17 10.5 M17 0 L0 10.5" stroke="#e8e4d9" stroke-width="1.8"/>
+                  <path d="M8.5 0 V10.5 M0 5.25 H17" stroke="#e8e4d9" stroke-width="2.4"/>
+                  <path d="M8.5 0 V10.5 M0 5.25 H17" stroke="#c45c4a" stroke-width="1.1"/>
+                </g>
+              </g>
+              <!-- split-rail fence, receding toward the bay -->
+              <g stroke="#6b543c" stroke-linecap="round" fill="none">
+                <path d="M4 178 L44 164 L82 155 L112 149" stroke-width="2.6"/>
+                <path d="M6 194 L46 177 L84 166 L114 158" stroke-width="2.2"/>
+                <path d="M8 150 V202" stroke-width="3.8"/>
+                <path d="M45 142 V184" stroke-width="3.1"/>
+                <path d="M83 138 V172" stroke-width="2.6"/>
+                <path d="M113 136 V163" stroke-width="2.1"/>
+              </g>
+              <!-- potato rows -->
+              <g stroke="#5f5138" stroke-width="5" stroke-linecap="round" fill="none" opacity=".8">
+                <path d="M28 206 C110 198 250 198 344 208"/>
+                <path d="M20 228 C120 218 260 218 352 230"/>
+              </g>
+              <g fill="#556a3c">
+                <path d="M60 202 c-3-6 1-9 4-9 c3 0 7 3 4 9 c4-4 9-2 8 2 c-6 3-18 3-24 0 c-1-4 4-6 8-2 Z"/>
+                <path d="M132 198 c-3-6 1-9 4-9 c3 0 7 3 4 9 c4-4 9-2 8 2 c-6 3-18 3-24 0 c-1-4 4-6 8-2 Z"/>
+                <path d="M296 202 c-3-6 1-9 4-9 c3 0 7 3 4 9 c4-4 9-2 8 2 c-6 3-18 3-24 0 c-1-4 4-6 8-2 Z"/>
+                <path d="M96 224 c-3-6 1-9 4-9 c3 0 7 3 4 9 c4-4 9-2 8 2 c-6 3-18 3-24 0 c-1-4 4-6 8-2 Z"/>
+                <path d="M330 226 c-3-6 1-9 4-9 c3 0 7 3 4 9 c4-4 9-2 8 2 c-6 3-18 3-24 0 c-1-4 4-6 8-2 Z"/>
+              </g>
+              <!-- uprooted potatoes -->
+              <g fill="#c9a06b" stroke="#8a6b42" stroke-width=".8">
+                <ellipse cx="176" cy="226" rx="6" ry="4.2"/>
+                <ellipse cx="192" cy="231" rx="4.6" ry="3.4"/>
+                <ellipse cx="163" cy="233" rx="4" ry="3"/>
+              </g>
+              <!-- the pig: cedar-and-salmon boar, rooting snout-down -->
+              <g class="pw-pig">
+                <ellipse cx="240" cy="229" rx="42" ry="4.6" fill="#3f4a2c" opacity=".3"/>
+                <ellipse cx="242" cy="200" rx="36" ry="20" fill="#d1704f"/>
+                <path d="M210 192 C220 182 238 177 254 180 C244 174 222 176 210 186 Z" fill="#8f4a2e" opacity=".55"/>
+                <path d="M210 205 C216 215 234 220 250 220 C232 222 213 218 205 208 Z" fill="#8f4a2e" opacity=".5"/>
+                <path d="M218 186 C208 190 201 199 198 212 L217 216 C219 205 220 194 218 186 Z" fill="#d1704f"/>
+                <ellipse cx="203" cy="214" rx="5.6" ry="3.8" fill="#8f4a2e"/>
+                <circle cx="210" cy="199" r="1.8" fill="#12181d"/>
+                <path d="M221 182 L229 172 L233 183 Z" fill="#a2543c"/>
+                <path d="M228 218 v11 M250 219 v11 M266 213 v10" stroke="#d1704f" stroke-width="5.5" stroke-linecap="round"/>
+                <path d="M266 213 v10" stroke="#a2543c" stroke-width="5.5" stroke-linecap="round" opacity=".5"/>
+                <path d="M276 193 Q286 185 281 177 Q278 173 274 176" fill="none" stroke="#d1704f" stroke-width="3.4" stroke-linecap="round"/>
+                <g fill="#5f5138">
+                  <circle cx="196" cy="220" r="1.7"/><circle cx="192" cy="215" r="1.2"/><circle cx="200" cy="224" r="1.2"/>
+                </g>
+              </g>
+              <!-- Lyman Cutlar: period figure in profile, musket in hand -->
+              <g aria-hidden="true">
+                <ellipse cx="130" cy="228" rx="23" ry="3.4" fill="#3f4a2c" opacity=".3"/>
+                <g fill="#2c3a45">
+                  <!-- brimmed hat -->
+                  <path d="M112 156 C120 154.4 138 154.4 146 156 L146 159.2 C137 160.6 121 160.6 112 159.2 Z"/>
+                  <path d="M120 147 C120 143 126 141 129 141 C132 141 138 143 138 147 L138 156 L120 156 Z"/>
+                  <!-- head in profile -->
+                  <circle cx="130" cy="165" r="6.2"/>
+                  <path d="M134.5 161.5 L141.5 165.5 L134.5 169.5 Z"/>
+                  <!-- coat -->
+                  <path d="M123 171 L137 171 L141 179 L143 201 L117 201 L119 179 Z"/>
+                  <path d="M117 201 L143 201 L142 207 L118 207 Z"/>
+                  <!-- legs & boots -->
+                  <path d="M121 207 L128 207 L125 224 L118 224 Z"/>
+                  <path d="M131 207 L138 207 L141 224 L134 224 Z"/>
+                  <path d="M116 224 L126 224 L125 228 L114.5 228 Z"/>
+                  <path d="M133 224 L143 224 L144.5 228 L132 228 Z"/>
+                </g>
+                <!-- musket held across the chest -->
+                <path d="M116 198 L157 158" stroke="#1d2830" stroke-width="2.4" stroke-linecap="round"/>
+                <path d="M116 198 L123 191" stroke="#1d2830" stroke-width="4.6" stroke-linecap="round"/>
+                <!-- arms to the grip -->
+                <path d="M128 177 L147 167.5" stroke="#2c3a45" stroke-width="5" stroke-linecap="round"/>
+                <path d="M129 181 C127 184 125.5 186.5 124.5 190" fill="none" stroke="#2c3a45" stroke-width="5" stroke-linecap="round"/>
               </g>
             </svg>
           </div>
@@ -277,6 +884,10 @@
           <div class="story-body" data-adult="When American settler Lyman Cutlar shot a British Hudson’s Bay Company pig rooting in his potato patch, two empires nearly went to war over who owned the San Juans. Soldiers camped at opposite ends of the island for 12 years — American Camp and English Camp — without firing another shot. In 1872, Kaiser Wilhelm I of Germany arbitrated: the border would run through Haro Strait. The islands became American. The pig, history’s most consequential casualty, remains the only fatality." data-kid="A farmer shot a pig that was eating his potatoes. The pig belonged to a British company. America and Britain both said the islands were theirs! Soldiers lived on opposite ends of San Juan Island for 12 years but never fought. A German emperor decided America would keep the islands. The pig was the only one who got hurt!">
             When American settler Lyman Cutlar shot a British Hudson’s Bay Company pig rooting in his potato patch, two empires nearly went to war over who owned the San Juans. Soldiers camped at opposite ends of the island for 12 years — American Camp and English Camp — without firing another shot. In 1872, Kaiser Wilhelm I of Germany arbitrated: the border would run through Haro Strait. The islands became American. The pig, history’s most consequential casualty, remains the only fatality.
           </div>
+          <blockquote class="pw-quote">
+            <p>&ldquo;It is up to you to keep your potatoes out of my pig.&rdquo;</p>
+            <cite>Reply attributed to Charles Griffin &middot; Hudson&rsquo;s Bay Co. &middot; 1859</cite>
+          </blockquote>
           <div class="pig-war-facts">
             <div class="mini-fact"><strong>0</strong><span>human casualties</span></div>
             <div class="mini-fact"><strong>12</strong><span>years of joint occupation</span></div>
@@ -285,6 +896,8 @@
         </div>
       </div>
     </section>
+
+    <div class="sj-divider sj-divider--wave dv-history-whales" aria-hidden="true"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" opacity=".3" d="M0 30 C120 18 240 16 360 26 C480 36 600 40 720 32 C840 24 960 20 1080 28 C1200 36 1320 38 1440 30 L1440 90 L0 90 Z"/><path fill="currentColor" opacity=".55" d="M0 48 C120 38 240 36 360 44 C480 52 600 56 720 50 C840 44 960 40 1080 46 C1200 52 1320 56 1440 50 L1440 90 L0 90 Z"/><path fill="currentColor" d="M0 68 C120 58 240 56 360 62 C480 68 600 72 720 68 C840 64 960 60 1080 64 C1200 68 1320 72 1440 68 L1440 90 L0 90 Z"/></svg></div>
 
     <!-- ==================== WHALES ==================== -->
     <section class="section whales-section" id="whales">
@@ -307,32 +920,35 @@
               <button type="button" class="sim-btn" id="sim-pause" aria-label="Pause" hidden>
                 <svg viewBox="0 0 24 24" width="18" height="18"><path d="M6 5h4v14H6zm8 0h4v14h-4z" fill="currentColor"/></svg>
               </button>
-              <div class="sim-month" id="sim-month">January</div>
+              <div class="sim-month-dial"><span class="dial-label">Month</span><div class="sim-month" id="sim-month">January</div></div>
               <input type="range" id="sim-scrub" min="0" max="11" value="0" step="1" aria-label="Month of year" />
-              <div class="sim-speed">
-                <label for="sim-speed">Speed</label>
-                <select id="sim-speed">
-                  <option value="0.5">0.5×</option>
-                  <option value="1" selected>1×</option>
-                  <option value="2">2×</option>
-                  <option value="4">4×</option>
-                </select>
+              <div class="sim-speed" role="group" aria-label="Simulation speed">
+                <span class="sim-speed-label">Speed</span>
+                <button type="button" class="speed-btn" data-speed="0.5">½×</button>
+                <button type="button" class="speed-btn active" data-speed="1" aria-pressed="true">1×</button>
+                <button type="button" class="speed-btn" data-speed="2">2×</button>
+                <button type="button" class="speed-btn" data-speed="4">4×</button>
+              </div>
+              <div class="sim-presence" id="sim-presence" aria-live="off">
+                <span class="chart-label">Inland presence</span>
+                <span class="sp-vals" id="sim-presence-vals">Residents 15% · Bigg’s 70%</span>
               </div>
             </div>
             <div class="sim-legend">
-              <span class="leg leg-j"><i></i> J pod</span>
-              <span class="leg leg-k"><i></i> K pod</span>
-              <span class="leg leg-l"><i></i> L pod</span>
-              <span class="leg leg-biggs"><i></i> Bigg’s</span>
-              <span class="leg leg-ship"><i></i> Shipping</span>
+              <span class="leg leg-j"><svg class="icon" aria-hidden="true"><use href="#i-orca-fin"/></svg> J pod</span>
+              <span class="leg leg-k"><svg class="icon" aria-hidden="true"><use href="#i-orca-fin"/></svg> K pod</span>
+              <span class="leg leg-l"><svg class="icon" aria-hidden="true"><use href="#i-orca-fin"/></svg> L pod</span>
+              <span class="leg leg-biggs"><svg class="icon" aria-hidden="true"><use href="#i-orca-fin"/></svg> Bigg’s</span>
+              <span class="leg leg-ship"><svg class="icon" aria-hidden="true"><use href="#i-ship"/></svg> Shipping</span>
             </div>
           </div>
         </div>
 
         <div class="whale-pods">
           <article class="pod-card" data-pod="j">
+            <svg class="pod-art" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><path class="pa-wave" d="M0 62 Q20 57 40 62 T80 62 T120 62 T160 62 V80 H0 Z"/><path class="pa-body" d="M6 66 C30 36 62 24 88 26 C116 28 140 44 154 66 Z"/><path class="pa-fin" d="M62 32 C60 16 52 6 42 2 C54 7 62 14 68 22 C72 26 76 30 84 32 Z"/><path class="pa-saddle" d="M84 32 C94 26 106 27 112 35 C104 42 92 42 84 38 Z"/></svg>
             <div class="pod-header">
-              <span class="pod-badge j">J</span>
+              <span class="pod-badge j" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-orca-fin"/></svg><b>J</b></span>
               <div>
                 <h3>J Pod</h3>
                 <p class="pod-meta">Southern Resident · ~25 whales</p>
@@ -341,11 +957,12 @@
             <p data-adult="Often the most frequently sighted of the three Southern Resident pods in inland waters. Led through matrilines — grandmothers and mothers hold ecological knowledge of salmon runs." data-kid="J pod visits often! Grandmothers lead the family and teach everyone where to find fish.">
               Often the most frequently sighted of the three Southern Resident pods in inland waters. Led through matrilines — grandmothers and mothers hold ecological knowledge of salmon runs.
             </p>
-            <button type="button" class="text-btn" data-focus-pod="j">Highlight on map →</button>
+            <button type="button" class="text-btn" data-focus-pod="j">Highlight on map <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </article>
           <article class="pod-card" data-pod="k">
+            <svg class="pod-art" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><path class="pa-wave" d="M0 62 Q20 57 40 62 T80 62 T120 62 T160 62 V80 H0 Z"/><path class="pa-body" d="M6 66 C30 36 62 24 88 26 C116 28 140 44 154 66 Z"/><path class="pa-fin" d="M62 32 C60 16 52 6 42 2 C54 7 62 14 68 22 C72 26 76 30 84 32 Z"/><path class="pa-saddle" d="M84 32 C94 26 106 27 112 35 C104 42 92 42 84 38 Z"/></svg>
             <div class="pod-header">
-              <span class="pod-badge k">K</span>
+              <span class="pod-badge k" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-orca-fin"/></svg><b>K</b></span>
               <div>
                 <h3>K Pod</h3>
                 <p class="pod-meta">Southern Resident · ~16 whales</p>
@@ -354,11 +971,12 @@
             <p data-adult="Smallest of the three pods. Like all Southern Residents, they specialize almost entirely on Chinook salmon — a diet that has become a crisis as runs decline." data-kid="K pod is the smallest family. They love Chinook salmon best of all.">
               Smallest of the three pods. Like all Southern Residents, they specialize almost entirely on Chinook salmon — a diet that has become a crisis as runs decline.
             </p>
-            <button type="button" class="text-btn" data-focus-pod="k">Highlight on map →</button>
+            <button type="button" class="text-btn" data-focus-pod="k">Highlight on map <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </article>
           <article class="pod-card" data-pod="l">
+            <svg class="pod-art" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><path class="pa-wave" d="M0 62 Q20 57 40 62 T80 62 T120 62 T160 62 V80 H0 Z"/><path class="pa-body" d="M6 66 C30 36 62 24 88 26 C116 28 140 44 154 66 Z"/><path class="pa-fin" d="M62 32 C60 16 52 6 42 2 C54 7 62 14 68 22 C72 26 76 30 84 32 Z"/><path class="pa-saddle" d="M84 32 C94 26 106 27 112 35 C104 42 92 42 84 38 Z"/></svg>
             <div class="pod-header">
-              <span class="pod-badge l">L</span>
+              <span class="pod-badge l" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-orca-fin"/></svg><b>L</b></span>
               <div>
                 <h3>L Pod</h3>
                 <p class="pod-meta">Southern Resident · ~32 whales</p>
@@ -367,11 +985,12 @@
             <p data-adult="Largest Southern Resident pod. They range widely, sometimes remaining offshore for longer stretches, then sweeping into the San Juans when salmon pulse through Haro Strait." data-kid="L pod is the biggest family. Sometimes they swim far out in the ocean, then come back when the salmon do.">
               Largest Southern Resident pod. They range widely, sometimes remaining offshore for longer stretches, then sweeping into the San Juans when salmon pulse through Haro Strait.
             </p>
-            <button type="button" class="text-btn" data-focus-pod="l">Highlight on map →</button>
+            <button type="button" class="text-btn" data-focus-pod="l">Highlight on map <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </article>
           <article class="pod-card biggs" data-pod="biggs">
+            <svg class="pod-art" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><path class="pa-wave" d="M0 62 Q20 57 40 62 T80 62 T120 62 T160 62 V80 H0 Z"/><path class="pa-body" d="M6 66 C30 36 62 24 88 26 C116 28 140 44 154 66 Z"/><path class="pa-fin" d="M60 32 L56 -4 C62 8 70 20 78 32 Z"/><path class="pa-saddle" d="M82 32 C92 26 104 27 110 35 C102 42 90 42 82 38 Z"/></svg>
             <div class="pod-header">
-              <span class="pod-badge biggs">B</span>
+              <span class="pod-badge biggs" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-orca-fin"/></svg><b>B</b></span>
               <div>
                 <h3>Bigg’s (Transients)</h3>
                 <p class="pod-meta">Mammal-eaters · thriving</p>
@@ -380,7 +999,7 @@
             <p data-adult="Culturally and genetically distinct from Residents. They hunt seals, sea lions, and porpoises in quiet, stealthy groups. Population is increasing — a rare bright line in marine mammal conservation." data-kid="Bigg’s orcas eat seals and sea lions. They sneak quietly when they hunt. Their numbers are growing!">
               Culturally and genetically distinct from Residents. They hunt seals, sea lions, and porpoises in quiet, stealthy groups. Population is increasing — a rare bright line in marine mammal conservation.
             </p>
-            <button type="button" class="text-btn" data-focus-pod="biggs">Highlight on map →</button>
+            <button type="button" class="text-btn" data-focus-pod="biggs">Highlight on map <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </article>
         </div>
 
@@ -388,22 +1007,22 @@
           <h3 data-adult="Why Southern Residents struggle" data-kid="Why the fish-eating orcas need help">Why Southern Residents struggle</h3>
           <div class="pressure-grid">
             <div class="pressure-card">
-              <div class="pressure-icon">🐟</div>
+              <div class="pressure-icon"><svg class="icon" aria-hidden="true"><use href="#i-salmon"/></svg></div>
               <h4>Prey</h4>
               <p data-adult="Chinook salmon abundance has fallen across much of their range. Fewer calories mean longer gaps between successful hunts — especially hard on pregnant females and calves." data-kid="There aren’t enough big salmon left for them to eat."></p>
             </div>
             <div class="pressure-card">
-              <div class="pressure-icon">🔊</div>
+              <div class="pressure-icon"><svg class="icon" aria-hidden="true"><use href="#i-sonar"/></svg></div>
               <h4>Noise</h4>
               <p data-adult="Vessel noise masks echolocation. Southern Residents hunt by sound in murky water; engines can drown the clicks that find fish." data-kid="Boat noise makes it hard for orcas to “see” with sound."></p>
             </div>
             <div class="pressure-card">
-              <div class="pressure-icon">☠️</div>
+              <div class="pressure-icon"><svg class="icon" aria-hidden="true"><use href="#i-droplet"/></svg></div>
               <h4>Toxins</h4>
               <p data-adult="PCBs and other persistent pollutants build up in blubber. When whales go hungry, fat burns and toxins flood the bloodstream — a cruel feedback loop." data-kid="Old chemicals hide in their fat and make them sick when food is scarce."></p>
             </div>
             <div class="pressure-card">
-              <div class="pressure-icon">🛥</div>
+              <div class="pressure-icon"><svg class="icon" aria-hidden="true"><use href="#i-ship"/></svg></div>
               <h4>Traffic</h4>
               <p data-adult="Haro Strait is a superhighway for cargo and tankers. Collision risk and chronic disturbance stack on top of prey and noise stress." data-kid="Big ships and whale-watch boats share the same roads the whales use."></p>
             </div>
@@ -425,13 +1044,29 @@
             </div>
           </div>
           <p class="sightings-status" id="sightings-status" data-kind="info">Loading sightings…</p>
-          <p class="sightings-blurb" data-adult="Pins combine a stylized seasonal traffic model with parsed Orca Network monthly reports (place names + coordinates when present). Run <code>python3 server.py</code> for the live feed. Click a card to fly the map. Positions are approximate — whales move fast." data-kid="These pins show where people reported whales. Tap one to zoom the map. Whales swim quickly, so the spot is only a clue!">
-            Pins combine a stylized seasonal traffic model with parsed Orca Network monthly reports (place names + coordinates when present). Run <code>python3 server.py</code> for the live feed. Click a card to fly the map. Positions are approximate — whales move fast.
+          <p class="sightings-blurb" data-adult="Pins combine a stylized seasonal traffic model with parsed Orca Network monthly reports (place names + coordinates when present). Run <code>python3 server.py</code> for the live feed. Open a card for the full report text and linked photos, video, or hydrophone audio when available. Positions are approximate — whales move fast." data-kid="These pins show where people reported whales. Tap a card to read the full report and see photo or video links. Whales swim quickly, so the spot is only a clue!">
+            Pins combine a stylized seasonal traffic model with parsed Orca Network monthly reports (place names + coordinates when present). Run <code>python3 server.py</code> for the live feed. Open a card for the full report text and linked photos, video, or hydrophone audio when available. Positions are approximate — whales move fast.
           </p>
           <div class="sightings-list" id="sightings-list" aria-live="polite"></div>
         </div>
       </div>
+
+      <!-- Full whale-report detail (text + media) -->
+      <div class="sighting-modal" id="sighting-modal" hidden role="dialog" aria-modal="true" aria-labelledby="sm-title">
+        <div class="sm-backdrop" data-close-sighting></div>
+        <div class="sm-card">
+          <button type="button" class="sm-close" data-close-sighting aria-label="Close report">×</button>
+          <p class="sm-eyebrow" id="sm-eyebrow">Whale report</p>
+          <h3 id="sm-title"></h3>
+          <p class="sm-meta" id="sm-meta"></p>
+          <div class="sm-body" id="sm-body"></div>
+          <div class="sm-media" id="sm-media" hidden></div>
+          <div class="sm-actions" id="sm-actions"></div>
+        </div>
+      </div>
     </section>
+
+    <div class="sj-divider sj-divider--wave dv-whales-lime" aria-hidden="true"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" opacity=".3" d="M0 30 C120 18 240 16 360 26 C480 36 600 40 720 32 C840 24 960 20 1080 28 C1200 36 1320 38 1440 30 L1440 90 L0 90 Z"/><path fill="currentColor" opacity=".55" d="M0 48 C120 38 240 36 360 44 C480 52 600 56 720 50 C840 44 960 40 1080 46 C1200 52 1320 56 1440 50 L1440 90 L0 90 Z"/><path fill="currentColor" d="M0 68 C120 58 240 56 360 62 C480 68 600 72 720 68 C840 64 960 60 1080 64 C1200 68 1320 72 1440 68 L1440 90 L0 90 Z"/></svg></div>
 
     <!-- ==================== LIME KILN ==================== -->
     <section class="section lime-kiln-section" id="lime-kiln">
@@ -465,6 +1100,8 @@
       </div>
     </section>
 
+    <div class="sj-divider sj-divider--rule dv-lime-wildlife" aria-hidden="true"><svg viewBox="0 0 360 24"><path d="M4 12 H116 M244 12 H356" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55" fill="none"/><circle cx="126" cy="12" r="1.8" fill="currentColor"/><circle cx="234" cy="12" r="1.8" fill="currentColor"/><ellipse cx="148" cy="12" rx="11" ry="7" fill="none" stroke="currentColor" stroke-width="1.75"/><ellipse cx="148" cy="12" rx="4.6" ry="2.8" fill="currentColor"/><path d="M163 16.5 L166.5 7.5 L170 16.5 Z" fill="currentColor"/><path d="M177 6.5 C177 13.5 178.8 16.5 183 16.5 C187.2 16.5 189 13.5 189 6.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M194.5 7.5 L198 16.5 L201.5 7.5 Z" fill="currentColor"/><path d="M212 4.5 A8 8 0 0 0 212 19.5 A10.5 10.5 0 0 1 212 4.5 Z" fill="currentColor"/></svg></div>
+
     <!-- ==================== WILDLIFE ==================== -->
     <section class="section wildlife-section" id="wildlife">
       <div class="section-header">
@@ -492,17 +1129,33 @@
         <div class="wm-backdrop" data-close-modal></div>
         <div class="wm-card">
           <button type="button" class="wm-close" data-close-modal aria-label="Close">×</button>
-          <img class="wm-photo" id="wm-photo" alt="" hidden />
-          <div class="wm-emoji" id="wm-emoji"></div>
-          <p class="wm-type" id="wm-type"></p>
-          <h3 id="wm-title"></h3>
-          <p class="wm-latin" id="wm-latin"></p>
-          <p class="wm-body" id="wm-body"></p>
-          <div class="wm-tags" id="wm-tags"></div>
-          <p class="wm-fun" id="wm-fun"></p>
+          <div class="wm-hero">
+            <img class="wm-photo" id="wm-photo" alt="" hidden />
+            <div class="wm-emoji" id="wm-emoji" hidden></div>
+            <span class="wm-badge" id="wm-badge" aria-hidden="true"></span>
+            <p class="wm-type" id="wm-type"></p>
+          </div>
+          <div class="wm-content">
+            <h3 id="wm-title"></h3>
+            <p class="wm-latin" id="wm-latin"></p>
+            <div class="wm-sound-wrap" id="wm-sound-wrap" hidden>
+              <button type="button" class="wm-sound-btn" id="wm-sound" aria-pressed="false">
+                <span class="wm-sound-ico" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M4 9v6h3.5L12 19.5V4.5L7.5 9H4zm11.5 3a3.5 3.5 0 0 0-1.8-3.05v6.1A3.5 3.5 0 0 0 15.5 12zM13.7 5.1v1.55a6 6 0 0 1 0 10.7v1.55a7.55 7.55 0 0 0 0-13.8z"/></svg>
+                </span>
+                <span class="wm-sound-label">Play sound</span>
+              </button>
+              <p class="wm-sound-hint" id="wm-sound-hint"></p>
+            </div>
+            <p class="wm-body" id="wm-body"></p>
+            <div class="wm-tags" id="wm-tags"></div>
+            <p class="wm-fun" id="wm-fun"></p>
+          </div>
         </div>
       </div>
     </section>
+
+    <div class="sj-divider sj-divider--land dv-wildlife-ecology" aria-hidden="true"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" opacity=".28" d="M0 50 L90 38 C170 28 250 24 330 32 L430 44 C530 54 610 52 710 42 C790 34 880 28 970 34 L1090 46 C1190 55 1310 53 1440 42 L1440 90 L0 90 Z"/><path fill="currentColor" opacity=".55" d="M0 64 C120 54 220 47 340 53 L480 63 C580 69 680 67 780 57 C880 47 980 45 1090 53 L1240 65 C1310 69 1380 68 1440 62 L1440 90 L0 90 Z"/><path fill="currentColor" d="M0 78 C140 70 260 66 400 72 C540 78 660 80 800 74 C940 68 1080 66 1220 72 C1310 76 1390 78 1440 76 L1440 90 L0 90 Z"/></svg></div>
 
     <!-- ==================== ECOLOGY ==================== -->
     <section class="section ecology-section" id="ecology">
@@ -517,97 +1170,607 @@
       <div class="ecology-cross" id="ecology-cross">
         <div class="cross-visual" id="cross-visual">
           <!-- Built in ecology.js / static HTML -->
-          <svg viewBox="0 0 900 520" class="cross-svg" role="img" aria-label="Ecological cross-section of a San Juan island">
+          <div class="cross-scene">
+          <svg viewBox="0 0 900 560" class="cross-svg" role="img" aria-label="Painted ecological cross-section of a San Juan island, from fir canopy and Garry-oak meadow down through rocky intertidal and kelp forest to the deep channel floor">
             <defs>
-              <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#7eb8d4"/>
-                <stop offset="100%" stop-color="#c5e4f0"/>
+              <linearGradient id="ecoSky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#8fb6cc"/>
+                <stop offset=".55" stop-color="#c8dede"/>
+                <stop offset="1" stop-color="#efe3c2"/>
               </linearGradient>
-              <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#3a7ca5"/>
-                <stop offset="40%" stop-color="#1f4e6b"/>
-                <stop offset="100%" stop-color="#0d2433"/>
+              <linearGradient id="ecoSea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#3f88a6"/>
+                <stop offset=".3" stop-color="#22617e"/>
+                <stop offset=".65" stop-color="#0f3b54"/>
+                <stop offset="1" stop-color="#081824"/>
               </linearGradient>
-              <linearGradient id="landGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#6b8f4e"/>
-                <stop offset="50%" stop-color="#4a6741"/>
-                <stop offset="100%" stop-color="#3d4f35"/>
+              <linearGradient id="ecoCut" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#5f4c38"/>
+                <stop offset=".6" stop-color="#463626"/>
+                <stop offset="1" stop-color="#332619"/>
               </linearGradient>
+              <linearGradient id="ecoMeadow" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#d3b968"/>
+                <stop offset="1" stop-color="#a8904a"/>
+              </linearGradient>
+              <linearGradient id="ecoMeadowLit" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f2dd9c" stop-opacity=".8"/>
+                <stop offset=".4" stop-color="#e0c274" stop-opacity=".2"/>
+                <stop offset="1" stop-color="#846e3c" stop-opacity=".4"/>
+              </linearGradient>
+              <linearGradient id="ecoRock" x1="0" y1="0" x2=".25" y2="1">
+                <stop offset="0" stop-color="#8d7c65"/>
+                <stop offset=".5" stop-color="#5d4f40"/>
+                <stop offset="1" stop-color="#3a3128"/>
+              </linearGradient>
+              <linearGradient id="ecoRay" x1="0" y1="0" x2=".3" y2="1">
+                <stop offset="0" stop-color="#dff2ec" stop-opacity=".75"/>
+                <stop offset="1" stop-color="#dff2ec" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="ecoDeepOv" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#041220" stop-opacity="0"/>
+                <stop offset=".55" stop-color="#03101c" stop-opacity=".55"/>
+                <stop offset="1" stop-color="#02090f" stop-opacity=".85"/>
+              </linearGradient>
+              <radialGradient id="ecoSunHalo">
+                <stop offset="0" stop-color="#f6e3a4" stop-opacity=".5"/>
+                <stop offset=".42" stop-color="#f2dc96" stop-opacity=".2"/>
+                <stop offset="1" stop-color="#f2dc96" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ecoVig" cx=".5" cy=".45" r=".78">
+                <stop offset=".62" stop-color="#06121a" stop-opacity="0"/>
+                <stop offset="1" stop-color="#06121a" stop-opacity=".3"/>
+              </radialGradient>
+              <filter id="ecoBlur"><feGaussianBlur stdDeviation="3.2"/></filter>
+              <filter id="ecoRayWob" x="-30%" y="-10%" width="160%" height="130%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.008 0.045" numOctaves="2" seed="7" result="ecoN"/>
+                <feDisplacementMap in="SourceGraphic" in2="ecoN" scale="18"/>
+              </filter>
+              <filter id="ecoGrain">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0.82 0 0 0 0 0.86 0 0 0 0 0.82 0 0 0 0.05 0"/>
+              </filter>
+              <!-- three hand-drawn fir silhouettes, reused with varied scale / flip / hue -->
+              <g id="eco-fir-a"><path d="M0 -92 C-1.2 -85 -3.4 -79 -7 -74 L-2.6 -75.4 C-4.6 -66 -8.8 -59 -14.6 -53 L-6.6 -55.4 C-9.6 -45 -15 -37 -22.4 -30.6 L-10.6 -34 C-14.6 -24 -20.6 -16 -28.6 -9.6 L-13.2 -13.6 C-17.4 -5.4 -23 1 -30.4 6.4 L-3.2 2.6 L-3.2 12 L3.2 12 L3.2 2.6 L30.4 6.4 C23 1 17.4 -5.4 13.2 -13.6 L28.6 -9.6 C20.6 -16 14.6 -24 10.6 -34 L22.4 -30.6 C15 -37 9.6 -45 6.6 -55.4 L14.6 -53 C8.8 -59 4.6 -66 2.6 -75.4 L7 -74 C3.4 -79 1.2 -85 0 -92 Z"/></g>
+              <g id="eco-fir-b"><path d="M0 -104 C-1 -97 -2.6 -91 -5.4 -86 L-2 -87.2 C-3.6 -78 -6.8 -71 -11.6 -65 L-5.4 -67 C-7.6 -57.4 -11.6 -49.8 -17.4 -43.6 L-8.4 -46.4 C-11.6 -36 -16.6 -28 -23.4 -21.4 L-11.6 -25 C-15.4 -15.4 -20.8 -7.6 -27.6 -1.4 L-14.2 -5 C-18 2 -23 7.6 -29.6 12 L-2.8 8 L-2.8 16 L2.8 16 L2.8 8 L29.6 12 C23 7.6 18 2 14.2 -5 L27.6 -1.4 C20.8 -7.6 15.4 -15.4 11.6 -25 L23.4 -21.4 C16.6 -28 11.6 -36 8.4 -46.4 L17.4 -43.6 C11.6 -49.8 7.6 -57.4 5.4 -67 L11.6 -65 C6.8 -71 3.6 -78 2 -87.2 L5.4 -86 C2.6 -91 1 -97 0 -104 Z"/></g>
+              <g id="eco-fir-c"><path d="M0 -66 C-1.8 -60 -4.4 -55 -8.4 -50.6 L-3.4 -51.8 C-6.4 -43.4 -11.2 -36.6 -17.8 -31.2 L-8.4 -33.6 C-12.4 -25 -18.4 -18 -26.2 -12.6 L-12.4 -15.6 C-16.8 -7.6 -22.8 -1 -30.6 4.2 L-4 1 L-4 10 L4 10 L4 1 L30.6 4.2 C22.8 -1 16.8 -7.6 12.4 -15.6 L26.2 -12.6 C18.4 -18 12.4 -25 8.4 -33.6 L17.8 -31.2 C11.2 -36.6 6.4 -43.4 3.4 -51.8 L8.4 -50.6 C4.4 -55 1.8 -60 0 -66 Z"/></g>
+              <!-- d: wind-leaned fir with uneven tiers and a branch gap on the weather side -->
+              <g id="eco-fir-d"><path d="M5 -90 C3.6 -84 2 -79 -0.6 -74.6 L2.6 -75.6 C1.2 -68 -1.4 -61.6 -5.6 -56 L-0.2 -57.8 C-1.4 -52.6 -3.6 -48 -7 -44 L-1 -45.6 C-3 -36.6 -7.6 -29.4 -14.2 -23.6 L-4.4 -26.4 C-6.8 -18.2 -11.4 -11.2 -18.4 -5.6 L-6.2 -8.6 C-9.2 -1.6 -13.8 4 -20.4 8.4 L-2 4.6 L-3.2 12 L3.4 12 L2.8 4.2 L25.8 7.4 C19.2 2.6 14.4 -3.2 11.2 -10.2 L21.4 -7.6 C14.8 -13.2 10.2 -20.2 7.4 -28.6 L15.6 -26.2 C10 -32 6.4 -39.2 4.8 -47.8 L10.4 -46.2 C6.8 -50.4 4.6 -55.2 3.8 -60.8 L8 -59.4 C5.4 -64.2 4.2 -69.4 4.4 -75.2 L7.2 -74.2 C5.6 -79 4.8 -84.2 5 -90 Z"/></g>
+              <!-- e: veteran fir with a dead snag spike top -->
+              <g id="eco-fir-e"><path d="M0 -100 L1.8 -78 L5.2 -81 L2.6 -68 L6.8 -70.4 L3.2 -58 C1.6 -52.4 1.6 -47 2.8 -41.6 L11 -44.6 C6.6 -37.6 4 -30.4 3.4 -22.8 L17.2 -27.2 C11.8 -19.4 8.4 -11.4 7.2 -3 L26.6 -7.2 C19.8 -0.8 13.2 3.6 6.2 6 L5.6 12 L-3.6 12 L-3.2 5.8 C-10.8 4 -17.8 0 -24.6 -5.8 L-6.6 -1.8 C-8.4 -10 -12.2 -17.6 -18 -24.8 L-4.6 -20.6 C-5.8 -28.2 -8.8 -35.2 -13.6 -41.8 L-3.2 -38.8 C-4.6 -45 -4.6 -51.2 -3.4 -57.6 L-7.4 -68.4 L-2.4 -65 L-1.6 -78 Z"/></g>
+              <!-- f: tall narrow spire fir -->
+              <g id="eco-fir-f"><path d="M0 -108 C-0.6 -101 -1.6 -95 -3.6 -90 L-0.8 -91 C-1.8 -83.4 -3.8 -76.6 -7 -70.6 L-2.2 -72.2 C-3.8 -64 -6.6 -56.6 -10.6 -50 L-4 -52.4 C-6 -43.4 -9.4 -35 -14.2 -27.4 L-5.6 -30.4 C-8 -21.2 -11.8 -12.6 -17 -5 L-2.6 -8.6 L-2.6 12 L2.6 12 L2.6 -8.6 L17 -5 C11.8 -12.6 8 -21.2 5.6 -30.4 L14.2 -27.4 C9.4 -35 6 -43.4 4 -52.4 L10.6 -50 C6.6 -56.6 3.8 -64 2.2 -72.2 L7 -70.6 C3.8 -76.6 1.8 -83.4 0.8 -91 L3.6 -90 C1.6 -95 0.6 -101 0 -108 Z"/></g>
+              <path id="eco-fish-p" d="M0 0 C4 -2.4 9 -2.4 12 0 C9 2.4 4 2.4 0 0 Z M0 0 L-4 -2.4 L-4 2.4 Z"/>
+              <path id="ecoChan" d="M60 416 C300 398 620 402 880 420" fill="none"/>
+              <!-- sprite additions used by the species panel -->
+              <symbol id="i-fir" viewBox="0 0 24 24"><path d="M12 1.8 C11.5 4.4 10.5 6.6 8.8 8.5 L11 7.9 C10.2 10.3 8.8 12.3 6.7 14 L10.1 13.2 C9.1 15.8 7.4 17.9 4.9 19.6 L11 18.6 L11 22.2 L13 22.2 L13 18.6 L19.1 19.6 C16.6 17.9 14.9 15.8 13.9 13.2 L17.3 14 C15.2 12.3 13.8 10.3 13 7.9 L15.2 8.5 C13.5 6.6 12.5 4.4 12 1.8 Z" fill="currentColor"/></symbol>
+              <symbol id="i-fern" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M12 21.5 C12 14.5 12 8.5 12.4 3.5"/><path d="M12 18.6 C9.4 18.1 7.5 16.7 6.7 14.6"/><path d="M12 18.6 C14.6 18.1 16.5 16.7 17.3 14.6"/><path d="M12.1 14.6 C9.9 14.1 8.3 12.9 7.5 11.1"/><path d="M12.1 14.6 C14.3 14.1 15.9 12.9 16.7 11.1"/><path d="M12.2 10.7 C10.4 10.2 9.1 9.2 8.5 7.8"/><path d="M12.2 10.7 C14 10.2 15.3 9.2 15.9 7.8"/><path d="M12.3 7.1 C11.1 6.7 10.2 5.9 9.7 4.9"/><path d="M12.3 7.1 C13.5 6.7 14.4 5.9 14.9 4.9"/></g></symbol>
+              <symbol id="i-fungi" viewBox="0 0 24 24"><path d="M4 12.6 C4 7.6 7.6 4.2 12 4.2 C16.4 4.2 20 7.6 20 12.6 C20 13.1 19.6 13.5 19.1 13.5 L4.9 13.5 C4.4 13.5 4 13.1 4 12.6 Z" fill="currentColor"/><path d="M9.4 13.5 L9 18.6 C9 20 10.3 21 12 21 C13.7 21 15 20 15 18.6 L14.6 13.5 Z" fill="currentColor" opacity=".75"/></symbol>
+              <symbol id="i-owl" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 5.2 L5.4 2.6 L8.6 3.9 M17.5 5.2 L18.6 2.6 L15.4 3.9"/><path d="M12 3.2 C7.9 3.2 5.2 6.2 5.2 10.2 L5.2 15 C5.2 18.8 8 21.3 12 21.3 C16 21.3 18.8 18.8 18.8 15 L18.8 10.2 C18.8 6.2 16.1 3.2 12 3.2 Z"/><circle cx="9.2" cy="9.4" r="1.5"/><circle cx="14.8" cy="9.4" r="1.5"/><path d="M12 11.4 L12 13"/></g></symbol>
             </defs>
-            <!-- Sky -->
-            <rect class="eco-layer" data-layer="canopy" x="0" y="0" width="900" height="140" fill="url(#skyGrad)"/>
-            <!-- Sun -->
-            <circle cx="780" cy="50" r="28" fill="#f4d58d" opacity=".9"/>
-            <!-- Canopy trees -->
-            <g class="eco-layer trees" data-layer="canopy">
-              <path d="M80 140 L100 60 L120 140 Z" fill="#2d5a3d"/>
-              <path d="M140 140 L165 40 L190 140 Z" fill="#3a6b48"/>
-              <path d="M200 140 L220 70 L240 140 Z" fill="#2d5a3d"/>
-              <path d="M250 140 L280 30 L310 140 Z" fill="#3d7a4a"/>
-              <path d="M320 140 L345 55 L370 140 Z" fill="#2d5a3d"/>
-              <ellipse cx="400" cy="100" rx="25" ry="40" fill="#c45c26"/>
-              <rect x="395" y="120" width="10" height="20" fill="#5c4033"/>
-              <path d="M430 140 L450 50 L470 140 Z" fill="#3a6b48"/>
-              <path d="M480 140 L510 35 L540 140 Z" fill="#2d5a3d"/>
-              <path d="M550 140 L570 75 L590 140 Z" fill="#3a6b48"/>
+
+            <!-- ===== SKY (canopy stratum) ===== -->
+            <g class="eco-layer" data-layer="canopy">
+              <rect x="0" y="0" width="900" height="252" fill="url(#ecoSky)"/>
+              <!-- WPA stratified sky bands -->
+              <g>
+                <rect x="0" y="0" width="900" height="30" fill="#7fa8c2" opacity=".5"/>
+                <rect x="0" y="30" width="900" height="32" fill="#8db3c8" opacity=".42"/>
+                <rect x="0" y="62" width="900" height="34" fill="#9fc0cc" opacity=".36"/>
+                <rect x="0" y="96" width="900" height="36" fill="#b3cfd0" opacity=".3"/>
+                <rect x="0" y="132" width="900" height="40" fill="#cbdcd0" opacity=".28"/>
+                <rect x="0" y="172" width="900" height="80" fill="#e7ddba" opacity=".3"/>
+              </g>
+              <!-- morning sun: soft tapered halo over a warm core -->
+              <g class="eco-sun">
+                <circle cx="756" cy="54" r="88" fill="url(#ecoSunHalo)"/>
+                <circle cx="756" cy="54" r="21" fill="#f5e2a0"/>
+                <circle cx="756" cy="54" r="24.5" fill="none" stroke="#f6e3a4" stroke-opacity=".4" stroke-width="2"/>
+                <path d="M741 47 A16.5 16.5 0 0 1 762 38" fill="none" stroke="#fbf0c6" stroke-width="3.4" stroke-linecap="round"/>
+              </g>
+              <!-- cumulus drift: overlapping puffs, lit from above -->
+              <g class="eco-cloud">
+                <ellipse cx="134" cy="41" rx="38" ry="8.5" fill="#d9e3de" opacity=".85"/>
+                <ellipse cx="120" cy="33" rx="19" ry="10.5" fill="#f3f6f1"/>
+                <ellipse cx="149" cy="32" rx="16" ry="9" fill="#eef2ec"/>
+                <ellipse cx="134" cy="27" rx="13" ry="7.5" fill="#fbfcfa"/>
+              </g>
+              <g class="eco-cloud eco-cloud-b">
+                <ellipse cx="566" cy="34" rx="33" ry="7" fill="#dce5e0" opacity=".8"/>
+                <ellipse cx="554" cy="27" rx="16" ry="8.5" fill="#f2f5f0"/>
+                <ellipse cx="579" cy="26.5" rx="13" ry="7.5" fill="#f7f9f5"/>
+                <ellipse cx="566" cy="22" rx="10" ry="5.5" fill="#fcfdfb"/>
+              </g>
+              <g class="eco-cloud eco-cloud-c" opacity=".75">
+                <ellipse cx="392" cy="92" rx="26" ry="5.5" fill="#dfe8e2" opacity=".8"/>
+                <ellipse cx="383" cy="87" rx="13" ry="6.5" fill="#f1f4ef"/>
+                <ellipse cx="402" cy="86.5" rx="11" ry="5.5" fill="#f8faf6"/>
+              </g>
+              <g stroke="#ffffff" stroke-width="1.3" stroke-linecap="round" opacity=".22">
+                <path d="M230 60 h48 M690 106 h44"/>
+              </g>
+              <!-- circling eagle -->
+              <g class="eco-eagle"><g transform="translate(318,58)"><g class="eco-eagle-bob">
+                <path d="M-17 0 C-10 -4.6 -4 -5.8 -0.6 -4 C0.4 -5.2 2 -5.6 3.4 -4.8 C8.6 -7.4 13.8 -6.6 17 -2.4 C12 -3.6 7.6 -3.2 4 -1.6 C5.4 0.4 6 2.4 5.6 4.4 C3.6 2.4 1.6 0.8 -0.6 0 C-6 1.6 -11.6 1.6 -17 0 Z" fill="#232a30"/>
+                <circle cx="-1.4" cy="-3.4" r="1.1" fill="#e8e2d4"/>
+              </g></g></g>
             </g>
-            <!-- Land / forest floor -->
-            <path class="eco-layer" data-layer="forest" d="M0 140 Q200 120 350 135 T600 140 L600 220 L0 220 Z" fill="url(#landGrad)"/>
-            <!-- Intertidal rocky shore -->
-            <path class="eco-layer" data-layer="intertidal" d="M600 140 L750 160 L900 155 L900 240 L600 240 Z" fill="#8a7f72"/>
-            <path class="eco-layer" data-layer="intertidal" d="M620 180 Q640 170 660 185 T700 180 T740 190" fill="none" stroke="#6b635a" stroke-width="3"/>
-            <!-- Water surface -->
-            <path class="eco-layer" data-layer="kelp" d="M0 220 Q150 210 300 225 T600 220 L900 240 L900 520 L0 520 Z" fill="url(#waterGrad)"/>
-            <!-- Kelp -->
-            <g class="eco-layer kelp-fronds" data-layer="kelp">
-              <path d="M100 230 Q110 300 95 380 Q80 450 105 500" fill="none" stroke="#2d6b4a" stroke-width="8" stroke-linecap="round"/>
-              <path d="M180 235 Q200 320 170 400 Q150 470 185 510" fill="none" stroke="#3a8a5c" stroke-width="6" stroke-linecap="round"/>
-              <path d="M280 228 Q290 310 275 390 Q260 460 290 505" fill="none" stroke="#2d6b4a" stroke-width="7" stroke-linecap="round"/>
-              <path d="M400 232 Q420 300 390 380 Q370 450 410 500" fill="none" stroke="#3a8a5c" stroke-width="5" stroke-linecap="round"/>
-              <path d="M520 230 Q535 320 510 400 Q490 470 530 510" fill="none" stroke="#2d6b4a" stroke-width="6" stroke-linecap="round"/>
-              <!-- kelp bulbs -->
-              <circle cx="100" cy="250" r="6" fill="#4a9a6a"/><circle cx="95" cy="300" r="5" fill="#4a9a6a"/>
-              <circle cx="180" cy="270" r="5" fill="#5aaa7a"/><circle cx="175" cy="340" r="6" fill="#5aaa7a"/>
-              <circle cx="280" cy="260" r="5" fill="#4a9a6a"/>
+
+            <!-- Olympic range across the strait (backdrop) — three stacked haze bands -->
+            <g class="eco-layer" data-layer="canopy">
+              <path d="M620 152 L668 126 L706 144 L742 120 L784 140 L822 116 L858 136 L900 124 L900 246 L620 246 Z" fill="#8ba6b4" opacity=".9"/>
+              <path d="M736 126 L742 120 L750 128 L742 131 Z M816 122 L822 116 L830 124 L822 127 Z M662 130 L668 126 L675 133 L668 136 Z" fill="#eef4f5" opacity=".9"/>
+              <path d="M620 158 L654 148 L686 156 L718 142 L756 156 L788 146 L824 158 L856 148 L900 158 L900 246 L620 246 Z" fill="#748f9e" opacity=".85"/>
+              <path d="M620 178 L664 168 L706 178 L752 168 L802 180 L846 172 L900 182 L900 246 L620 246 Z" fill="#5d7d8e" opacity=".8"/>
+              <path d="M620 196 Q760 188 900 200 L900 246 L620 246 Z" fill="#4c6b7c" opacity=".55"/>
             </g>
-            <!-- Deep channel creatures hints -->
-            <g class="eco-layer" data-layer="deep" opacity=".6">
-              <ellipse cx="700" cy="400" rx="40" ry="12" fill="#1a3a4a"/>
-              <ellipse cx="750" cy="450" rx="25" ry="8" fill="#1a3a4a"/>
-              <path d="M200 420 Q220 410 240 420" fill="none" stroke="#4a8a9a" stroke-width="2"/>
+
+            <!-- ===== FOREST FLOOR (cut face of the island) ===== -->
+            <g class="eco-layer" data-layer="forest">
+              <path d="M0 160 C56 154 118 162 184 158 C266 152 344 162 414 162 C470 150 548 146 622 154 L622 244 L0 244 Z" fill="url(#ecoCut)"/>
+              <path d="M0 160 C56 154 118 162 184 158 C266 152 344 162 414 162" fill="none" stroke="#4e6b3d" stroke-width="7" opacity=".95"/>
+              <g stroke="#6b5540" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".3">
+                <path d="M88 166 C86 182 90 198 86 212 M88 170 C94 182 96 194 102 202 M88 172 C82 180 78 188 72 194"/>
+                <path d="M248 166 C246 184 250 200 246 214 M248 170 C254 184 258 196 264 206 M248 172 C242 182 236 190 232 200"/>
+                <path d="M408 166 C406 180 410 194 406 206 M408 170 C414 180 418 190 424 198"/>
+              </g>
+              <g stroke="#d8c9a2" stroke-width=".9" fill="none" opacity=".28">
+                <path d="M96 200 C140 210 190 206 240 212 C290 218 340 210 400 216"/>
+                <path d="M120 224 C180 230 250 224 320 230 C380 234 440 228 500 232"/>
+              </g>
+              <g fill="#6b5a46" opacity=".65">
+                <ellipse cx="150" cy="212" rx="11" ry="6"/>
+                <ellipse cx="330" cy="226" rx="15" ry="8"/>
+                <ellipse cx="520" cy="214" rx="9" ry="5"/>
+                <ellipse cx="60" cy="228" rx="8" ry="5"/>
+              </g>
+              <path d="M0 202 C150 198 300 208 450 202 C520 199 580 202 622 200" stroke="#291f15" stroke-width="1.2" stroke-dasharray="5 5" fill="none" opacity=".5"/>
+              <!-- sword ferns and fungi along the rim -->
+              <g stroke="#6f8c4a" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".9">
+                <path d="M70 162 C66 154 60 150 54 148 M70 162 C69 153 66 147 62 143 M70 162 C72 154 76 149 82 146 M70 162 C71 152 74 146 79 141"/>
+                <path d="M230 160 C226 152 220 148 214 146 M230 160 C229 151 226 145 222 141 M230 160 C232 152 236 147 242 144"/>
+                <path d="M390 164 C386 156 380 152 374 150 M390 164 C389 155 386 149 382 145 M390 164 C392 156 396 151 402 148"/>
+              </g>
+              <g transform="translate(352,161)">
+                <path d="M-6 0 C-6 -4 -3.4 -6 0 -6 C3.4 -6 6 -4 6 0 Z" fill="#b98a52"/>
+                <path d="M-1.4 0 L-1.2 3.4 L1.6 3.4 L1.4 0 Z" fill="#e0cfa8"/>
+                <path d="M4 2 C4 -1 6 -2.6 8.6 -2.6 C11.2 -2.6 13 -1 13 2 Z" fill="#a87a48"/>
+                <path d="M7.6 2 L7.8 4.6 L9.8 4.6 L9.6 2 Z" fill="#d8c69e"/>
+              </g>
+              <!-- black-tailed deer at the meadow edge: alert, head up, ears pricked -->
+              <g transform="translate(446,156) scale(1.1)" fill="#33291f">
+                <path d="M-15.7 -22.9 L-18.6 -27.6 L-14.6 -23.9 Z"/>
+                <path d="M-13.4 -23.1 L-13.5 -28.3 L-11.3 -23.5 Z"/>
+                <path d="M-16.2 -22.6 L-19.2 -19.8 Q-19.5 -19.2 -18.8 -19 L-15.4 -18.4 L-12.6 -17.6 L-10 -12.6 L-8.8 -9.8 L-8.8 0 L-7.5 0 L-6.6 -9.4 L-5.5 -9.4 L-4.6 0 L-3.3 0 L-3.9 -9.2 Q0 -8.7 6 -9.6 L5.3 0 L6.7 0 L7.5 -9.6 L8.7 -9.4 L10.2 -6 L11.6 0 L12.9 0 L11.7 -6.2 L10.6 -11 L11.6 -12.4 Q10.6 -13.6 9.2 -13.9 Q3 -15 -4 -14.7 Q-8 -14.6 -10.2 -15.4 Q-12.4 -18.6 -13.3 -22.3 Q-14.7 -23.2 -16.2 -22.6 Z"/>
+                <circle cx="-16.2" cy="-20.9" r=".55" fill="#d8c9a2" opacity=".55"/>
+              </g>
             </g>
-            <!-- Eagle -->
-            <g class="eco-layer" data-layer="canopy" transform="translate(600,40)">
-              <path d="M0 10 Q20 0 40 10 Q20 5 0 10" fill="#1a1a1a"/>
-              <circle cx="20" cy="8" r="3" fill="#f4d58d"/>
+
+            <!-- ===== CANOPY (trees over the slab) ===== -->
+            <g class="eco-layer" data-layer="canopy">
+              <!-- hazy back row -->
+              <g fill="#5d8a72" opacity=".7">
+                <use href="#eco-fir-f" transform="translate(64,154) scale(.55)"/>
+                <use href="#eco-fir-b" transform="translate(120,152) scale(.55)"/>
+                <use href="#eco-fir-d" transform="translate(172,156) scale(.62) scale(-1,1)"/>
+                <use href="#eco-fir-c" transform="translate(226,152) scale(.7)"/>
+                <use href="#eco-fir-e" transform="translate(282,154) scale(.52)"/>
+                <use href="#eco-fir-a" transform="translate(336,156) scale(.58)"/>
+                <use href="#eco-fir-f" transform="translate(388,154) scale(.56) scale(-1,1)"/>
+              </g>
+              <!-- front stand, each fir its own shape -->
+              <use href="#eco-fir-b" transform="translate(38,160) scale(.95)" fill="#24513a"/>
+              <use href="#eco-fir-d" transform="translate(88,158) scale(1.08)" fill="#2f6347"/>
+              <use href="#eco-fir-c" transform="translate(142,162) scale(1.05)" fill="#1d4531"/>
+              <use href="#eco-fir-f" transform="translate(196,159) scale(.92) scale(-1,1)" fill="#2a5c42"/>
+              <use href="#eco-fir-e" transform="translate(248,157) scale(1.06)" fill="#24513a"/>
+              <use href="#eco-fir-a" transform="translate(305,160) scale(1)" fill="#336a4d"/>
+              <use href="#eco-fir-d" transform="translate(358,162) scale(.88)" fill="#1d4531"/>
+              <use href="#eco-fir-f" transform="translate(408,159) scale(1)" fill="#2f6347"/>
+              <!-- Garry-oak meadow -->
+              <path d="M414 162 C470 150 548 146 622 154 L622 190 C548 182 470 184 414 186 Z" fill="url(#ecoMeadow)"/>
+              <path d="M414 162 C470 150 548 146 622 154 L622 190 C548 182 470 184 414 186 Z" fill="url(#ecoMeadowLit)"/>
+              <!-- dry-grass texture strokes across the prairie band -->
+              <g stroke="#8a7440" stroke-width="1" stroke-linecap="round" fill="none" opacity=".45">
+                <path d="M424 180 v-6 M440 178 v-7 M452 176 v-6 M466 174 v-7 M482 172 v-6 M498 170 v-7 M514 169 v-6 M528 167 v-7 M544 166 v-6 M560 165 v-7 M576 165 v-6 M592 166 v-7 M606 167 v-6 M618 168 v-6"/>
+              </g>
+              <g stroke="#c4a458" stroke-width=".9" stroke-linecap="round" fill="none" opacity=".6">
+                <path d="M430 176 v-5 M446 174 v-6 M460 172 v-5 M474 170 v-6 M490 168 v-5 M506 166 v-6 M522 164 v-5 M538 163 v-6 M552 162 v-5 M568 161 v-6 M584 162 v-5 M600 163 v-6 M612 164 v-5"/>
+              </g>
+              <g stroke="#b6984e" stroke-width="1.4" stroke-linecap="round" fill="none" opacity=".85">
+                <path d="M432 168 c-2 -5 -3 -8 -6 -10 M432 168 c0 -6 0 -9 1 -12 M432 168 c2 -5 4 -7 6 -9"/>
+                <path d="M512 162 c-2 -4 -3 -7 -5 -9 M512 162 c0 -5 0 -8 1 -11 M512 162 c2 -4 3 -6 5 -8"/>
+                <path d="M556 158 c-2 -4 -3 -6 -5 -8 M556 158 c0 -5 1 -8 2 -10"/>
+                <path d="M486 165 c-2 -4 -3 -7 -5 -9 M486 165 c0 -5 0 -8 1 -10 M486 165 c2 -4 3 -6 5 -8"/>
+                <path d="M604 158 c-2 -4 -3 -6 -5 -8 M604 158 c0 -5 1 -7 2 -9 M604 158 c2 -3 3 -5 5 -7"/>
+              </g>
+              <!-- camas in bloom: slender stems with violet-blue spikes -->
+              <g stroke="#5c7040" stroke-width=".9" stroke-linecap="round" fill="none" opacity=".8">
+                <path d="M447 166 c0 -5 0 -8 0 -11 M496 161 c0 -4 0 -8 0 -10 M530 160 c0 -4 0 -7 0 -9 M475 165 c0 -4 0 -7 0 -9 M572 156 c0 -4 0 -7 0 -9"/>
+              </g>
+              <g fill="#7a86c8" opacity=".85">
+                <circle cx="447" cy="154" r="1.5"/><circle cx="446" cy="157" r="1.1"/><circle cx="448.5" cy="156" r="1"/>
+                <circle cx="496" cy="150" r="1.4"/><circle cx="495" cy="153" r="1"/><circle cx="497.5" cy="152.4" r=".9"/>
+                <circle cx="530" cy="150" r="1.4"/><circle cx="529" cy="153" r="1"/><circle cx="531.4" cy="152.6" r=".9"/>
+                <circle cx="475" cy="155" r="1.3"/><circle cx="474" cy="158" r="1"/>
+                <circle cx="572" cy="146" r="1.3"/><circle cx="571" cy="149" r="1"/><circle cx="573.4" cy="148.4" r=".9"/>
+              </g>
+              <!-- gnarled Garry oak -->
+              <g transform="translate(468,160)">
+                <path d="M0 0 C-1 -8 2 -13 -1 -20 C-3 -26 -7 -30 -13 -34 M-1 -20 C2 -25 7 -28 12 -31 M-1 -14 C-6 -17 -9 -17 -13 -16" fill="none" stroke="#4a3a28" stroke-width="4" stroke-linecap="round"/>
+                <path d="M-28 -30 C-33 -40 -26 -49 -15 -50 C-11 -58 2 -61 9 -55 C19 -58 28 -51 26 -43 C32 -36 27 -28 18 -27 C10 -22 -5 -22 -13 -26 C-21 -23 -27 -25 -28 -30 Z" fill="#5c7040"/>
+                <path d="M-22 -32 C-14 -28 -2 -27 8 -30 C-2 -24 -16 -25 -22 -32 Z" fill="#43522c" opacity=".7"/>
+              </g>
+              <!-- madrona with peeling red bark -->
+              <g transform="translate(586,158)">
+                <path d="M0 2 C-3 -12 -10 -22 -17 -30 M0 2 C1 -12 6 -24 8 -36 M-17 -30 C-21 -36 -22 -43 -20 -50 M8 -36 C11 -43 11 -50 9 -56" fill="none" stroke="#b4552b" stroke-width="5" stroke-linecap="round"/>
+                <path d="M-2 -8 C-6 -16 -11 -23 -15 -28 M2 -10 C3 -18 5 -27 7 -34" fill="none" stroke="#e08a52" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>
+                <g fill="#3f7a4e">
+                  <path d="M-34 -46 C-38 -56 -30 -64 -19 -64 C-16 -72 -4 -74 2 -68 C4 -70 8 -70 10 -68 C12 -64 10 -60 6 -58 C4 -52 -6 -48 -14 -50 C-22 -46 -31 -46 -34 -46 Z"/>
+                  <path d="M-2 -56 C-4 -66 4 -73 14 -72 C24 -74 32 -68 31 -60 C36 -56 33 -49 26 -48 C18 -44 6 -46 0 -50 C-2 -52 -3 -54 -2 -56 Z"/>
+                </g>
+                <g fill="#2f5f3d" opacity=".6">
+                  <path d="M-30 -48 C-22 -44 -12 -44 -4 -48 C-12 -42 -24 -42 -30 -48 Z"/>
+                  <path d="M4 -50 C12 -46 22 -46 28 -50 C22 -44 10 -44 4 -50 Z"/>
+                </g>
+              </g>
+              <!-- drifting morning fog -->
+              <g class="eco-fog" opacity=".3" filter="url(#ecoBlur)" fill="#f0f5f2">
+                <ellipse cx="180" cy="118" rx="150" ry="12"/>
+                <ellipse cx="420" cy="132" rx="120" ry="10"/>
+                <ellipse cx="70" cy="138" rx="90" ry="8"/>
+              </g>
             </g>
-            <!-- Seal on rock -->
-            <g class="eco-layer" data-layer="intertidal" transform="translate(680,175)">
-              <ellipse cx="0" cy="0" rx="18" ry="8" fill="#6b635a"/>
-              <circle cx="-12" cy="-4" r="5" fill="#6b635a"/>
+
+            <!-- ===== INTERTIDAL ROCKY SHORE ===== -->
+            <g class="eco-layer" data-layer="intertidal">
+              <path d="M588 152 C640 146 686 154 726 168 C776 186 826 206 866 226 C884 234 896 240 900 246 L900 320 L560 320 L560 208 C564 184 574 162 588 152 Z" fill="url(#ecoRock)"/>
+              <g stroke="#2e261e" stroke-linecap="round" fill="none" opacity=".5">
+                <path d="M620 172 C648 180 676 192 700 206" stroke-width="2"/>
+                <path d="M700 182 C730 194 762 210 788 226" stroke-width="1.6"/>
+                <path d="M772 200 C800 212 828 226 850 238" stroke-width="1.8"/>
+                <path d="M636 208 C660 216 684 228 704 240" stroke-width="1.3"/>
+              </g>
+              <g fill="#d8c9a2" opacity=".6">
+                <circle cx="612" cy="160" r="2"/><circle cx="628" cy="156" r="1.4"/><circle cx="668" cy="166" r="1.8"/><circle cx="700" cy="174" r="1.5"/>
+              </g>
+              <g fill="#e8934e" opacity=".5">
+                <circle cx="644" cy="158" r="1.5"/><circle cx="686" cy="168" r="1.3"/><circle cx="716" cy="178" r="1.4"/>
+              </g>
+              <!-- barnacle band -->
+              <g fill="#ece2ce" opacity=".8">
+                <circle cx="716" cy="196" r="1.2"/><circle cx="726" cy="200" r="1"/><circle cx="738" cy="196" r="1.3"/><circle cx="752" cy="204" r="1.1"/><circle cx="764" cy="210" r="1.2"/><circle cx="778" cy="214" r="1"/><circle cx="792" cy="220" r="1.2"/><circle cx="806" cy="226" r="1"/>
+              </g>
+              <!-- mussel patch -->
+              <g fill="#1d2b3a">
+                <ellipse cx="822" cy="236" rx="4.4" ry="2.6" transform="rotate(-24 822 236)"/>
+                <ellipse cx="832" cy="240" rx="4" ry="2.4" transform="rotate(-12 832 240)"/>
+                <ellipse cx="814" cy="242" rx="3.6" ry="2.2" transform="rotate(-32 814 242)"/>
+                <ellipse cx="842" cy="244" rx="3.6" ry="2.2" transform="rotate(-18 842 244)"/>
+              </g>
+              <!-- rockweed at the waterline -->
+              <g stroke="#5f7331" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".9">
+                <path d="M756 238 c-4 -8 -3 -14 1 -19 M756 238 c2 -8 6 -13 11 -16 M756 238 c-8 -5 -12 -10 -13 -16"/>
+                <path d="M866 240 c-3 -7 -2 -12 1 -16 M866 240 c3 -6 7 -10 11 -12"/>
+              </g>
+              <g fill="#7d9440" opacity=".9">
+                <ellipse cx="758" cy="217" rx="2.6" ry="3.6"/><ellipse cx="768" cy="221" rx="2.4" ry="3.2"/><ellipse cx="742" cy="221" rx="2.4" ry="3.2"/>
+              </g>
+              <path d="M700 230 C760 244 830 252 900 250 L900 262 C830 262 750 254 696 242 Z" fill="#4c6a52" opacity=".45"/>
+              <g fill="#ffffff" opacity=".14" filter="url(#ecoBlur)">
+                <ellipse cx="758" cy="238" rx="52" ry="5"/>
+                <ellipse cx="860" cy="248" rx="34" ry="4"/>
+              </g>
+              <!-- hauled-out harbor seal -->
+              <path d="M652 210 C660 196 692 190 714 198 C728 204 730 214 720 220 L662 222 C654 218 646 214 652 210 Z" fill="#453a2e"/>
+              <g transform="translate(684,204) scale(1.15)" fill="#5a646e">
+                <path d="M-24 3 C-26 -1 -23 -5 -19 -6 C-18 -10 -14 -12 -11 -11 C-8.6 -10.2 -7.6 -8 -8.8 -6 C0 -8.4 12 -6.4 18 -1.4 C21 1 25 -0.4 27 -3.4 C28.2 0.6 26 4 22 5 L-20 5 C-23 5 -24.4 4.2 -24 3 Z"/>
+                <ellipse cx="0" cy="-1" rx="10" ry="3.4" fill="#8b959e" opacity=".5"/>
+                <circle cx="-14" cy="-8.6" r=".8" fill="#20262c"/>
+                <g fill="#3d454e" opacity=".7"><circle cx="2" cy="0" r=".9"/><circle cx="8" cy="-1.6" r=".8"/><circle cx="-3" cy="-3" r=".8"/></g>
+              </g>
+              <!-- black oystercatcher -->
+              <g transform="translate(836,222)">
+                <path d="M0 0 C1.6 -4.4 6.4 -6 9.6 -4.4 C11.6 -3.4 11.8 -1 10 0 L3 1.4 L2 4.6 L1 4.6 L1.6 1.6 Z" fill="#16181c"/>
+                <path d="M9.8 -4.6 L16 -7" stroke="#d84e20" stroke-width="1.3" stroke-linecap="round"/>
+                <circle cx="8.6" cy="-4.2" r=".7" fill="#e8c848"/>
+                <path d="M2.6 4.6 L2.6 7 M1.2 4.6 L1.2 7" stroke="#d8909a" stroke-width=".9"/>
+              </g>
             </g>
+
+            <!-- ===== WATER BODY (kelp stratum, base) ===== -->
+            <g class="eco-layer" data-layer="kelp">
+              <path d="M0 241 C80 238 170 243 260 240 C360 237 460 243 560 241 L900 245 L900 560 L0 560 Z" fill="url(#ecoSea)"/>
+              <!-- submerged island slope -->
+              <path d="M598 245 C650 264 708 300 756 348 C808 400 852 468 880 532 L900 545 L900 560 L618 560 C610 466 600 372 590 302 C586 276 590 258 598 245 Z" fill="#0c2434" opacity=".92"/>
+              <g stroke="#1c3a4c" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".7">
+                <path d="M632 290 C668 316 702 348 730 384"/>
+                <path d="M660 342 C696 374 728 412 752 452"/>
+                <path d="M704 424 C736 458 762 496 780 530"/>
+                <path d="M612 330 C632 368 648 410 658 452"/>
+              </g>
+              <g fill="#16303f">
+                <ellipse cx="648" cy="384" rx="14" ry="7" transform="rotate(24 648 384)"/>
+                <ellipse cx="712" cy="470" rx="17" ry="8" transform="rotate(30 712 470)"/>
+                <ellipse cx="626" cy="508" rx="12" ry="6"/>
+              </g>
+              <!-- urchins grazing the slope -->
+              <g fill="#4a2f66">
+                <circle cx="640" cy="376" r="4"/><circle cx="652" cy="382" r="3.2"/>
+                <circle cx="706" cy="462" r="4.4"/><circle cx="718" cy="468" r="3"/>
+                <circle cx="668" cy="428" r="3.4"/>
+              </g>
+              <g stroke="#5c3d7c" stroke-width=".9" stroke-linecap="round" opacity=".8">
+                <path d="M640 370 v-4 M635 372 l-3 -3 M645 372 l3 -3 M706 456 v-5 M700 458 l-4 -3 M712 458 l4 -3 M668 423 v-4 M663 425 l-3 -3"/>
+              </g>
+              <g class="eco-shimmer" stroke="#bfe0dc" stroke-linecap="round" fill="none" opacity=".55">
+                <path d="M40 246 h64 M170 249 h44 M300 245 h58 M430 250 h40 M540 246 h36" stroke-width="1.6"/>
+                <path d="M100 252 h36 M250 254 h30 M380 253 h34" stroke-width="1.1" opacity=".6"/>
+              </g>
+            </g>
+
+            <!-- ===== DEEP CHANNEL ===== -->
+            <g class="eco-layer" data-layer="deep">
+              <rect x="0" y="380" width="900" height="180" fill="url(#ecoDeepOv)"/>
+              <g stroke="#3d6478" stroke-width="1" stroke-dasharray="2 6" fill="none" opacity=".3">
+                <path d="M0 428 C150 424 300 432 450 428 C600 424 750 430 900 426"/>
+                <path d="M0 492 C160 488 320 494 480 490 C640 486 780 492 900 488"/>
+              </g>
+              <text font-family="JetBrains Mono, ui-monospace, monospace" font-size="12.5" letter-spacing="2.25" fill="#a9cbdc" opacity=".55"><textPath href="#ecoChan" startOffset="12%">H A R O&#160;&#160;&#160;S T R A I T</textPath></text>
+              <!-- sediment floor -->
+              <path d="M0 530 C90 520 190 536 300 528 C420 520 540 536 660 528 C770 522 840 530 900 526 L900 560 L0 560 Z" fill="#131f2b"/>
+              <g fill="#2c3c4c" opacity=".8">
+                <circle cx="130" cy="536" r="1.2"/><circle cx="210" cy="542" r="1"/><circle cx="290" cy="534" r="1.3"/><circle cx="380" cy="544" r="1"/><circle cx="470" cy="536" r="1.2"/><circle cx="560" cy="544" r="1"/><circle cx="640" cy="536" r="1.2"/><circle cx="740" cy="540" r="1"/><circle cx="820" cy="534" r="1.2"/>
+              </g>
+              <ellipse cx="240" cy="534" rx="16" ry="5" fill="#1e2c3a"/>
+              <ellipse cx="700" cy="532" rx="20" ry="6" fill="#1e2c3a"/>
+              <!-- plumose anemones on a deep boulder -->
+              <g transform="translate(700,529)">
+                <path d="M-7 0 C-7 -7 -6 -12 -5 -15 M4 0 C4 -6 5 -10 6 -13" stroke="#8ea8ac" stroke-width="4" stroke-linecap="round" opacity=".65"/>
+                <ellipse cx="-5" cy="-17" rx="5.4" ry="3.4" fill="#cfe0e0" opacity=".7"/>
+                <ellipse cx="6" cy="-15" rx="4.6" ry="3" fill="#c2d6d6" opacity=".65"/>
+                <g stroke="#e2eeee" stroke-width=".9" stroke-linecap="round" opacity=".7">
+                  <path d="M-5 -18 l-5 -3 M-5 -18 l-2 -4 M-5 -18 l2 -4 M-5 -18 l5 -2 M-8 -17 l-4 -1"/>
+                  <path d="M6 -16 l-4 -3 M6 -16 l0 -4 M6 -16 l4 -3 M8 -15 l4 -1"/>
+                </g>
+              </g>
+              <!-- brittle star -->
+              <g stroke="#46607a" stroke-width="1.2" stroke-linecap="round" fill="none" opacity=".7" transform="translate(250,532)">
+                <path d="M0 0 C-6 -3 -10 -3 -14 -1 M0 0 C-2 -6 -1 -10 2 -13 M0 0 C5 -4 9 -4 13 -2 M0 0 C4 3 8 4 13 3 M0 0 C-3 4 -7 5 -12 5"/>
+                <circle cx="0" cy="0" r="2" fill="#46607a" stroke="none"/>
+              </g>
+              <!-- an orca passes through the channel -->
+              <g class="eco-orca"><g transform="translate(190,474)">
+                <path d="M-70 6 C-58 -6 -34 -13 -8 -13.6 C0 -25 6 -33 8 -43 C14 -33 18 -23 16 -12.6 C34 -10 50 -2 58 6 C50 10.4 38 13.4 22 14.4 L28 22 L12 15.2 C-8 16.4 -30 15.4 -46 12.4 C-54 15 -61 18.4 -67 18.4 C-65 14 -63.4 10.4 -70 6 Z" fill="#04090e"/>
+                <ellipse cx="-42" cy="-2.6" rx="6.6" ry="2.8" fill="#c9d6d4" opacity=".75" transform="rotate(-14 -42 -2.6)"/>
+                <path d="M-58 8 C-40 4 -16 3.4 6 5.4 C-14 9.4 -40 10 -58 8 Z" fill="#9fb3bd" opacity=".28"/>
+              </g></g>
+              <!-- soundings, in fathoms -->
+              <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6f96ac" opacity=".35">
+                <text x="120" y="452">56</text>
+                <text x="420" y="470">72</text>
+                <text x="600" y="440">64</text>
+                <text x="800" y="500">104</text>
+              </g>
+              <text x="30" y="552" font-family="JetBrains Mono, ui-monospace, monospace" font-size="9" letter-spacing="3" fill="#5b7d94" opacity=".5">SOUNDINGS IN FATHOMS</text>
+            </g>
+
+            <!-- ===== KELP FOREST (over the deep shading) ===== -->
+            <g class="eco-layer" data-layer="kelp">
+              <g class="eco-rays" style="pointer-events:none" filter="url(#ecoRayWob)">
+                <path d="M128 246 L186 246 L148 470 L100 452 Z" fill="url(#ecoRay)"/>
+                <path d="M252 247 L300 247 L282 486 L232 478 Z" fill="url(#ecoRay)" opacity=".8"/>
+                <path d="M372 246 L416 247 L426 466 L378 472 Z" fill="url(#ecoRay)" opacity=".65"/>
+                <path d="M492 248 L530 248 L560 440 L516 452 Z" fill="url(#ecoRay)" opacity=".5"/>
+              </g>
+              <!-- bull kelp, each plant swaying on its own clock -->
+              <g class="eco-kelp eco-k1">
+                <ellipse cx="82" cy="524" rx="12" ry="5" fill="#22303c"/>
+                <path d="M82 522 C96 470 70 396 88 330 C98 296 92 268 86 252" fill="none" stroke="#3c7a4f" stroke-width="4.6" stroke-linecap="round"/>
+                <!-- mid-column blade tufts -->
+                <g fill="#2c5c40" opacity=".85">
+                  <path d="M88 392 C102 384 116 382 130 386 C116 390 103 394 92 400 Z"/>
+                  <path d="M84 340 C72 332 60 330 48 334 C60 338 72 342 82 348 Z"/>
+                </g>
+                <!-- pneumatocyst -->
+                <circle cx="86" cy="248" r="7.4" fill="#6aa06b"/>
+                <ellipse cx="83.6" cy="245.4" rx="2.6" ry="2" fill="#93c68e" opacity=".85"/>
+                <path d="M86 255 L86 260" stroke="#3c7a4f" stroke-width="3" stroke-linecap="round"/>
+                <!-- blade bundle -->
+                <g fill="#33694a">
+                  <path d="M88 246 C110 240 134 242 158 234 C136 246 112 250 90 250 Z"/>
+                  <path d="M89 249 C112 252 138 258 166 256 C138 262 110 258 88 253 Z"/>
+                  <path d="M84 246 C68 240 52 240 38 246 C54 249 70 251 83 250 Z"/>
+                </g>
+                <g stroke="#4e8a5c" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".75">
+                  <path d="M88 248 C114 246 142 250 168 244"/>
+                  <path d="M88 249 C112 254 138 258 162 258"/>
+                </g>
+              </g>
+              <g class="eco-kelp eco-k2">
+                <ellipse cx="150" cy="527" rx="9" ry="4" fill="#22303c"/>
+                <path d="M150 525 C138 468 160 400 146 340 C138 306 144 280 152 264" fill="none" stroke="#347048" stroke-width="3.8" stroke-linecap="round"/>
+                <g fill="#2a5840" opacity=".85">
+                  <path d="M148 420 C136 414 124 414 112 418 C124 422 136 426 146 428 Z"/>
+                </g>
+                <circle cx="153" cy="260" r="6" fill="#639b64"/>
+                <ellipse cx="151" cy="258" rx="2" ry="1.6" fill="#8fc08a" opacity=".8"/>
+                <g fill="#2f6244">
+                  <path d="M155 258 C172 254 190 256 208 251 C191 261 172 263 156 262 Z"/>
+                  <path d="M155 262 C172 266 190 270 210 268 C190 274 170 271 154 265 Z"/>
+                  <path d="M151 258 C138 253 126 253 114 258 C126 261 139 262 150 261 Z"/>
+                </g>
+              </g>
+              <g class="eco-kelp eco-k3">
+                <ellipse cx="256" cy="522" rx="13" ry="5.4" fill="#22303c"/>
+                <path d="M256 520 C246 460 274 386 258 322 C250 288 254 262 260 246" fill="none" stroke="#3c7a4f" stroke-width="5" stroke-linecap="round"/>
+                <g fill="#2c5c40" opacity=".85">
+                  <path d="M262 376 C278 368 294 366 310 371 C294 376 278 380 265 385 Z"/>
+                  <path d="M254 442 C242 436 228 435 216 439 C228 444 242 447 252 450 Z"/>
+                </g>
+                <circle cx="261" cy="242" r="7.8" fill="#6aa06b"/>
+                <ellipse cx="258.4" cy="239.4" rx="2.8" ry="2.2" fill="#93c68e" opacity=".85"/>
+                <path d="M261 250 L260 255" stroke="#3c7a4f" stroke-width="3.2" stroke-linecap="round"/>
+                <g fill="#33694a">
+                  <path d="M264 239 C288 233 314 235 340 228 C316 241 290 245 265 244 Z"/>
+                  <path d="M264 243 C290 248 318 254 348 252 C318 259 288 254 263 247 Z"/>
+                  <path d="M258 240 C242 234 226 234 210 240 C226 244 243 245 257 244 Z"/>
+                </g>
+                <g stroke="#4e8a5c" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".75">
+                  <path d="M263 242 C292 244 322 250 352 246"/>
+                </g>
+              </g>
+              <g class="eco-kelp eco-k4">
+                <ellipse cx="366" cy="526" rx="10" ry="4.4" fill="#22303c"/>
+                <path d="M366 524 C378 462 352 392 368 330 C376 300 370 278 364 266" fill="none" stroke="#347048" stroke-width="4" stroke-linecap="round"/>
+                <g fill="#2a5840" opacity=".85">
+                  <path d="M368 400 C382 393 396 392 410 396 C396 401 382 405 371 409 Z"/>
+                </g>
+                <circle cx="363" cy="262" r="6.2" fill="#639b64"/>
+                <ellipse cx="361" cy="260" rx="2" ry="1.6" fill="#8fc08a" opacity=".8"/>
+                <g fill="#2f6244">
+                  <path d="M365 260 C382 256 400 258 418 253 C400 263 382 265 366 264 Z"/>
+                  <path d="M365 264 C382 269 400 273 420 271 C400 277 380 274 364 267 Z"/>
+                  <path d="M361 260 C348 255 336 255 324 260 C336 263 349 264 360 263 Z"/>
+                </g>
+              </g>
+              <g class="eco-kelp eco-k5">
+                <ellipse cx="452" cy="522" rx="12" ry="5" fill="#22303c"/>
+                <path d="M452 520 C464 464 442 396 456 336 C463 305 458 278 452 262" fill="none" stroke="#3c7a4f" stroke-width="4.6" stroke-linecap="round"/>
+                <g fill="#2c5c40" opacity=".85">
+                  <path d="M456 388 C470 381 484 380 498 384 C484 389 470 393 459 397 Z"/>
+                  <path d="M450 448 C438 442 426 441 414 445 C426 450 439 453 448 456 Z"/>
+                </g>
+                <circle cx="451" cy="258" r="7" fill="#6aa06b"/>
+                <ellipse cx="448.6" cy="255.6" rx="2.4" ry="1.9" fill="#93c68e" opacity=".85"/>
+                <g fill="#33694a">
+                  <path d="M454 255 C474 250 496 252 518 246 C497 258 474 261 455 260 Z"/>
+                  <path d="M454 259 C476 264 500 269 526 267 C500 274 474 270 453 263 Z"/>
+                  <path d="M448 256 C434 250 420 250 406 256 C420 259 435 260 447 259 Z"/>
+                </g>
+              </g>
+              <g class="eco-kelp eco-k6">
+                <ellipse cx="628" cy="302" rx="9" ry="4" fill="#0f2c3e"/>
+                <path d="M628 300 C634 286 622 270 630 256" fill="none" stroke="#347048" stroke-width="3.4" stroke-linecap="round"/>
+                <circle cx="630" cy="252" r="5.2" fill="#639b64"/>
+                <ellipse cx="628.4" cy="250.4" rx="1.7" ry="1.4" fill="#8fc08a" opacity=".8"/>
+                <g fill="#2f6244">
+                  <path d="M632 250 C646 247 660 249 676 245 C660 254 645 256 632 255 Z"/>
+                  <path d="M628 250 C617 246 606 246 596 251 C606 254 618 254 627 253 Z"/>
+                </g>
+              </g>
+              <!-- understory blades -->
+              <g stroke="#2c5c40" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".8">
+                <path d="M404 526 c-3 -12 -2 -22 2 -30 M404 526 c4 -10 8 -17 13 -22 M404 526 c-8 -8 -12 -15 -13 -23"/>
+                <path d="M120 528 c-3 -10 -2 -18 2 -25 M120 528 c4 -9 8 -15 12 -19"/>
+              </g>
+              <!-- drifting school of juvenile salmon -->
+              <g class="eco-fish" fill="#cfe3ea" opacity=".6">
+                <use href="#eco-fish-p" transform="translate(280,352)"/>
+                <use href="#eco-fish-p" transform="translate(300,342) scale(.85)"/>
+                <use href="#eco-fish-p" transform="translate(302,362) scale(.9)"/>
+                <use href="#eco-fish-p" transform="translate(322,352) scale(1.1)"/>
+                <use href="#eco-fish-p" transform="translate(318,336) scale(.8)"/>
+                <use href="#eco-fish-p" transform="translate(340,346) scale(.95)"/>
+                <use href="#eco-fish-p" transform="translate(336,366) scale(.85)"/>
+                <use href="#eco-fish-p" transform="translate(356,356)"/>
+                <use href="#eco-fish-p" transform="translate(298,378) scale(.8)"/>
+              </g>
+              <!-- harbor seal on patrol -->
+              <g class="eco-seal-swim">
+                <g transform="translate(468,330)" fill="#28363f" opacity=".88">
+                  <path d="M-28 0 C-22 -6 -8 -8.6 6 -6.6 C15 -5.4 21 -2.6 25 0.6 L31 -4 L29.4 1 L31.6 6 L24 3.4 C18 6.6 9 8.4 -2 7.2 C-14 6 -24 3.6 -28 0 Z"/>
+                  <path d="M-2 3 L-8 9.4 L-0.6 7 Z"/>
+                  <circle cx="-23" cy="-2.6" r=".9" fill="#0d1418"/>
+                </g>
+              </g>
+              <!-- stray bubbles -->
+              <g fill="#cfe6ea" opacity=".35">
+                <circle cx="102" cy="300" r="1.6"/><circle cx="98" cy="282" r="1.1"/><circle cx="360" cy="320" r="1.4"/><circle cx="356" cy="300" r="1"/><circle cx="452" cy="290" r="1.2"/>
+              </g>
+              <!-- shore splash foam -->
+              <g fill="#eef6f2">
+                <circle cx="600" cy="246" r="2.2" opacity=".55"/><circle cx="614" cy="243" r="1.4" opacity=".45"/><circle cx="680" cy="249" r="1.8" opacity=".45"/><circle cx="884" cy="251" r="1.5" opacity=".4"/>
+              </g>
+            </g>
+
+            <!-- grain, vignette, chart frame -->
+            <rect width="900" height="560" fill="url(#ecoVig)" pointer-events="none"/>
+            <rect width="900" height="560" filter="url(#ecoGrain)" pointer-events="none" opacity=".8"/>
+            <rect x="3.5" y="3.5" width="893" height="553" fill="none" stroke="#f2e9d8" stroke-opacity=".18" stroke-width="1.4" pointer-events="none"/>
+
             <!-- Interactive hit areas (invisible) -->
-            <rect class="hit" data-layer="canopy" x="0" y="0" width="600" height="140" fill="transparent"/>
-            <rect class="hit" data-layer="forest" x="0" y="140" width="600" height="80" fill="transparent"/>
-            <rect class="hit" data-layer="intertidal" x="600" y="140" width="300" height="100" fill="transparent"/>
-            <rect class="hit" data-layer="kelp" x="0" y="220" width="900" height="150" fill="transparent"/>
-            <rect class="hit" data-layer="deep" x="0" y="370" width="900" height="150" fill="transparent"/>
+            <rect class="hit" data-layer="canopy" x="0" y="0" width="620" height="158" fill="transparent"/>
+            <rect class="hit" data-layer="forest" x="0" y="158" width="600" height="84" fill="transparent"/>
+            <rect class="hit" data-layer="kelp" x="0" y="242" width="900" height="176" fill="transparent"/>
+            <rect class="hit" data-layer="deep" x="0" y="418" width="900" height="142" fill="transparent"/>
+            <rect class="hit" data-layer="intertidal" x="600" y="118" width="300" height="140" fill="transparent"/>
           </svg>
           <div class="layer-labels">
-            <button type="button" class="layer-label" data-layer="canopy" style="top:8%">Canopy</button>
-            <button type="button" class="layer-label" data-layer="forest" style="top:28%">Forest floor</button>
-            <button type="button" class="layer-label" data-layer="intertidal" style="top:28%;left:72%">Intertidal</button>
-            <button type="button" class="layer-label" data-layer="kelp" style="top:52%">Kelp forest</button>
-            <button type="button" class="layer-label" data-layer="deep" style="top:78%">Deep channel</button>
+            <button type="button" class="layer-label" data-layer="canopy" style="top:6%">Canopy</button>
+            <button type="button" class="layer-label" data-layer="forest" style="top:33%">Forest floor</button>
+            <button type="button" class="layer-label" data-layer="intertidal" style="top:26%;left:74%">Intertidal</button>
+            <button type="button" class="layer-label" data-layer="kelp" style="top:55%">Kelp forest</button>
+            <button type="button" class="layer-label" data-layer="deep" style="top:84%">Deep channel</button>
+          </div>
+          </div>
+          <div class="cross-scale" aria-hidden="true">
+            <div class="cross-scale-row">
+              <span class="cross-scale-cap">Transect A&#8202;&#8211;&#8202;A&#8242; &#183; San Juan Channel</span>
+              <span class="cross-scale-cap">Soundings in fathoms</span>
+            </div>
+            <svg class="cross-scale-ruler" viewBox="0 0 560 26" preserveAspectRatio="xMidYMid meet" role="presentation" focusable="false">
+              <line x1="4" y1="7" x2="556" y2="7" stroke="#5b7d94" stroke-width="1" opacity=".7"/>
+              <g stroke="#5b7d94" opacity=".55" stroke-width="1">
+                <line x1="31.6" y1="7" x2="31.6" y2="11.5"/><line x1="59.2" y1="7" x2="59.2" y2="11.5"/><line x1="86.8" y1="7" x2="86.8" y2="11.5"/>
+                <line x1="142" y1="7" x2="142" y2="11.5"/><line x1="169.6" y1="7" x2="169.6" y2="11.5"/><line x1="197.2" y1="7" x2="197.2" y2="11.5"/>
+                <line x1="252.4" y1="7" x2="252.4" y2="11.5"/><line x1="280" y1="7" x2="280" y2="11.5"/><line x1="307.6" y1="7" x2="307.6" y2="11.5"/>
+                <line x1="362.8" y1="7" x2="362.8" y2="11.5"/><line x1="390.4" y1="7" x2="390.4" y2="11.5"/><line x1="418" y1="7" x2="418" y2="11.5"/>
+                <line x1="473.2" y1="7" x2="473.2" y2="11.5"/><line x1="500.8" y1="7" x2="500.8" y2="11.5"/><line x1="528.4" y1="7" x2="528.4" y2="11.5"/>
+              </g>
+              <g stroke="#7ba6bc" stroke-width="1.2" opacity=".8">
+                <line x1="4" y1="7" x2="4" y2="15"/><line x1="114.4" y1="7" x2="114.4" y2="15"/><line x1="224.8" y1="7" x2="224.8" y2="15"/>
+                <line x1="335.2" y1="7" x2="335.2" y2="15"/><line x1="445.6" y1="7" x2="445.6" y2="15"/><line x1="556" y1="7" x2="556" y2="15"/>
+              </g>
+              <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="8" fill="#7ba6bc" opacity=".75" text-anchor="middle">
+                <text x="4" y="24.5">0</text><text x="114.4" y="24.5">20</text><text x="224.8" y="24.5">40</text>
+                <text x="335.2" y="24.5">60</text><text x="445.6" y="24.5">80</text><text x="556" y="24.5">100</text>
+              </g>
+            </svg>
+            <div class="cross-scale-foot">
+              <span class="cross-scale-cap cross-scale-cap--dim">Vertical exaggeration &#8776;6&#215;</span>
+              <span class="cross-scale-wave"></span>
+              <span class="cross-scale-cap cross-scale-cap--dim">Datum MLLW</span>
+            </div>
           </div>
         </div>
         <aside class="cross-panel" id="cross-panel">
-          <p class="eyebrow">Select a layer</p>
+          <p class="eyebrow" id="cross-eyebrow">Island transect</p>
           <h3 id="cross-title">Island cross-section</h3>
-          <p id="cross-body" data-adult="Click any band of the diagram — canopy, forest, shore, kelp, or deep water — to learn who thrives there and how the layers connect." data-kid="Click a layer to meet the plants and animals that live there!">
-            Click any band of the diagram — canopy, forest, shore, kelp, or deep water — to learn who thrives there and how the layers connect.
+          <p id="cross-body" data-adult="One line drawn from the fir canopy down through prairie, shore, and kelp to the channel floor. Hover or tap any band of the painting — or the legend below — to open that layer." data-kid="This picture is an island sandwich! Tap a layer of the painting — or the little legend — to meet who lives there.">
+            One line drawn from the fir canopy down through prairie, shore, and kelp to the channel floor. Hover or tap any band of the painting — or the legend below — to open that layer.
           </p>
+          <figure class="cross-photo-wrap" id="cross-photo-wrap" hidden>
+            <img id="cross-photo" alt="" loading="lazy"/>
+          </figure>
           <ul id="cross-species" class="cross-species"></ul>
+          <div class="cross-default" id="cross-default">
+            <div class="cross-legend" role="group" aria-label="Transect legend — select a layer">
+              <button type="button" class="legend-row" data-layer="canopy"><span class="legend-swatch legend-swatch--canopy" aria-hidden="true"></span><span class="legend-name">Canopy &amp; sky</span><span class="legend-note chart-label">eagles · firs</span></button>
+              <button type="button" class="legend-row" data-layer="forest"><span class="legend-swatch legend-swatch--forest" aria-hidden="true"></span><span class="legend-name">Forest floor</span><span class="legend-note chart-label">ferns · deer</span></button>
+              <button type="button" class="legend-row" data-layer="intertidal"><span class="legend-swatch legend-swatch--intertidal" aria-hidden="true"></span><span class="legend-name">Intertidal</span><span class="legend-note chart-label">seals · stars</span></button>
+              <button type="button" class="legend-row" data-layer="kelp"><span class="legend-swatch legend-swatch--kelp" aria-hidden="true"></span><span class="legend-name">Kelp forest</span><span class="legend-note chart-label">to ~10 fm</span></button>
+              <button type="button" class="legend-row" data-layer="deep"><span class="legend-swatch legend-swatch--deep" aria-hidden="true"></span><span class="legend-name">Deep channel</span><span class="legend-note chart-label">100+ fm</span></button>
+            </div>
+            <figure class="cross-featured">
+              <img src="assets/photos/wildlife/eagle.jpg" alt="Bald eagle perched above the shoreline" loading="lazy"/>
+              <figcaption>
+                <span class="chart-label">Featured resident</span>
+                <strong>Bald eagle</strong>
+                <p data-adult="San Juan County holds one of the densest bald-eagle nesting populations in the lower 48 — nearly every mile of shoreline is watched from a fir snag." data-kid="More eagle families nest here than almost anywhere in the country. Look up — one is probably watching the water right now!">San Juan County holds one of the densest bald-eagle nesting populations in the lower 48 — nearly every mile of shoreline is watched from a fir snag.</p>
+              </figcaption>
+            </figure>
+          </div>
         </aside>
       </div>
 
@@ -627,6 +1790,8 @@
         </div>
       </div>
     </section>
+
+    <div class="sj-divider sj-divider--wave dv-ecology-tidepool" aria-hidden="true"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" opacity=".3" d="M0 30 C120 18 240 16 360 26 C480 36 600 40 720 32 C840 24 960 20 1080 28 C1200 36 1320 38 1440 30 L1440 90 L0 90 Z"/><path fill="currentColor" opacity=".55" d="M0 48 C120 38 240 36 360 44 C480 52 600 56 720 50 C840 44 960 40 1080 46 C1200 52 1320 56 1440 50 L1440 90 L0 90 Z"/><path fill="currentColor" d="M0 68 C120 58 240 56 360 62 C480 68 600 72 720 68 C840 64 960 60 1080 64 C1200 68 1320 72 1440 68 L1440 90 L0 90 Z"/></svg></div>
 
     <!-- ==================== TIDEPOOLS ==================== -->
     <section class="section tidepool-section" id="tidepool">
@@ -652,70 +1817,161 @@
               <svg class="tp-svg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="tpSky" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#9ec9de"/>
-                    <stop offset="100%" stop-color="#d4e8f0"/>
+                    <stop offset="0" stop-color="#c3d8dd"/>
+                    <stop offset=".7" stop-color="#e8e2d0"/>
+                    <stop offset="1" stop-color="#f0e3c8"/>
                   </linearGradient>
-                  <linearGradient id="tpPool" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#3d8fad"/>
-                    <stop offset="55%" stop-color="#1f5a72"/>
-                    <stop offset="100%" stop-color="#0e3444"/>
+                  <linearGradient id="tpSea" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#6fa3b5"/>
+                    <stop offset="1" stop-color="#8fb8c2"/>
                   </linearGradient>
-                  <linearGradient id="tpRock" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#7a7268"/>
-                    <stop offset="100%" stop-color="#4f4942"/>
+                  <linearGradient id="tpRockBack" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#9c8a72"/>
+                    <stop offset=".5" stop-color="#7d6d58"/>
+                    <stop offset="1" stop-color="#5c5044"/>
                   </linearGradient>
-                  <filter id="tpSoft" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="1.2"/>
+                  <linearGradient id="tpRockMid" x1="0" y1="0" x2="0.3" y2="1">
+                    <stop offset="0" stop-color="#8a7a64"/>
+                    <stop offset=".45" stop-color="#6b5d4c"/>
+                    <stop offset="1" stop-color="#453b30"/>
+                  </linearGradient>
+                  <linearGradient id="tpRockFg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#655847"/>
+                    <stop offset="1" stop-color="#352d24"/>
+                  </linearGradient>
+                  <radialGradient id="tpPool" cx=".42" cy=".38" r=".85">
+                    <stop offset="0" stop-color="#4fa3b5"/>
+                    <stop offset=".45" stop-color="#22708a"/>
+                    <stop offset=".8" stop-color="#0f4459"/>
+                    <stop offset="1" stop-color="#0a3345"/>
+                  </radialGradient>
+                  <radialGradient id="tpPool2" cx=".45" cy=".4" r=".9">
+                    <stop offset="0" stop-color="#3d90a4"/>
+                    <stop offset=".7" stop-color="#155066"/>
+                    <stop offset="1" stop-color="#0b3648"/>
+                  </radialGradient>
+                  <linearGradient id="tpRay" x1="0" y1="0" x2=".35" y2="1">
+                    <stop offset="0" stop-color="#eafaf4" stop-opacity=".5"/>
+                    <stop offset="1" stop-color="#eafaf4" stop-opacity="0"/>
+                  </linearGradient>
+                  <filter id="tpSoft" x="-40%" y="-40%" width="180%" height="180%">
+                    <feGaussianBlur stdDeviation="3"/>
+                  </filter>
+                  <filter id="tpRayWob" x="-30%" y="-10%" width="160%" height="130%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.01 0.05" numOctaves="2" seed="4" result="tpN"/>
+                    <feDisplacementMap in="SourceGraphic" in2="tpN" scale="12"/>
+                  </filter>
+                  <filter id="tpGrainLight" x="0" y="0" width="100%" height="100%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" seed="11" stitchTiles="stitch"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0.93 0 0 0 0 0.88 0 0 0 0 0.76 0 0 0 0.16 0"/>
+                  </filter>
+                  <filter id="tpGrainDark" x="0" y="0" width="100%" height="100%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="23" stitchTiles="stitch"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0.12 0 0 0 0 0.1 0 0 0 0 0.07 0 0 0 0.2 0"/>
                   </filter>
                 </defs>
 
-                <!-- Sky -->
-                <rect width="900" height="520" fill="url(#tpSky)"/>
-                <circle cx="780" cy="58" r="26" fill="#f0d78c" opacity=".85"/>
-
-                <!-- Distant sea / high water hint -->
-                <path d="M0 95 Q200 85 450 98 T900 90 L900 130 L0 130 Z" fill="#5ba3c4" opacity=".45"/>
-
-                <!-- Zone bands (subtle background strips on rock face) -->
-                <g class="tp-zone-bands">
-                  <rect class="tp-zone-band" data-zone="splash" data-zone-hit="splash" x="40" y="120" width="820" height="48" fill="#a89880" opacity=".25" style="cursor:pointer"/>
-                  <rect class="tp-zone-band" data-zone="high" data-zone-hit="high" x="40" y="168" width="820" height="70" fill="#8a7d6c" opacity=".28" style="cursor:pointer"/>
-                  <rect class="tp-zone-band" data-zone="mid" data-zone-hit="mid" x="40" y="238" width="820" height="90" fill="#6b635a" opacity=".3" style="cursor:pointer"/>
-                  <rect class="tp-zone-band" data-zone="low" data-zone-hit="low" x="40" y="328" width="820" height="150" fill="#4a5558" opacity=".22" style="cursor:pointer"/>
+                <!-- Morning fog sky & far sea -->
+                <rect width="900" height="150" fill="url(#tpSky)"/>
+                <circle cx="762" cy="52" r="30" fill="#f2d992" opacity=".8" filter="url(#tpSoft)"/>
+                <path d="M0 84 L110 76 L230 88 L370 74 L520 86 L660 72 L800 84 L900 76 L900 96 L0 96 Z" fill="#8fa5a4" opacity=".55"/>
+                <path d="M0 92 Q220 84 450 94 T900 88 L900 138 L0 138 Z" fill="url(#tpSea)"/>
+                <g stroke="#dcebe7" stroke-width="1.4" stroke-linecap="round" opacity=".5" class="tp-swell">
+                  <path d="M60 106 h58"/><path d="M240 114 h44"/><path d="M470 104 h64"/>
+                  <path d="M680 112 h50"/><path d="M820 104 h44"/>
                 </g>
 
-                <!-- Main rock shelf -->
-                <path d="M20 140 Q80 125 160 145 L220 200 Q300 185 380 210 L480 175 Q560 160 640 190 L720 165 Q800 150 880 180 L880 500 L20 500 Z" fill="url(#tpRock)"/>
-                <path d="M40 200 Q120 190 200 220 T360 215 T520 240 T700 220 L720 500 L40 500 Z" fill="#5c554c" opacity=".55"/>
+                <!-- Zone bands (kept hooks; painterly tint strips) -->
+                <g class="tp-zone-bands">
+                  <rect class="tp-zone-band" data-zone="splash" data-zone-hit="splash" x="40" y="120" width="820" height="48" fill="#c9b998" opacity=".16" style="cursor:pointer"/>
+                  <rect class="tp-zone-band" data-zone="high" data-zone-hit="high" x="40" y="168" width="820" height="70" fill="#a89272" opacity=".14" style="cursor:pointer"/>
+                  <rect class="tp-zone-band" data-zone="mid" data-zone-hit="mid" x="40" y="238" width="820" height="90" fill="#6f7d62" opacity=".14" style="cursor:pointer"/>
+                  <rect class="tp-zone-band" data-zone="low" data-zone-hit="low" x="40" y="328" width="820" height="150" fill="#3f6a72" opacity=".12" style="cursor:pointer"/>
+                </g>
 
-                <!-- Tidepool water body -->
-                <ellipse cx="420" cy="390" rx="210" ry="95" fill="url(#tpPool)"/>
-                <ellipse cx="420" cy="385" rx="190" ry="75" fill="#2a7a96" opacity=".35"/>
-                <!-- Surface shimmer -->
-                <path d="M250 360 Q320 348 390 358 T550 355" fill="none" stroke="#a8d5e5" stroke-width="2" opacity=".5"/>
-                <path d="M280 375 Q360 365 440 378 T590 370" fill="none" stroke="#7eb8d4" stroke-width="1.5" opacity=".4"/>
+                <!-- Back rock ledge -->
+                <path d="M0 150 C60 132 130 128 196 142 C250 152 296 150 352 138 C420 124 490 126 552 142 C610 156 668 154 726 140 C784 128 846 130 900 146 L900 300 L0 300 Z" fill="url(#tpRockBack)"/>
+                <path d="M0 150 C60 132 130 128 196 142 C250 152 296 150 352 138 C420 124 490 126 552 142 C610 156 668 154 726 140 C784 128 846 130 900 146" fill="none" stroke="#c8b58e" stroke-width="2" opacity=".5"/>
+                <!-- crevices on back ledge -->
+                <g stroke="#3a3128" stroke-linecap="round" fill="none" opacity=".5">
+                  <path d="M120 160 C150 178 168 198 176 224" stroke-width="2.4"/>
+                  <path d="M320 152 C336 176 340 200 336 228" stroke-width="2"/>
+                  <path d="M598 158 C616 180 624 204 622 232" stroke-width="2.4"/>
+                  <path d="M760 152 C776 172 786 196 788 222" stroke-width="1.8"/>
+                </g>
+                <!-- lichen & dry-zone stipple -->
+                <g fill="#d8c9a2" opacity=".6">
+                  <circle cx="90" cy="138" r="2.2"/><circle cx="104" cy="146" r="1.6"/><circle cx="210" cy="134" r="2"/>
+                  <circle cx="430" cy="132" r="2.2"/><circle cx="446" cy="140" r="1.4"/><circle cx="700" cy="136" r="2"/>
+                  <circle cx="840" cy="142" r="1.8"/><circle cx="560" cy="146" r="1.6"/>
+                </g>
+                <g fill="#e8934e" opacity=".45">
+                  <circle cx="150" cy="132" r="1.8"/><circle cx="162" cy="140" r="1.2"/><circle cx="512" cy="136" r="1.6"/>
+                  <circle cx="666" cy="130" r="1.4"/><circle cx="806" cy="134" r="1.6"/>
+                </g>
 
-                <!-- Secondary small pool -->
-                <ellipse cx="680" cy="400" rx="70" ry="40" fill="url(#tpPool)" opacity=".9"/>
+                <!-- Mid shelf with wet sheen -->
+                <path d="M0 300 C70 280 150 274 228 286 C300 296 362 292 428 278 C500 264 578 266 648 282 C716 296 792 296 900 278 L900 420 L0 420 Z" fill="url(#tpRockMid)"/>
+                <path d="M0 300 C70 280 150 274 228 286 C300 296 362 292 428 278 C500 264 578 266 648 282 C716 296 792 296 900 278" fill="none" stroke="#b9c2b4" stroke-width="1.6" opacity=".45"/>
+                <g fill="#efe" opacity=".1" filter="url(#tpSoft)" class="tp-sheen">
+                  <ellipse cx="180" cy="300" rx="70" ry="10"/>
+                  <ellipse cx="620" cy="292" rx="86" ry="9"/>
+                  <ellipse cx="800" cy="306" rx="52" ry="8"/>
+                </g>
 
-                <!-- Rock edges / texture -->
-                <path d="M180 280 Q220 250 280 275 T360 260" fill="none" stroke="#3d3832" stroke-width="3" opacity=".4"/>
-                <path d="M500 300 Q560 280 620 305" fill="none" stroke="#3d3832" stroke-width="2.5" opacity=".35"/>
-                <ellipse cx="150" cy="310" rx="45" ry="28" fill="#6b635a"/>
-                <ellipse cx="720" cy="300" rx="55" ry="32" fill="#6b635a"/>
+                <!-- Main tidepool -->
+                <path id="tp-pool-main" d="M212 372 C238 344 306 330 396 330 C494 330 576 346 612 376 C640 400 632 434 588 456 C536 480 436 488 352 476 C270 464 214 436 204 408 C200 394 202 382 212 372 Z" fill="url(#tpPool)"/>
+                <!-- wet rim highlight -->
+                <path d="M212 372 C238 344 306 330 396 330 C494 330 576 346 612 376" fill="none" stroke="#d6ede8" stroke-width="2.2" opacity=".55"/>
+                <path d="M612 376 C640 400 632 434 588 456 C536 480 436 488 352 476 C270 464 214 436 204 408" fill="none" stroke="#0a2e3e" stroke-width="3" opacity=".5"/>
+                <!-- submerged pebbles & shadow -->
+                <g opacity=".55">
+                  <ellipse cx="330" cy="440" rx="26" ry="9" fill="#0c3a4d"/>
+                  <ellipse cx="470" cy="452" rx="30" ry="10" fill="#0c3a4d"/>
+                  <ellipse cx="545" cy="420" rx="20" ry="7" fill="#11485e"/>
+                  <ellipse cx="290" cy="410" rx="16" ry="6" fill="#11485e"/>
+                </g>
+                <!-- god rays through the pool -->
+                <g class="tp-rays" style="pointer-events:none" filter="url(#tpRayWob)">
+                  <path d="M300 334 L342 334 L306 470 L272 452 Z" fill="url(#tpRay)"/>
+                  <path d="M400 332 L434 332 L416 482 L382 476 Z" fill="url(#tpRay)" opacity=".8"/>
+                  <path d="M498 336 L528 338 L536 468 L502 474 Z" fill="url(#tpRay)" opacity=".6"/>
+                </g>
+                <!-- surface shimmer -->
+                <g class="tp-shimmer" stroke="#a8d5e5" stroke-linecap="round" fill="none">
+                  <path d="M262 366 Q330 356 398 364 T540 360" stroke-width="1.8" opacity=".5"/>
+                  <path d="M292 386 Q368 376 446 388 T588 380" stroke-width="1.4" opacity=".35"/>
+                  <path d="M320 452 Q392 462 470 456" stroke-width="1.2" opacity=".3"/>
+                </g>
+                <!-- darting juvenile fish -->
+                <g class="tp-dart" fill="#0d3c50" opacity=".7" style="pointer-events:none">
+                  <path d="M508 402 C514 399 520 399 524 402 C520 405 514 405 508 402 Z"/>
+                  <path d="M528 410 C533 407.5 538 407.5 541 410 C538 412.5 533 412.5 528 410 Z"/>
+                </g>
 
-                <!-- Algae / rockweed accents (mid) -->
-                <g opacity=".85">
-                  <path d="M200 300 Q210 270 205 245" fill="none" stroke="#3a6b48" stroke-width="4" stroke-linecap="round"/>
-                  <path d="M220 305 Q235 275 228 250" fill="none" stroke="#4a8a5c" stroke-width="3.5" stroke-linecap="round"/>
-                  <path d="M560 320 Q575 290 568 265" fill="none" stroke="#3a6b48" stroke-width="4" stroke-linecap="round"/>
-                  <path d="M580 318 Q590 288 595 260" fill="none" stroke="#2d6b4a" stroke-width="3" stroke-linecap="round"/>
+                <!-- Secondary pool -->
+                <path d="M636 388 C654 374 692 368 726 374 C758 380 776 394 774 412 C772 430 744 442 708 442 C672 442 642 430 634 412 C631 403 632 395 636 388 Z" fill="url(#tpPool2)"/>
+                <path d="M636 388 C654 374 692 368 726 374 C758 380 776 394 774 412" fill="none" stroke="#cfe6e0" stroke-width="1.8" opacity=".5"/>
+
+                <!-- Foreground boulders -->
+                <path d="M0 420 C60 402 130 398 190 412 C240 424 260 444 252 470 C244 498 190 514 120 516 C60 518 0 510 0 510 Z" fill="url(#tpRockFg)"/>
+                <path d="M790 412 C830 400 870 402 900 414 L900 520 L760 520 C748 490 758 448 790 412 Z" fill="url(#tpRockFg)"/>
+                <path d="M540 486 C580 474 640 474 690 486 C720 494 728 508 712 518 L520 518 C508 504 516 492 540 486 Z" fill="#40372c"/>
+                <!-- speculars on wet foreground rock -->
+                <g fill="#fff" opacity=".12" filter="url(#tpSoft)">
+                  <ellipse cx="140" cy="428" rx="44" ry="6"/>
+                  <ellipse cx="846" cy="424" rx="30" ry="5"/>
+                  <ellipse cx="620" cy="492" rx="40" ry="5"/>
                 </g>
 
                 <!-- Foam / splash dots high -->
-                <circle cx="80" cy="150" r="3" fill="white" opacity=".5"/>
-                <circle cx="100" cy="145" r="2" fill="white" opacity=".4"/>
-                <circle cx="820" cy="155" r="2.5" fill="white" opacity=".45"/>
+                <g fill="#fff" class="tp-foam">
+                  <circle cx="80" cy="128" r="3" opacity=".55"/>
+                  <circle cx="98" cy="122" r="2" opacity=".45"/>
+                  <circle cx="118" cy="130" r="1.6" opacity=".4"/>
+                  <circle cx="812" cy="128" r="2.6" opacity=".5"/>
+                  <circle cx="830" cy="122" r="1.8" opacity=".4"/>
+                </g>
 
                 <!-- Zone hit strips under creatures (creatures painted after so they receive clicks first) -->
                 <rect data-zone-hit="splash" x="40" y="120" width="820" height="48" fill="transparent" style="cursor:pointer"/>
@@ -725,84 +1981,224 @@
 
                 <!-- Creatures (interactive hotspots — topmost for hit testing) -->
                 <g class="tp-hot" data-creature="barnacle" tabindex="0" role="button" aria-label="Acorn barnacle">
-                  <circle cx="120" cy="195" r="7" fill="#e8e0d0"/>
-                  <circle cx="138" cy="188" r="6" fill="#ddd5c4"/>
-                  <circle cx="152" cy="198" r="8" fill="#e8e0d0"/>
-                  <circle cx="168" cy="185" r="5" fill="#d4ccc0"/>
-                  <circle cx="100" cy="200" r="5" fill="#ddd5c4"/>
-                  <text x="135" y="175" text-anchor="middle" class="tp-label">Barnacles</text>
+                  <g stroke="#8a7d68" stroke-width=".7">
+                    <path d="M112 204 L117 192 Q120 189 123 192 L128 204 Z" fill="#ece2ce"/>
+                    <path d="M130 200 L134 190 Q137 187 140 190 L144 200 Z" fill="#ddd2bc"/>
+                    <path d="M146 206 L152 193 Q155 189.5 158 193 L164 206 Z" fill="#f0e7d4"/>
+                    <path d="M166 199 L170 191 Q172.5 188.5 175 191 L179 199 Z" fill="#d6cab4"/>
+                    <path d="M96 208 L100 198 Q103 195 106 198 L110 208 Z" fill="#e2d8c2"/>
+                    <path d="M124 212 L128 203 Q131 200 134 203 L138 212 Z" fill="#e8ddc8"/>
+                    <path d="M152 214 L156 206 Q158.5 203.5 161 206 L165 214 Z" fill="#d9cdb6"/>
+                  </g>
+                  <g fill="#8a7d68" opacity=".8">
+                    <ellipse cx="120" cy="193.5" rx="1.8" ry="1"/>
+                    <ellipse cx="137" cy="191.5" rx="1.6" ry=".9"/>
+                    <ellipse cx="155" cy="194.5" rx="2" ry="1.1"/>
+                    <ellipse cx="172.5" cy="192.5" rx="1.4" ry=".8"/>
+                    <ellipse cx="103" cy="199.5" rx="1.4" ry=".8"/>
+                  </g>
+                  <text x="138" y="180" text-anchor="middle" class="tp-label">Barnacles</text>
                 </g>
 
                 <g class="tp-hot" data-creature="mussel" tabindex="0" role="button" aria-label="California mussel">
-                  <ellipse cx="300" cy="275" rx="14" ry="8" fill="#1a2a38" transform="rotate(-25 300 275)"/>
-                  <ellipse cx="318" cy="282" rx="13" ry="7" fill="#243545" transform="rotate(15 318 282)"/>
-                  <ellipse cx="290" cy="288" rx="12" ry="7" fill="#1a2a38" transform="rotate(-10 290 288)"/>
-                  <ellipse cx="332" cy="270" rx="11" ry="6" fill="#2a3a4a" transform="rotate(30 332 270)"/>
-                  <ellipse cx="310" cy="295" rx="10" ry="6" fill="#1a2a38" transform="rotate(-5 310 295)"/>
-                  <text x="310" y="255" text-anchor="middle" class="tp-label">Mussels</text>
+                  <g transform="translate(300,282)">
+                    <path d="M-16 -12 C-8 -20 2 -20 6 -13 C9 -7 4 -1 -5 1 C-13 3 -19 -4 -16 -12 Z" fill="#16222e" transform="rotate(-24)"/>
+                    <path d="M8 -14 C16 -21 26 -20 29 -13 C31 -7 26 -2 18 0 C10 2 5 -6 8 -14 Z" fill="#20303f"/>
+                    <path d="M-22 2 C-15 -5 -5 -5 -2 2 C0 8 -5 13 -13 14 C-21 15 -25 9 -22 2 Z" fill="#1a2836"/>
+                    <path d="M4 6 C11 -1 21 -1 24 6 C26 12 21 17 13 18 C5 19 1 13 4 6 Z" fill="#243545"/>
+                    <path d="M28 -4 C34 -10 43 -9 45 -3 C47 3 42 7 35 8 C29 9 25 2 28 -4 Z" fill="#2c3f52"/>
+                    <g stroke="#5b7288" stroke-width=".8" fill="none" opacity=".8">
+                      <path d="M-14 -14 C-9 -16 -3 -16 3 -13"/>
+                      <path d="M10 -15 C16 -18 23 -17 27 -13"/>
+                      <path d="M-20 0 C-15 -3 -8 -3 -4 0"/>
+                      <path d="M6 4 C12 1 19 1 22 5"/>
+                    </g>
+                    <g stroke="#8ba3b8" stroke-width=".6" opacity=".6">
+                      <path d="M-9 3 l3 6 M14 10 l2 6 M31 6 l3 5"/>
+                    </g>
+                  </g>
+                  <text x="310" y="252" text-anchor="middle" class="tp-label">Mussels</text>
                 </g>
 
                 <g class="tp-hot" data-creature="ochre-star" tabindex="0" role="button" aria-label="Ochre sea star">
-                  <g transform="translate(520,320)">
-                    <path d="M0 -18 L4 -4 L18 -6 L6 2 L12 16 L0 8 L-12 16 L-6 2 L-18 -6 L-4 -4 Z" fill="#c45c26"/>
-                    <circle cx="0" cy="0" r="5" fill="#a84820"/>
+                  <g transform="translate(556,322) rotate(12)">
+                    <path d="M0 -24 C3 -14 5 -8 10 -5 C16 -7 22 -8 28 -6 C24 0 20 4 18 9 C21 15 22 21 20 27 C14 24 8 22 3 22 C-2 25 -7 29 -13 30 C-13 24 -14 18 -17 13 C-23 11 -28 8 -31 3 C-25 0 -20 -3 -17 -8 C-18 -14 -17 -20 -14 -25 C-9 -22 -4 -21 -1 -22 Z" fill="#cf6428"/>
+                    <path d="M0 -24 C3 -14 5 -8 10 -5 C16 -7 22 -8 28 -6 C24 0 20 4 18 9 C21 15 22 21 20 27 C14 24 8 22 3 22 C-2 25 -7 29 -13 30 C-13 24 -14 18 -17 13 C-23 11 -28 8 -31 3 C-25 0 -20 -3 -17 -8 C-18 -14 -17 -20 -14 -25 C-9 -22 -4 -21 -1 -22 Z" fill="none" stroke="#9c4418" stroke-width="1.4"/>
+                    <g fill="#f0c9a2" opacity=".85">
+                      <circle cx="0" cy="0" r="1.4"/><circle cx="1" cy="-10" r="1.1"/><circle cx="0" cy="-17" r="1"/>
+                      <circle cx="9" cy="-2" r="1.1"/><circle cx="17" cy="-4" r="1"/>
+                      <circle cx="9" cy="8" r="1.1"/><circle cx="14" cy="17" r="1"/>
+                      <circle cx="-4" cy="10" r="1.1"/><circle cx="-9" cy="20" r="1"/>
+                      <circle cx="-10" cy="2" r="1.1"/><circle cx="-21" cy="3" r="1"/>
+                      <circle cx="-8" cy="-9" r="1"/><circle cx="6" cy="-6" r="1"/>
+                    </g>
                   </g>
-                  <text x="520" y="300" text-anchor="middle" class="tp-label">Ochre star</text>
+                  <text x="556" y="286" text-anchor="middle" class="tp-label">Ochre star</text>
                 </g>
 
                 <g class="tp-hot" data-creature="anemone" tabindex="0" role="button" aria-label="Aggregating anemone">
-                  <g transform="translate(360,400)">
-                    <ellipse cx="0" cy="8" rx="14" ry="8" fill="#2d5a4a"/>
-                    <circle cx="-8" cy="-2" r="3" fill="#7ec8a0"/><circle cx="0" cy="-6" r="3.5" fill="#8ed4b0"/>
-                    <circle cx="8" cy="-2" r="3" fill="#7ec8a0"/><circle cx="-4" cy="2" r="2.5" fill="#a8e0c4"/>
-                    <circle cx="5" cy="2" r="2.5" fill="#a8e0c4"/>
-                  </g>
-                  <g transform="translate(400,415)">
-                    <ellipse cx="0" cy="6" rx="12" ry="7" fill="#2d5a4a"/>
-                    <circle cx="-6" cy="-1" r="2.5" fill="#7ec8a0"/><circle cx="0" cy="-4" r="3" fill="#8ed4b0"/>
-                    <circle cx="6" cy="-1" r="2.5" fill="#7ec8a0"/>
-                  </g>
-                  <text x="380" y="375" text-anchor="middle" class="tp-label">Anemones</text>
+                  <g transform="translate(352,404)"><g class="tp-anem">
+                    <ellipse cx="0" cy="6" rx="13" ry="6" fill="#1e4a3c"/>
+                    <g stroke="#8ed4b0" stroke-width="1.6" stroke-linecap="round" opacity=".9">
+                      <path d="M0 2 V-9 M-5 2 L-10 -7 M5 2 L10 -7 M-9 4 L-16 -2 M9 4 L16 -2 M-3 1 L-5 -9 M3 1 L5 -9"/>
+                    </g>
+                    <g stroke="#b8e8cc" stroke-width="1.2" stroke-linecap="round" opacity=".75">
+                      <path d="M-7 3 L-13 -5 M7 3 L13 -5 M-1 1 L-2 -10 M1 1 L2 -10"/>
+                    </g>
+                    <circle cx="0" cy="3" r="2.4" fill="#4a8f6e"/>
+                  </g></g>
+                  <g transform="translate(394,422)"><g class="tp-anem tp-anem-b">
+                    <ellipse cx="0" cy="5" rx="11" ry="5" fill="#1e4a3c"/>
+                    <g stroke="#8ed4b0" stroke-width="1.4" stroke-linecap="round" opacity=".9">
+                      <path d="M0 1 V-8 M-4 1 L-9 -6 M4 1 L9 -6 M-8 3 L-13 -2 M8 3 L13 -2"/>
+                    </g>
+                    <circle cx="0" cy="2" r="2" fill="#4a8f6e"/>
+                  </g></g>
+                  <g transform="translate(326,428)"><g class="tp-anem tp-anem-c">
+                    <ellipse cx="0" cy="4" rx="9" ry="4.5" fill="#1c443a"/>
+                    <g stroke="#7ec8a0" stroke-width="1.3" stroke-linecap="round" opacity=".85">
+                      <path d="M0 1 V-6 M-4 1 L-8 -4 M4 1 L8 -4 M-7 2 L-11 -1 M7 2 L11 -1"/>
+                    </g>
+                    <circle cx="0" cy="1.5" r="1.7" fill="#4a8f6e"/>
+                  </g></g>
+                  <text x="366" y="378" text-anchor="middle" class="tp-label">Anemones</text>
                 </g>
 
                 <g class="tp-hot" data-creature="sculpin" tabindex="0" role="button" aria-label="Tidepool sculpin">
-                  <g transform="translate(470,405)">
-                    <ellipse cx="0" cy="0" rx="18" ry="7" fill="#6b7a6a"/>
-                    <path d="M14 -2 L24 -6 L22 0 L24 6 L14 2" fill="#5a6a5a"/>
-                    <circle cx="-10" cy="-1" r="1.5" fill="#1a1a1a"/>
-                    <path d="M-4 -6 Q0 -12 4 -6" fill="none" stroke="#5a6a5a" stroke-width="1.5"/>
-                  </g>
-                  <text x="480" y="385" text-anchor="middle" class="tp-label">Sculpin</text>
+                  <g class="tp-sculpin"><g transform="translate(470,412)" opacity=".92">
+                    <path d="M-20 0 C-14 -6 -4 -8 4 -6 C10 -5 15 -2 17 0 C15 2 10 4.5 4 5.5 C-4 7 -14 5 -20 0 Z" fill="#66755f"/>
+                    <path d="M17 0 L26 -5 L24 0 L26 5 Z" fill="#556449"/>
+                    <path d="M-6 -6 Q-2 -12 3 -6" fill="#556449"/>
+                    <path d="M2 5 Q5 9 9 5" fill="#556449"/>
+                    <g fill="#42503c" opacity=".85">
+                      <circle cx="-6" cy="0" r="1.6"/><circle cx="2" cy="-2.5" r="1.3"/>
+                      <circle cx="7" cy="1.5" r="1.4"/><circle cx="-12" cy="-2" r="1.2"/>
+                    </g>
+                    <circle cx="-14" cy="-2.5" r="1.6" fill="#141a12"/>
+                    <circle cx="-13.6" cy="-2.9" r=".5" fill="#cfe0c8"/>
+                  </g></g>
+                  <text x="478" y="392" text-anchor="middle" class="tp-label">Sculpin</text>
                 </g>
 
                 <g class="tp-hot" data-creature="chiton" tabindex="0" role="button" aria-label="Gumboot chiton">
-                  <ellipse cx="280" cy="420" rx="28" ry="14" fill="#8b3a2a"/>
-                  <ellipse cx="280" cy="418" rx="22" ry="10" fill="#a04830" opacity=".6"/>
-                  <text x="280" y="400" text-anchor="middle" class="tp-label">Gumboot</text>
+                  <g transform="translate(258,448)">
+                    <ellipse cx="0" cy="0" rx="27" ry="13" fill="#7d3424"/>
+                    <ellipse cx="0" cy="-1.5" rx="21" ry="9" fill="#a04830"/>
+                    <g stroke="#c06a4a" stroke-width="1" fill="none" opacity=".7">
+                      <path d="M-16 -6 C-16 -2 -16 2 -15 5"/>
+                      <path d="M-8 -8 C-8 -3 -8 3 -7 7"/>
+                      <path d="M0 -9 C0 -3 0 3 0 8"/>
+                      <path d="M8 -8 C8 -3 8 3 7 7"/>
+                      <path d="M16 -6 C16 -2 16 2 15 5"/>
+                    </g>
+                    <g fill="#5e2418" opacity=".65">
+                      <circle cx="-22" cy="4" r="1"/><circle cx="-12" cy="9" r="1.1"/><circle cx="0" cy="10.5" r="1"/>
+                      <circle cx="12" cy="9" r="1.1"/><circle cx="22" cy="4" r="1"/>
+                    </g>
+                  </g>
+                  <text x="258" y="424" text-anchor="middle" class="tp-label">Gumboot</text>
                 </g>
 
                 <g class="tp-hot" data-creature="hermit" tabindex="0" role="button" aria-label="Hermit crab">
-                  <g transform="translate(620,390)">
-                    <path d="M0 0 Q8 -12 18 -4 Q22 4 12 10 Q2 12 0 0" fill="#c4a882"/>
-                    <circle cx="-4" cy="2" r="4" fill="#c45c26"/>
-                    <line x1="-6" y1="-2" x2="-12" y2="-10" stroke="#3d3832" stroke-width="1.2"/>
-                    <line x1="-2" y1="-2" x2="-4" y2="-11" stroke="#3d3832" stroke-width="1.2"/>
-                  </g>
-                  <text x="625" y="365" text-anchor="middle" class="tp-label">Hermit</text>
+                  <g class="tp-hermit"><g transform="translate(626,362)">
+                    <path d="M2 -2 C0 -10 6 -16 14 -16 C22 -16 27 -10 26 -3 C25 3 20 7 13 7 C8 7 4 4 4 0 C4 -4 8 -6 11 -5 C13 -4.5 14 -2.5 13 -1" fill="none" stroke="#8a6d4a" stroke-width="4.6" stroke-linecap="round"/>
+                    <path d="M2 -2 C0 -10 6 -16 14 -16 C22 -16 27 -10 26 -3" fill="none" stroke="#a8875e" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+                    <circle cx="-4" cy="2" r="4.4" fill="#c45c26"/>
+                    <path d="M-7 5 C-10 8 -14 8 -16 6 M-4 6 C-6 10 -9 11 -12 10" stroke="#a84820" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                    <path d="M-8 0 C-12 -1 -14 1 -14 4 C-12 5 -9 4 -8 2 Z" fill="#a84820"/>
+                    <line x1="-5" y1="-2" x2="-10" y2="-9" stroke="#5e3a20" stroke-width="1.1"/>
+                    <line x1="-2" y1="-2" x2="-3" y2="-10" stroke="#5e3a20" stroke-width="1.1"/>
+                    <circle cx="-6" cy="-1" r="1.1" fill="#141a12"/>
+                  </g></g>
+                  <text x="630" y="336" text-anchor="middle" class="tp-label">Hermit</text>
                 </g>
 
                 <g class="tp-hot" data-creature="urchin" tabindex="0" role="button" aria-label="Purple sea urchin">
-                  <g transform="translate(680,395)">
-                    <circle cx="0" cy="0" r="12" fill="#5a3a7a"/>
-                    <line x1="0" y1="-18" x2="0" y2="18" stroke="#7a5a9a" stroke-width="1.5"/>
-                    <line x1="-16" y1="-8" x2="16" y2="8" stroke="#7a5a9a" stroke-width="1.5"/>
-                    <line x1="-16" y1="8" x2="16" y2="-8" stroke="#7a5a9a" stroke-width="1.5"/>
-                    <line x1="-12" y1="-14" x2="12" y2="14" stroke="#6a4a8a" stroke-width="1"/>
-                    <line x1="12" y1="-14" x2="-12" y2="14" stroke="#6a4a8a" stroke-width="1"/>
-                    <circle cx="0" cy="0" r="5" fill="#4a2a6a"/>
+                  <g transform="translate(700,412)">
+                    <g stroke="#7a5a9a" stroke-width="1.1" stroke-linecap="round">
+                      <path d="M0 -12 V-19 M0 12 V19 M-12 0 H-19 M12 0 H19 M-8.5 -8.5 L-14 -14 M8.5 -8.5 L14 -14 M-8.5 8.5 L-14 14 M8.5 8.5 L14 14 M-4 -11 L-6.5 -17.5 M4 -11 L6.5 -17.5 M-11 -4 L-17.5 -6.5 M11 -4 L17.5 -6.5 M-4 11 L-6.5 17.5 M4 11 L6.5 17.5 M-11 4 L-17.5 6.5 M11 4 L17.5 6.5"/>
+                    </g>
+                    <circle cx="0" cy="0" r="11.5" fill="#553675"/>
+                    <circle cx="-3.5" cy="-3.5" r="6" fill="#684888" opacity=".7"/>
+                    <g fill="#8f6fb0" opacity=".8">
+                      <circle cx="0" cy="-6" r=".9"/><circle cx="5" cy="-3" r=".9"/><circle cx="6" cy="4" r=".9"/>
+                      <circle cx="0" cy="7" r=".9"/><circle cx="-6" cy="3" r=".9"/><circle cx="-6" cy="-4" r=".9"/>
+                    </g>
                   </g>
-                  <text x="680" y="365" text-anchor="middle" class="tp-label">Urchin</text>
+                  <g transform="translate(736,428) scale(.7)">
+                    <g stroke="#6a4a8a" stroke-width="1.1" stroke-linecap="round">
+                      <path d="M0 -12 V-18 M0 12 V18 M-12 0 H-18 M12 0 H18 M-8.5 -8.5 L-13 -13 M8.5 -8.5 L13 -13 M-8.5 8.5 L-13 13 M8.5 8.5 L13 13"/>
+                    </g>
+                    <circle cx="0" cy="0" r="11" fill="#4a2f66"/>
+                    <circle cx="-3" cy="-3" r="5" fill="#5c3d7c" opacity=".7"/>
+                  </g>
+                  <text x="708" y="380" text-anchor="middle" class="tp-label">Urchins</text>
                 </g>
+
+                <g class="tp-hot" data-creature="rockweed" tabindex="0" role="button" aria-label="Pacific rockweed">
+                  <g class="tp-weed" style="transform-origin:176px 306px">
+                    <g stroke="#5a6e2f" stroke-linecap="round" fill="none">
+                      <path d="M176 306 C172 288 174 272 182 258" stroke-width="4.6"/>
+                      <path d="M176 306 C184 290 192 280 204 272" stroke-width="4"/>
+                      <path d="M176 306 C166 292 158 284 146 278" stroke-width="3.6"/>
+                      <path d="M182 258 C186 250 192 245 200 242" stroke-width="3"/>
+                      <path d="M182 258 C178 249 172 244 164 241" stroke-width="3"/>
+                    </g>
+                    <g fill="#7d9440">
+                      <ellipse cx="201" cy="241" rx="4.4" ry="6"/><ellipse cx="163" cy="240" rx="4.2" ry="5.6"/>
+                      <ellipse cx="206" cy="270" rx="4" ry="5.4"/><ellipse cx="144" cy="276" rx="3.8" ry="5.2"/>
+                    </g>
+                  </g>
+                  <g class="tp-weed tp-weed-b" style="transform-origin:764px 300px">
+                    <g stroke="#54682c" stroke-linecap="round" fill="none">
+                      <path d="M764 300 C760 284 763 270 771 258" stroke-width="4.2"/>
+                      <path d="M764 300 C772 286 780 278 790 272" stroke-width="3.6"/>
+                      <path d="M771 258 C775 251 780 247 787 244" stroke-width="2.8"/>
+                    </g>
+                    <g fill="#75903c">
+                      <ellipse cx="788" cy="243" rx="4" ry="5.4"/><ellipse cx="792" cy="270" rx="3.6" ry="5"/>
+                    </g>
+                  </g>
+                  <text x="176" y="232" text-anchor="middle" class="tp-label">Rockweed</text>
+                </g>
+
+                <g class="tp-hot" data-creature="kelp" tabindex="0" role="button" aria-label="Bull kelp wrack">
+                  <path d="M470 500 C520 488 570 486 622 492 C666 497 704 496 740 488" fill="none" stroke="#5c5a26" stroke-width="5" stroke-linecap="round"/>
+                  <path d="M470 500 C520 488 570 486 622 492" fill="none" stroke="#7a7734" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+                  <ellipse cx="748" cy="486" rx="10" ry="8" fill="#6b682c"/>
+                  <ellipse cx="745" cy="483" rx="4" ry="3" fill="#8a8740" opacity=".8"/>
+                  <g fill="#4f4d20" opacity=".9">
+                    <path d="M756 482 C778 474 800 474 818 482 C800 484 782 488 768 494 Z"/>
+                    <path d="M754 490 C774 490 792 496 804 506 C788 504 770 502 758 498 Z"/>
+                  </g>
+                  <text x="620" y="474" text-anchor="middle" class="tp-label">Bull kelp</text>
+                </g>
+
+                <!-- engraved zonation tabs, tied to the zone buttons -->
+                <g class="tp-zone-tags" font-family="JetBrains Mono, ui-monospace, monospace" font-size="9.5" letter-spacing="2.5" aria-hidden="false">
+                  <g class="tp-zone-tag" data-zone-hit="splash" role="button" tabindex="0" aria-label="Splash zone">
+                    <rect x="2" y="122" width="30" height="44" rx="3" class="tp-tag-plate"/>
+                    <line x1="32" y1="126" x2="32" y2="162" class="tp-tag-rule"/>
+                    <text transform="translate(20 144) rotate(-90)" text-anchor="middle" font-size="8" letter-spacing="1.4">SPLASH</text>
+                  </g>
+                  <g class="tp-zone-tag" data-zone-hit="high" role="button" tabindex="0" aria-label="High intertidal">
+                    <rect x="2" y="170" width="30" height="66" rx="3" class="tp-tag-plate"/>
+                    <line x1="32" y1="174" x2="32" y2="232" class="tp-tag-rule"/>
+                    <text transform="translate(20 203) rotate(-90)" text-anchor="middle">HIGH</text>
+                  </g>
+                  <g class="tp-zone-tag" data-zone-hit="mid" role="button" tabindex="0" aria-label="Mid intertidal">
+                    <rect x="2" y="240" width="30" height="86" rx="3" class="tp-tag-plate"/>
+                    <line x1="32" y1="244" x2="32" y2="322" class="tp-tag-rule"/>
+                    <text transform="translate(20 283) rotate(-90)" text-anchor="middle">MID</text>
+                  </g>
+                  <g class="tp-zone-tag" data-zone-hit="low" role="button" tabindex="0" aria-label="Low intertidal and pools">
+                    <rect x="2" y="330" width="30" height="146" rx="3" class="tp-tag-plate"/>
+                    <line x1="32" y1="334" x2="32" y2="472" class="tp-tag-rule"/>
+                    <text transform="translate(20 403) rotate(-90)" text-anchor="middle">LOW</text>
+                  </g>
+                </g>
+                <!-- click-ripples land here -->
+                <g class="tp-ripples" id="tp-ripples" style="pointer-events:none"></g>
               </svg>
             </div>
 
@@ -815,13 +2211,17 @@
               <img class="tp-photo" id="tp-photo" alt="" />
             </div>
             <div class="tp-panel-head">
-              <span class="tp-emoji" id="tp-emoji" aria-hidden="true">🌊</span>
+              <span class="tp-emoji" id="tp-emoji" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-wave"/></svg></span>
               <div>
                 <h3 id="tp-title">A living shoreline</h3>
                 <p class="tp-latin" id="tp-latin" hidden></p>
               </div>
             </div>
             <p id="tp-body">Click a creature in the pool or a zonation band to see who thrives where — and how a few hours of low water open a window into Salish Sea shore life.</p>
+            <div id="tp-zone-residents" hidden>
+              <p class="chart-label tp-residents-label">Residents of this zone</p>
+              <ul class="tp-residents" id="tp-residents-list"></ul>
+            </div>
             <p class="tp-fun" id="tp-fun" hidden></p>
           </aside>
         </div>
@@ -831,28 +2231,28 @@
         <h3 class="tp-tips-title" data-adult="Tidepool etiquette" data-kid="Be a kind explorer">Tidepool etiquette</h3>
         <div class="tp-tips-grid" id="tp-tips-grid">
           <div class="tp-tip-card">
-            <span class="tp-tip-icon" aria-hidden="true">👀</span>
+            <span class="tp-tip-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></span>
             <h4>Look, don’t poke</h4>
             <p data-adult="Hands and tools crush fragile animals and can tear anemones from rock. Observe with eyes and cameras." data-kid="Use your eyes, not your fingers. Animals can get hurt even by a gentle poke.">
               Hands and tools crush fragile animals and can tear anemones from rock. Observe with eyes and cameras.
             </p>
           </div>
           <div class="tp-tip-card">
-            <span class="tp-tip-icon" aria-hidden="true">🦶</span>
+            <span class="tp-tip-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-boot"/></svg></span>
             <h4>Watch your step</h4>
             <p data-adult="Walk on bare rock when possible. Stepping on seaweed and mussel beds smashes homes you cannot see." data-kid="Step on plain rock, not on the green slippery seaweed or the mussel patches.">
               Walk on bare rock when possible. Stepping on seaweed and mussel beds smashes homes you cannot see.
             </p>
           </div>
           <div class="tp-tip-card">
-            <span class="tp-tip-icon" aria-hidden="true">🪨</span>
+            <span class="tp-tip-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-rock"/></svg></span>
             <h4>Turn, then return</h4>
             <p data-adult="If you lift a rock, put it back exactly as you found it — dark underside down — so residents keep their shelter." data-kid="If a grown-up carefully lifts a rock, put it back the same way so animals keep their shady home.">
               If you lift a rock, put it back exactly as you found it — dark underside down — so residents keep their shelter.
             </p>
           </div>
           <div class="tp-tip-card">
-            <span class="tp-tip-icon" aria-hidden="true">⏳</span>
+            <span class="tp-tip-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-tide"/></svg></span>
             <h4>Mind the tide</h4>
             <p data-adult="Minus tides are best and brief. Know the schedule, keep an eye on the water, and never get cut off by a rising flood." data-kid="The ocean comes back! Always know when the tide turns and leave extra time to walk back.">
               Minus tides are best and brief. Know the schedule, keep an eye on the water, and never get cut off by a rising flood.
@@ -861,6 +2261,8 @@
         </div>
       </div>
     </section>
+
+    <div class="sj-divider sj-divider--rule dv-tidepool-explore" aria-hidden="true"><svg viewBox="0 0 360 24"><path d="M4 12 H116 M244 12 H356" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55" fill="none"/><circle cx="126" cy="12" r="1.8" fill="currentColor"/><circle cx="234" cy="12" r="1.8" fill="currentColor"/><ellipse cx="148" cy="12" rx="11" ry="7" fill="none" stroke="currentColor" stroke-width="1.75"/><ellipse cx="148" cy="12" rx="4.6" ry="2.8" fill="currentColor"/><path d="M163 16.5 L166.5 7.5 L170 16.5 Z" fill="currentColor"/><path d="M177 6.5 C177 13.5 178.8 16.5 183 16.5 C187.2 16.5 189 13.5 189 6.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M194.5 7.5 L198 16.5 L201.5 7.5 Z" fill="currentColor"/><path d="M212 4.5 A8 8 0 0 0 212 19.5 A10.5 10.5 0 0 1 212 4.5 Z" fill="currentColor"/></svg></div>
 
     <!-- ==================== EXPLORE ==================== -->
     <section class="section explore-section" id="explore">
@@ -883,6 +2285,8 @@
         <!-- Injected / static content below -->
       </div>
     </section>
+
+    <div class="sj-divider sj-divider--land dv-explore-scavenger" aria-hidden="true"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" opacity=".28" d="M0 50 L90 38 C170 28 250 24 330 32 L430 44 C530 54 610 52 710 42 C790 34 880 28 970 34 L1090 46 C1190 55 1310 53 1440 42 L1440 90 L0 90 Z"/><path fill="currentColor" opacity=".55" d="M0 64 C120 54 220 47 340 53 L480 63 C580 69 680 67 780 57 C880 47 980 45 1090 53 L1240 65 C1310 69 1380 68 1440 62 L1440 90 L0 90 Z"/><path fill="currentColor" d="M0 78 C140 70 260 66 400 72 C540 78 660 80 800 74 C940 68 1080 66 1220 72 C1310 76 1390 78 1440 76 L1440 90 L0 90 Z"/></svg></div>
 
     <!-- ==================== KID SCAVENGER HUNT ==================== -->
     <section class="section scavenger-section" id="scavenger">
@@ -914,23 +2318,77 @@
       </div>
     </section>
 
+    <div class="sj-divider sj-divider--wave dv-scavenger-discover" aria-hidden="true"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" opacity=".3" d="M0 30 C120 18 240 16 360 26 C480 36 600 40 720 32 C840 24 960 20 1080 28 C1200 36 1320 38 1440 30 L1440 90 L0 90 Z"/><path fill="currentColor" opacity=".55" d="M0 48 C120 38 240 36 360 44 C480 52 600 56 720 50 C840 44 960 40 1080 46 C1200 52 1320 56 1440 50 L1440 90 L0 90 Z"/><path fill="currentColor" d="M0 68 C120 58 240 56 360 62 C480 68 600 72 720 68 C840 64 960 60 1080 64 C1200 68 1320 72 1440 68 L1440 90 L0 90 Z"/></svg></div>
+
     <!-- ==================== DISCOVER / QUIZ ==================== -->
     <section class="section discover-section" id="discover">
       <div class="section-header">
         <p class="section-kicker">Discover</p>
         <h2 class="section-title" data-adult="Test your island sense" data-kid="Island quiz time!">Test your island sense</h2>
-        <p class="section-lede" data-adult="A short quiz for curious minds of any age. No grades — only better questions." data-kid="How much did you learn? Take the quiz!">
-          A short quiz for curious minds of any age. No grades — only better questions.
+        <p class="section-lede" data-adult="Sixteen questions for curious minds of any age — history, orcas, tidepools, and island geography. No grades — only better questions." data-kid="How much did you learn? Take the big island quiz!">
+          Sixteen questions for curious minds of any age — history, orcas, tidepools, and island geography. No grades — only better questions.
         </p>
       </div>
 
-      <div class="quiz" id="quiz">
-        <div class="quiz-progress">
-          <div class="quiz-bar" id="quiz-bar"></div>
-          <span class="quiz-count" id="quiz-count">1 / 6</span>
+      <div class="quiz-rig">
+        <div class="quiz-flags" aria-hidden="true">
+          <svg viewBox="0 0 260 30">
+            <path d="M0 2 C40 8 90 10 130 10 C170 10 220 8 260 2" fill="none" stroke="#5a4a30" stroke-width="1.4"/>
+            <g transform="translate(24,6) rotate(3)">
+              <rect width="22" height="16" fill="#f2e9d8" stroke="#2b3a42" stroke-width=".8"/>
+              <rect width="11" height="16" fill="#c9503c"/>
+            </g>
+            <g transform="translate(72,9) rotate(1.5)">
+              <rect width="22" height="16" fill="#f2e9d8" stroke="#2b3a42" stroke-width=".8"/>
+              <circle cx="11" cy="8" r="5" fill="#1a3a6b"/>
+            </g>
+            <g transform="translate(120,10)">
+              <rect width="22" height="16" fill="#d9b45b" stroke="#2b3a42" stroke-width=".8"/>
+              <path d="M0 0 L22 16 M22 0 L0 16" stroke="#12181d" stroke-width="2"/>
+            </g>
+            <g transform="translate(168,9) rotate(-1.5)">
+              <rect width="22" height="16" fill="#0f5132" stroke="#2b3a42" stroke-width=".8"/>
+              <rect y="5.4" width="22" height="5.2" fill="#f2e9d8"/>
+            </g>
+            <g transform="translate(216,6) rotate(-3)">
+              <rect width="22" height="16" fill="#f2e9d8" stroke="#2b3a42" stroke-width=".8"/>
+              <path d="M0 0 L22 0 L11 16 Z" fill="#c9a227"/>
+            </g>
+          </svg>
         </div>
-        <div class="quiz-body" id="quiz-body">
-          <!-- Injected by main/quiz -->
+        <div class="quiz" id="quiz" data-question-total="16">
+          <div class="quiz-instrument">
+            <div class="quiz-compass" aria-hidden="true">
+              <svg viewBox="0 0 84 84">
+                <circle cx="42" cy="42" r="39" fill="#f6efdd" stroke="#2b3a42" stroke-width="2"/>
+                <circle cx="42" cy="42" r="33" fill="none" stroke="rgba(43,58,66,.5)" stroke-width=".8"/>
+                <circle cx="42" cy="42" r="29" fill="none" stroke="rgba(43,58,66,.35)" stroke-width=".6" stroke-dasharray="1 3.5"/>
+                <g stroke="rgba(43,58,66,.7)" stroke-width="1.2">
+                  <path d="M42 5 V12 M42 72 V79 M5 42 H12 M72 42 H79"/>
+                </g>
+                <g stroke="rgba(43,58,66,.4)" stroke-width=".9">
+                  <path d="M15.8 15.8 L20.8 20.8 M68.2 15.8 L63.2 20.8 M15.8 68.2 L20.8 63.2 M68.2 68.2 L63.2 63.2"/>
+                </g>
+                <text x="42" y="21" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#8f4a2e">N</text>
+                <text x="42" y="70" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="#2b3a42" opacity=".7">S</text>
+                <text x="16" y="45" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="#2b3a42" opacity=".7">W</text>
+                <text x="68" y="45" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="#2b3a42" opacity=".7">E</text>
+                <g id="quiz-needle" style="transform-origin:42px 42px">
+                  <path d="M42 14 L46 42 L42 40 L38 42 Z" fill="#c9503c"/>
+                  <path d="M42 70 L38 42 L42 44 L46 42 Z" fill="#2b3a42" opacity=".8"/>
+                </g>
+                <circle cx="42" cy="42" r="3.4" fill="#c9a227" stroke="#7a5f14" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="quiz-progress">
+              <span class="chart-label quiz-bearing-label">Bearing to landfall</span>
+              <div class="quiz-bar" id="quiz-bar"></div>
+              <span class="quiz-count" id="quiz-count">1 / 16</span>
+            </div>
+          </div>
+          <div class="quiz-body" id="quiz-body">
+            <!-- Injected by main/quiz -->
+          </div>
         </div>
       </div>
 
@@ -949,22 +2407,92 @@
         <p class="disclaimer">This is an educational interactive inspired by long-form journalistic features. Wildlife population figures change; consult primary sources for current census data. Southern Resident orca counts are approximate and fluctuate with births and losses. Whale-report pins are approximate and may fall back to sample data when live fetch is blocked. Photos sourced for internal educational use. Formline motif is an abstract homage, not tribal art.</p>
       </div>
     </section>
+
+    <div class="sj-divider sj-divider--land dv-discover-footer" aria-hidden="true"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" opacity=".28" d="M0 50 L90 38 C170 28 250 24 330 32 L430 44 C530 54 610 52 710 42 C790 34 880 28 970 34 L1090 46 C1190 55 1310 53 1440 42 L1440 90 L0 90 Z"/><path fill="currentColor" opacity=".55" d="M0 64 C120 54 220 47 340 53 L480 63 C580 69 680 67 780 57 C880 47 980 45 1090 53 L1240 65 C1310 69 1380 68 1440 62 L1440 90 L0 90 Z"/><path fill="currentColor" d="M0 78 C140 70 260 66 400 72 C540 78 660 80 800 74 C940 68 1080 66 1220 72 C1310 76 1390 78 1440 76 L1440 90 L0 90 Z"/></svg></div>
   </main>
 
   <footer class="site-footer">
+    <div class="footer-scene" aria-hidden="true">
+      <svg viewBox="0 0 1440 260" preserveAspectRatio="xMaxYMax slice">
+        <defs>
+          <radialGradient id="ftr-beam-fade" gradientUnits="userSpaceOnUse" cx="1120" cy="118" r="360">
+            <stop offset="0" stop-color="#ffe9a8" stop-opacity=".65"/>
+            <stop offset=".55" stop-color="#ffe9a8" stop-opacity=".22"/>
+            <stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="ftr-lens-glow" gradientUnits="userSpaceOnUse" cx="1120" cy="118" r="26">
+            <stop offset="0" stop-color="#ffedb0" stop-opacity=".9"/>
+            <stop offset="1" stop-color="#ffedb0" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <g class="ftr-stars" fill="#e8f0f4">
+          <circle cx="70" cy="34" r="1.1"/><circle cx="180" cy="72" r=".8"/><circle class="tw" cx="265" cy="28" r="1.3"/>
+          <circle cx="356" cy="90" r=".8"/><circle cx="452" cy="46" r="1"/><circle class="tw tw2" cx="540" cy="102" r="1.2"/>
+          <circle cx="628" cy="24" r=".9"/><circle cx="704" cy="66" r="1.1"/><circle class="tw" cx="812" cy="38" r="1"/>
+          <circle cx="905" cy="88" r=".8"/><circle class="tw tw2" cx="988" cy="30" r="1.2"/><circle cx="1245" cy="52" r="1"/>
+          <circle cx="1330" cy="24" r="1.2"/><circle class="tw" cx="1398" cy="78" r=".9"/><circle cx="1176" cy="40" r=".8"/>
+          <circle cx="120" cy="112" r=".8"/><circle cx="760" cy="120" r=".8"/><circle class="tw tw2" cx="418" cy="14" r="1"/>
+        </g>
+        <g class="ftr-beam">
+          <path fill="url(#ftr-beam-fade)" d="M1120 118 L1470 94 L1470 142 Z M1120 118 L770 94 L770 142 Z"/>
+        </g>
+        <path fill="#0e2536" d="M0 190 L0 168 C90 158 170 152 260 158 L400 170 C500 178 590 176 690 168 C780 160 870 158 960 164 L1440 190 Z"/>
+        <path fill="#091c2a" d="M0 220 L0 196 C120 188 240 184 380 190 L560 200 C700 208 840 206 980 196 L980 182 C1030 172 1090 168 1150 170 C1230 172 1330 180 1440 176 L1440 220 Z"/>
+        <g class="ftr-light">
+          <circle cx="1120" cy="118" r="24" fill="url(#ftr-lens-glow)"/>
+          <path d="M1109 182 L1113 130 L1127 130 L1131 182 Z" fill="#dcd4c0"/>
+          <rect x="1112.5" y="140" width="15" height="6" fill="#8f4a2e" opacity=".85"/>
+          <rect x="1111.5" y="156" width="17" height="6" fill="#8f4a2e" opacity=".85"/>
+          <rect x="1109" y="126" width="22" height="5" fill="#12181d"/>
+          <rect x="1113" y="110" width="14" height="16" fill="#1d242b"/>
+          <rect x="1115.5" y="113" width="9" height="10" fill="#ffd97a"/>
+          <path d="M1111 110 L1120 100 L1129 110 Z" fill="#12181d"/>
+          <path d="M1096 190 C1104 182 1112 180 1120 180 C1130 180 1140 183 1148 190 Z" fill="#071624"/>
+        </g>
+        <g class="ftr-ferry">
+          <path d="M-16 16 H62" stroke="#16303f" stroke-width="1" opacity=".7"/>
+          <path d="M0 8 L46 8 L42 15 L4 15 Z" fill="#1a3648"/>
+          <rect x="8" y="2" width="30" height="6" rx="1" fill="#22414f"/>
+          <rect x="20" y="-3" width="6" height="5" fill="#22414f"/>
+          <g fill="#ffd97a">
+            <circle cx="12" cy="5" r="1"/><circle cx="17" cy="5" r="1"/><circle cx="22" cy="5" r="1"/>
+            <circle cx="27" cy="5" r="1"/><circle cx="32" cy="5" r="1"/><circle cx="23" cy="-1" r=".9"/>
+          </g>
+          <circle cx="44" cy="6" r="1" fill="#8fe08a"/>
+          <circle cx="2" cy="6" r="1" fill="#e07a5f"/>
+        </g>
+        <rect x="0" y="218" width="1440" height="42" fill="#081824"/>
+        <path d="M0 218 H1440" stroke="#274b5e" stroke-width="1.2" opacity=".8"/>
+        <g class="ftr-waves" stroke="#1c3a4d" stroke-width="1.1" fill="none" opacity=".9">
+          <path d="M-56 228 Q-42 224 -28 228 T0 228 T28 228 T56 228 T84 228 T112 228 T140 228 T168 228 T196 228 T224 228 T252 228 T280 228 T308 228 T336 228 T364 228 T392 228 T420 228 T448 228 T476 228 T504 228 T532 228 T560 228 T588 228 T616 228 T644 228 T672 228 T700 228 T728 228 T756 228 T784 228 T812 228 T840 228 T868 228 T896 228 T924 228 T952 228 T980 228 T1008 228 T1036 228 T1064 228 T1092 228 T1120 228 T1148 228 T1176 228 T1204 228 T1232 228 T1260 228 T1288 228 T1316 228 T1344 228 T1372 228 T1400 228 T1428 228 T1456 228 T1484 228 T1512 228"/>
+          <path d="M-56 240 Q-42 236 -28 240 T0 240 T28 240 T56 240 T84 240 T112 240 T140 240 T168 240 T196 240 T224 240 T252 240 T280 240 T308 240 T336 240 T364 240 T392 240 T420 240 T448 240 T476 240 T504 240 T532 240 T560 240 T588 240 T616 240 T644 240 T672 240 T700 240 T728 240 T756 240 T784 240 T812 240 T840 240 T868 240 T896 240 T924 240 T952 240 T980 240 T1008 240 T1036 240 T1064 240 T1092 240 T1120 240 T1148 240 T1176 240 T1204 240 T1232 240 T1260 240 T1288 240 T1316 240 T1344 240 T1372 240 T1400 240 T1428 240 T1456 240 T1484 240 T1512 240" opacity=".55"/>
+          <path d="M-56 252 Q-42 248 -28 252 T0 252 T28 252 T56 252 T84 252 T112 252 T140 252 T168 252 T196 252 T224 252 T252 252 T280 252 T308 252 T336 252 T364 252 T392 252 T420 252 T448 252 T476 252 T504 252 T532 252 T560 252 T588 252 T616 252 T644 252 T672 252 T700 252 T728 252 T756 252 T784 252 T812 252 T840 252 T868 252 T896 252 T924 252 T952 252 T980 252 T1008 252 T1036 252 T1064 252 T1092 252 T1120 252 T1148 252 T1176 252 T1204 252 T1232 252 T1260 252 T1288 252 T1316 252 T1344 252 T1372 252 T1400 252 T1428 252 T1456 252 T1484 252 T1512 252" opacity=".35"/>
+        </g>
+      </svg>
+    </div>
     <div class="footer-inner">
       <div class="footer-brand">
         <strong>San Juan Islands</strong>
         <span>An interactive exploration</span>
       </div>
       <p>Built for curious travelers, families, and anyone who loves the Salish Sea. Not affiliated with any official tourism, park agency, or Orca Network.</p>
-      <p class="footer-meta">Typography: Cormorant Garamond &amp; DM Sans · Maps: Leaflet/OSM + custom SVG · Whale traffic: canvas model + sighting overlays</p>
+      <div class="footer-legend">
+        <p class="footer-legend-title chart-label">Colophon · Chart legend</p>
+        <dl>
+          <div><dt>Typography</dt><dd>Cormorant Garamond &amp; DM Sans</dd></div>
+          <div><dt>Maps</dt><dd>Leaflet/OSM + custom SVG</dd></div>
+          <div><dt>Whale traffic</dt><dd>Canvas model + sighting overlays</dd></div>
+        </dl>
+      </div>
     </div>
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/icons.js"></script>
   <script src="js/data.js"></script>
   <script src="js/geo.js"></script>
+  <script src="js/hero.js"></script>
+  <script src="js/scenes.js"></script>
   <script src="js/map.js"></script>
   <script src="js/livemap.js"></script>
   <script src="js/whales.js"></script>

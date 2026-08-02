@@ -1,8 +1,45 @@
 /**
- * Wildlife field guide grid + modal
+ * Wildlife field guide grid + modal — "Chart & Current" field-guide styling.
+ * Emoji in data.js are replaced at render time with sprite icons (SJI.icon).
+ * Playable sound clips live under assets/sounds/ (illustrative field-guide audio).
  */
 (function () {
   let activeFilter = "all";
+  let audioEl = null;
+  let playingId = null;
+
+  /* Sprite icon per species id (falls back by type) */
+  const ICON_BY_ID = {
+    orca: "orca", eagle: "eagle", seal: "sea-lion", porpoise: "orca-fin",
+    deer: "deer", oystercatcher: "oystercatcher", heron: "heron",
+    madrona: "madrona-leaf", kelp: "kelp", "garry-oak": "oak-leaf",
+    fox: "fox", rabbit: "rabbit", steller: "sea-lion", murrelet: "murrelet",
+    salmon: "salmon", bluebird: "bluebird", anemone: "anemone",
+    "ochre-star": "seastar", chiton: "chiton", sculpin: "sculpin",
+    hermit: "crab", barnacle: "barnacle", mussel: "mussel", urchin: "urchin",
+    rockweed: "seaweed", "sea-lettuce": "seaweed"
+  };
+  const ICON_BY_TYPE = { mammal: "deer", bird: "heron", marine: "wave", plant: "fern" };
+  const FILTER_ICONS = {
+    all: "compass", mammal: "fox", bird: "eagle",
+    marine: "orca-fin", tidepool: "seastar", plant: "madrona-leaf"
+  };
+
+  /* Species with animal vocalizations vs. habitat field recordings */
+  const VOCAL = new Set([
+    "orca", "eagle", "seal", "porpoise", "deer", "oystercatcher", "heron",
+    "fox", "rabbit", "steller", "murrelet", "bluebird", "salmon", "hermit"
+  ]);
+
+  function iconFor(w) {
+    return ICON_BY_ID[w.id] || ICON_BY_TYPE[w.type] || "marker";
+  }
+
+  function typeLabelFor(w) {
+    return w.tags?.includes("tidepool")
+      ? "tidepool"
+      : w.type === "marine" ? "marine life" : w.type;
+  }
 
   function build() {
     const grid = document.getElementById("wildlife-grid");
@@ -10,16 +47,20 @@
 
     grid.innerHTML = SJI.WILDLIFE.map((w, i) => {
       const photo = SJI.PHOTOS?.wildlife?.[w.id];
+      const badge = `<span class="wild-badge" aria-hidden="true">${SJI.icon(iconFor(w))}</span>`;
       const media = photo
-        ? `<div class="wild-photo"><img src="${photo}" alt="" loading="lazy" /><span class="wild-emoji-badge" aria-hidden="true">${w.emoji}</span></div>`
-        : `<div class="wild-emoji" aria-hidden="true">${w.emoji}</div>`;
+        ? `<div class="wild-photo"><img src="${photo}" alt="" loading="lazy" />${badge}</div>`
+        : `<div class="wild-photo wild-photo--icon" aria-hidden="true">${SJI.icon(iconFor(w), "icon-xl")}${badge}</div>`;
       return `
-      <article class="wild-card ${photo ? "has-photo" : ""}" data-id="${w.id}" data-type="${w.type}" data-tags="${w.tags.join(" ")}"
+      <article class="wild-card has-photo" data-id="${w.id}" data-type="${w.type}" data-tags="${w.tags.join(" ")}"
         tabindex="0" role="button" aria-label="Learn about ${w.name}"
         style="animation-delay: ${i * 0.04}s">
         ${media}
-        <h3>${w.name}</h3>
-        <p class="wild-type">${w.tags?.includes("tidepool") ? "tidepool" : w.type === "marine" ? "marine life" : w.type}</p>
+        <div class="wild-meta">
+          <h3>${w.name}</h3>
+          <p class="wild-latin">${w.latin}</p>
+          <p class="wild-type">${typeLabelFor(w)}</p>
+        </div>
       </article>`;
     }).join("");
 
@@ -34,6 +75,11 @@
     });
 
     document.querySelectorAll("#wildlife-filters .filter-btn").forEach((btn) => {
+      /* Sprite icon chip prefix (once) */
+      if (!btn.querySelector(".icon")) {
+        const name = FILTER_ICONS[btn.dataset.filter] || "compass";
+        btn.insertAdjacentHTML("afterbegin", SJI.icon(name));
+      }
       btn.addEventListener("click", () => {
         document.querySelectorAll("#wildlife-filters .filter-btn").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
@@ -85,18 +131,17 @@
         photoEl.removeAttribute("src");
         if (emojiEl) {
           emojiEl.hidden = false;
-          emojiEl.textContent = w.emoji;
+          emojiEl.innerHTML = SJI.icon(iconFor(w), "icon-xl");
         }
       }
     } else if (emojiEl) {
       emojiEl.hidden = false;
-      emojiEl.textContent = w.emoji;
+      emojiEl.innerHTML = SJI.icon(iconFor(w), "icon-xl");
     }
-    const typeLabel = w.tags?.includes("tidepool")
-      ? "Tidepool"
-      : w.type === "marine"
-        ? "Marine life"
-        : w.type;
+    const badgeEl = document.getElementById("wm-badge");
+    if (badgeEl) badgeEl.innerHTML = SJI.icon(iconFor(w));
+
+    const typeLabel = typeLabelFor(w);
     document.getElementById("wm-type").textContent = typeLabel;
     document.getElementById("wm-title").textContent = w.name;
     document.getElementById("wm-latin").textContent = w.latin;
@@ -106,17 +151,95 @@
       .map((t) => `<span>${t}</span>`)
       .join("");
 
+    setupSound(w);
+
     modal.hidden = false;
     document.body.style.overflow = "hidden";
     modal.querySelector(".wm-close")?.focus();
   }
 
+  function stopSound() {
+    if (audioEl) {
+      audioEl.pause();
+      audioEl.currentTime = 0;
+      audioEl = null;
+    }
+    playingId = null;
+    const btn = document.getElementById("wm-sound");
+    if (btn) {
+      btn.classList.remove("is-playing");
+      btn.setAttribute("aria-pressed", "false");
+      const label = btn.querySelector(".wm-sound-label");
+      if (label && btn.dataset.idleLabel) label.textContent = btn.dataset.idleLabel;
+    }
+  }
+
+  function setupSound(w) {
+    const wrap = document.getElementById("wm-sound-wrap");
+    const btn = document.getElementById("wm-sound");
+    const hint = document.getElementById("wm-sound-hint");
+    stopSound();
+    if (!wrap || !btn) return;
+
+    if (!w.sound) {
+      wrap.hidden = true;
+      return;
+    }
+    wrap.hidden = false;
+    const vocal = VOCAL.has(w.id);
+    const idle = vocal ? "Play sound" : "Play habitat sound";
+    btn.dataset.idleLabel = idle;
+    btn.dataset.sound = w.sound;
+    btn.dataset.id = w.id;
+    btn.classList.remove("is-playing");
+    btn.setAttribute("aria-pressed", "false");
+    const label = btn.querySelector(".wm-sound-label");
+    if (label) label.textContent = idle;
+    if (hint) {
+      hint.textContent = vocal
+        ? "Real field recording (short clip for local learning)."
+        : "Real habitat recording — these species are mostly silent to our ears.";
+    }
+  }
+
+  function toggleSound() {
+    const btn = document.getElementById("wm-sound");
+    if (!btn || !btn.dataset.sound) return;
+    const id = btn.dataset.id;
+    if (playingId === id && audioEl && !audioEl.paused) {
+      stopSound();
+      return;
+    }
+    stopSound();
+    audioEl = new Audio(btn.dataset.sound);
+    audioEl.preload = "auto";
+    playingId = id;
+    btn.classList.add("is-playing");
+    btn.setAttribute("aria-pressed", "true");
+    const label = btn.querySelector(".wm-sound-label");
+    if (label) label.textContent = "Stop";
+    audioEl.addEventListener("ended", stopSound);
+    audioEl.addEventListener("error", () => {
+      stopSound();
+      const hint = document.getElementById("wm-sound-hint");
+      if (hint) hint.textContent = "Sound could not be loaded.";
+    });
+    audioEl.play().catch(() => stopSound());
+  }
+
   function closeModal() {
     const modal = document.getElementById("wildlife-modal");
     if (!modal || modal.hidden) return;
+    stopSound();
     modal.hidden = true;
     document.body.style.overflow = "";
   }
 
-  SJI.wildlife = { build, openModal, closeModal };
+  // Wire sound button once
+  document.getElementById("wm-sound")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleSound();
+  });
+
+  SJI.wildlife = { build, openModal, closeModal, stopSound };
 })();

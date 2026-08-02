@@ -162,9 +162,106 @@ def month_candidates(n: int = 18) -> list[dict]:
     return out
 
 
+MEDIA_HREF_RE = re.compile(
+    r'<a[^>]+href=["\'](https?://[^"\']+)["\'][^>]*>(.*?)</a>',
+    re.I | re.S,
+)
+
+
+def media_kind(url: str, label: str = "") -> str | None:
+    """Return media type, or None if this is not report media (nav/chrome)."""
+    u = (url or "").lower()
+    lab = (label or "").lower()
+
+    # Reject site chrome / social profile hubs
+    if re.search(
+        r"youtube\.com/@|youtube\.com/c/|youtube\.com/channel|"
+        r"orcanetwork\.org/(?:about|home|author|shop|donate|volunteer)|"
+        r"bloomerang\.co|facebook\.com/orcanetwork/?$|"
+        r"instagram\.com/orcanetwork|twitter\.com|x\.com/",
+        u,
+        re.I,
+    ):
+        return None
+    if re.search(r"orcanetwork\.org/?$", u):
+        return None
+    if lab in {"about", "contact us", "staff/board", "supporters", "shop", "volunteer", "home", "menu"}:
+        return None
+
+    if re.search(r"youtube\.com/watch|youtu\.be/|youtube\.com/embed/", u):
+        return "youtube"
+    if "vimeo.com" in u:
+        return "vimeo"
+    if "orcasound" in u:
+        return "audio"
+    if "audio" in lab and ("link to" in lab or "recording" in lab):
+        return "audio"
+    if "facebook.com/reel" in u or "fb.watch" in u:
+        return "video"
+    if "facebook.com" in u or "fb.com" in u:
+        if "video" in lab or "reel" in lab:
+            return "video"
+        if "photo" in lab or "groups/" in u or "/posts/" in u:
+            return "photos"
+        return "photos"
+    if re.search(r"\.(jpe?g|png|gif|webp)(\?|$)", u):
+        return "image"
+    if re.search(r"\.(mp4|mov|webm)(\?|$)", u):
+        return "video"
+    # Label-only cues for “Link to …” anchors
+    if "link to" in lab and any(k in lab for k in ("photo", "video", "reel", "audio", "youtube")):
+        return "photos" if "photo" in lab else "video" if "video" in lab or "reel" in lab else "audio" if "audio" in lab else "link"
+    return None
+
+
+def youtube_id(url: str) -> str | None:
+    m = re.search(
+        r"(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/)([A-Za-z0-9_-]{6,})",
+        url or "",
+    )
+    return m.group(1) if m else None
+
+
+def extract_media_from_text(text: str) -> list[dict]:
+    """Pull [[MEDIA:url|label]] markers left by html_to_lines."""
+    media: list[dict] = []
+    seen = set()
+    for m in re.finditer(r"\[\[MEDIA:([^\]|]+)\|([^\]]*)\]\]", text or ""):
+        url = unescape(m.group(1).strip())
+        label = unescape(m.group(2).strip()) or "Media"
+        if not url or url in seen:
+            continue
+        kind = media_kind(url, label)
+        if not kind:
+            continue
+        seen.add(url)
+        item = {"type": kind, "url": url, "label": label[:80]}
+        yid = youtube_id(url)
+        if yid:
+            item["youtubeId"] = yid
+        media.append(item)
+    return media
+
+
+def strip_media_markers(text: str) -> str:
+    t = re.sub(r"\[\[MEDIA:[^\]]+\]\]", " ", text or "")
+    return re.sub(r"\s+", " ", t).strip()
+
+
 def html_to_lines(html: str) -> list[str]:
+    """Convert HTML to text lines, preserving media links as markers."""
     text = re.sub(r"<script[\s\S]*?</script>", " ", html, flags=re.I)
     text = re.sub(r"<style[\s\S]*?</style>", " ", text, flags=re.I)
+
+    def repl_a(m: re.Match) -> str:
+        href = m.group(1).replace("]", "%5D")
+        label = re.sub(r"<[^>]+>", " ", m.group(2))
+        label = unescape(label)
+        label = re.sub(r"\s+", " ", label).strip() or "Link"
+        label = label.replace("|", "/").replace("]", ")")[:60]
+        return f" [[MEDIA:{href}|{label}]] "
+
+    text = MEDIA_HREF_RE.sub(repl_a, text)
     text = re.sub(r"<br\s*/?>", "\n", text, flags=re.I)
     text = re.sub(r"</(p|div|h\d|li|tr)>", "\n", text, flags=re.I)
     text = re.sub(r"<[^>]+>", " ", text)
@@ -172,7 +269,8 @@ def html_to_lines(html: str) -> list[str]:
     text = text.replace("\xa0", " ")
     text = re.sub(r"[ \t]+", " ", text)
     lines = [ln.strip() for ln in text.split("\n")]
-    return [ln for ln in lines if 8 < len(ln) < 500]
+    # Allow longer lines so full report sentences survive
+    return [ln for ln in lines if 8 < len(ln) < 1200]
 
 
 def resolve_place(text: str):
@@ -201,7 +299,25 @@ def classify(species: str, text: str) -> str:
     return "other"
 
 
-def parse_sightings(html: str, source_label: str) -> list[dict]:
+def species_label_for(species: str) -> str:
+    species_label = re.sub(r"\s+", " ", species).strip()
+    sl = species_label.lower()
+    if "southern resident" in sl:
+        return "Southern Resident killer whales"
+    if "bigg" in sl:
+        return "Bigg's killer whales"
+    if sl in ("orca", "killer whale", "killer whales"):
+        return "Killer whale (orca)"
+    if "humpback" in sl:
+        return "Humpback whale"
+    if "gray" in sl:
+        return "Gray whale"
+    if "minke" in sl:
+        return "Minke whale"
+    return species_label
+
+
+def parse_sightings(html: str, source_label: str, source_url: str = "") -> list[dict]:
     if not html or len(html) < 800:
         return []
     # Real monthly pages are large; 404 Divi pages are ~160k of chrome without report body
@@ -214,20 +330,23 @@ def parse_sightings(html: str, source_label: str) -> list[dict]:
     current_species = ""
     seen = set()
 
-    for line in lines:
+    for idx, line in enumerate(lines):
+        line_media = extract_media_from_text(line)
+
         dm = DATE_RE.search(line)
         if dm:
             current_date = dm.group(0).strip()
 
         sm = SPECIES_RE.search(line)
-        if sm and len(line) < 80:
+        if sm and len(strip_media_markers(line)) < 80:
             current_species = sm.group(0)
             continue
 
+        plain = strip_media_markers(line)
         if not SPECIES_RE.search(line) and not current_species:
             continue
         if not SPECIES_RE.search(line) and current_species and not (
-            COORD_RE.search(line) or resolve_place(line) or GROUP_RE.search(line)
+            COORD_RE.search(line) or resolve_place(plain) or GROUP_RE.search(line)
         ):
             continue
 
@@ -241,7 +360,7 @@ def parse_sightings(html: str, source_label: str) -> list[dict]:
             lat, lng = float(cm.group(1)), float(cm.group(2))
             loc = f"{lat:.3f}, {lng:.3f}"
         else:
-            place = resolve_place(line)
+            place = resolve_place(plain)
             if place:
                 lat, lng, loc = place
 
@@ -254,28 +373,67 @@ def parse_sightings(html: str, source_label: str) -> list[dict]:
 
         gm = GROUP_RE.search(line)
         group = gm.group(0) if gm else ""
-        note = re.sub(r"\s+", " ", line)[:240]
-        key = (round(lat, 3), round(lng, 3), group or species, current_date)
+
+        # Full report text from this line + following continuations / media links
+        report_parts = [plain]
+        report_media = list(line_media)
+        for j in range(idx + 1, min(idx + 8, len(lines))):
+            nxt = lines[j]
+            nxt_plain = strip_media_markers(nxt)
+            nxt_media = extract_media_from_text(nxt)
+
+            # New independent report (date + species, or new geocoded species line)
+            if j > idx + 1 and SPECIES_RE.search(nxt) and (
+                DATE_RE.search(nxt_plain) or resolve_place(nxt_plain) or COORD_RE.search(nxt)
+            ):
+                break
+            if j > idx + 1 and resolve_place(nxt_plain) and GROUP_RE.search(nxt) and len(nxt_plain) > 40:
+                # e.g. "T65As — Haro Strait …" next card
+                if not nxt_media and not re.search(r"photos?\s+by|link to", nxt_plain, re.I):
+                    break
+
+            if nxt_media:
+                report_media.extend(nxt_media)
+                if nxt_plain:
+                    report_parts.append(nxt_plain)
+                continue
+
+            if not nxt_plain:
+                continue
+
+            # Narrative / credit continuations
+            if re.search(
+                r"photos?\s+by|link to|^\d{1,2}:\d{2}|sent via|name:|"
+                r"via form|thanks to|looked like|surface activity",
+                nxt_plain,
+                re.I,
+            ):
+                report_parts.append(nxt_plain)
+                continue
+            # Short dangling credit lines
+            if len(nxt_plain) < 120 and not resolve_place(nxt_plain) and not COORD_RE.search(nxt):
+                report_parts.append(nxt_plain)
+                continue
+            break
+
+        # Dedupe media
+        uniq_media = []
+        seen_urls = set()
+        for m in report_media:
+            if m["url"] in seen_urls:
+                continue
+            seen_urls.add(m["url"])
+            uniq_media.append(m)
+
+        report = re.sub(r"\s+", " ", " ".join(report_parts)).strip()
+        note = report[:280]
+        key = (round(lat, 3), round(lng, 3), group or species, current_date, note[:60])
         if key in seen:
             continue
         seen.add(key)
 
-        kind = classify(species, line)
-        species_label = re.sub(r"\s+", " ", species).strip()
-        sl = species_label.lower()
-        if "southern resident" in sl or sl in ("southern resident",):
-            species_label = "Southern Resident killer whales"
-        elif "bigg" in sl:
-            species_label = "Bigg's killer whales"
-        elif sl in ("orca", "killer whale", "killer whales"):
-            species_label = "Killer whale (orca)"
-        elif "humpback" in sl:
-            species_label = "Humpback whale"
-        elif "gray" in sl:
-            species_label = "Gray whale"
-        elif "minke" in sl:
-            species_label = "Minke whale"
-        # Slight jitter so stacked pins separate
+        kind = classify(species, report)
+        species_label = species_label_for(species)
         jitter = (hash(note) % 1000) / 100000.0
         sightings.append(
             {
@@ -286,9 +444,12 @@ def parse_sightings(html: str, source_label: str) -> list[dict]:
                 "location": loc or "Salish Sea",
                 "when": current_date or "Report",
                 "note": note,
+                "report": report[:1200],
+                "media": uniq_media[:8],
                 "lat": round(lat + (jitter - 0.005), 5),
                 "lng": round(lng + ((hash(note[::-1]) % 1000) / 100000.0 - 0.005), 5),
                 "source": source_label,
+                "sourceUrl": source_url or "",
             }
         )
         if len(sightings) >= 40:
@@ -320,7 +481,8 @@ def _try_month(c: dict) -> tuple[dict, list[dict] | None, str]:
         return c, None, f"{c['month']} {c['year']}: soft 404"
     if "KILLER" not in upper and "HUMPBACK" not in upper and "GRAY WHALE" not in upper:
         return c, None, f"{c['month']} {c['year']}: no cetacean content"
-    parsed = parse_sightings(body, f"Orca Network · {c['month'].title()} {c['year']}")
+    label = f"Orca Network · {c['month'].title()} {c['year']}"
+    parsed = parse_sightings(body, label, c.get("url") or "")
     if len(parsed) < 2:
         return c, None, f"{c['month']} {c['year']}: parsed {len(parsed)}"
     return c, parsed, ""
@@ -386,11 +548,25 @@ def build_feed() -> dict:
 
 
 class Handler(SimpleHTTPRequestHandler):
+    # HTTP/1.1 keep-alive: one socket per browser tab instead of hundreds of
+    # short-lived HTTP/1.0 sockets, which intermittently surfaced as
+    # net::ERR_EMPTY_RESPONSE under parallel asset bursts.
+    protocol_version = "HTTP/1.1"
+    timeout = 60  # recycle idle keep-alive threads
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
 
     def log_message(self, fmt, *args):
         print(f"[{self.log_date_time_string()}] {args[0]}")
+
+    def handle(self):
+        # A client hanging up mid-response must never take down the thread
+        # in a way that leaves the next pipelined request unanswered.
+        try:
+            super().handle()
+        except (BrokenPipeError, ConnectionResetError, TimeoutError):
+            self.close_connection = True
 
     def do_GET(self):
         parsed = urlparse(self.path)

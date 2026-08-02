@@ -323,7 +323,7 @@ SJI.TIMELINE = [
 ];
 
 SJI.WILDLIFE = [
-  {
+{
     id: "orca",
     name: "Orca (Killer whale)",
     latin: "Orcinus orca",
@@ -332,9 +332,10 @@ SJI.WILDLIFE = [
     emoji: "🐋",
     body: "Two cultures meet here: salmon-specialist Southern Residents (J, K, L pods) and mammal-eating Bigg’s orcas. Residents are critically endangered; Bigg’s are increasing.",
     bodyKid: "The biggest dolphins! Some eat only fish; others hunt seals. Look for tall black fins slicing the water.",
-    fun: "Each orca’s dorsal fin and saddle patch is unique — like a fingerprint. Researchers know individuals by sight."
+    fun: "Each orca’s dorsal fin and saddle patch is unique — like a fingerprint. Researchers know individuals by sight.",
+    sound: "assets/sounds/orca.mp3"
   },
-  {
+{
     id: "eagle",
     name: "Bald eagle",
     latin: "Haliaeetus leucocephalus",
@@ -343,9 +344,10 @@ SJI.WILDLIFE = [
     emoji: "🦅",
     body: "San Juan Island and its neighbors host one of the greatest concentrations of bald eagles in the contiguous United States. Nesting pairs claim tall firs with bay views.",
     bodyKid: "So many eagles live here that San Juan Island is famous for them! Watch for white heads in tall trees.",
-    fun: "Young eagles are brown all over for several years — they don’t get the white head until adulthood."
+    fun: "Young eagles are brown all over for several years — they don’t get the white head until adulthood.",
+    sound: "assets/sounds/eagle.mp3"
   },
-  {
+{
     id: "seal",
     name: "Harbor seal",
     latin: "Phoca vitulina",
@@ -354,9 +356,10 @@ SJI.WILDLIFE = [
     emoji: "🦭",
     body: "Year-round residents that haul out on reefs and pocket beaches. Primary prey for Bigg’s orcas; a key link in the nearshore food web.",
     bodyKid: "Spotted seals that nap on rocks with their banana-pose bodies. They eat fish and can dive for many minutes.",
-    fun: "Pups can swim within hours of birth. “Banana pose” (head and tail up) helps them stay dry and warm on rocks."
+    fun: "Pups can swim within hours of birth. “Banana pose” (head and tail up) helps them stay dry and warm on rocks.",
+    sound: "assets/sounds/seal.mp3"
   },
-  {
+{
     id: "porpoise",
     name: "Dall’s porpoise",
     latin: "Phocoenoides dalli",
@@ -365,9 +368,10 @@ SJI.WILDLIFE = [
     emoji: "🐬",
     body: "Stocky, black-and-white speedsters that create a distinctive “rooster tail” spray when racing. Often mistaken for baby orcas at a distance.",
     bodyKid: "Fast little cousins of dolphins with black-and-white coloring. They make a splashy spray when they zoom!",
-    fun: "They can swim over 30 mph and sometimes “bow ride” invisible pressure waves in front of boats."
+    fun: "They can swim over 30 mph and sometimes “bow ride” invisible pressure waves in front of boats.",
+    sound: "assets/sounds/porpoise.mp3"
   },
-  {
+{
     id: "deer",
     name: "Columbian black-tailed deer",
     latin: "Odocoileus hemionus columbianus",
@@ -376,9 +380,10 @@ SJI.WILDLIFE = [
     emoji: "🦌",
     body: "The largest land mammal on San Juan Island. With wolves long gone, deer shape forest understories and gardens alike.",
     bodyKid: "The biggest land animal on the island. Quiet and common — you might see one at dusk near the trees.",
-    fun: "Island deer sometimes swim between islands. They’ve been seen in open channels on calm days."
+    fun: "Island deer sometimes swim between islands. They’ve been seen in open channels on calm days.",
+    sound: "assets/sounds/deer.mp3"
   },
-  {
+{
     id: "oystercatcher",
     name: "Black oystercatcher",
     latin: "Haematopus bachmani",
@@ -387,9 +392,10 @@ SJI.WILDLIFE = [
     emoji: "🐦",
     body: "A loud, red-billed shorebird of rocky coasts. Indicator of healthy intertidal habitat; pairs defend nesting territories on bare rock.",
     bodyKid: "A black bird with a bright orange-red beak that pokes under rocks for mussels and limpets.",
-    fun: "Their peeping calls carry far over the water. If you hear a loud “wheep!”, scan the shoreline rocks."
+    fun: "Their peeping calls carry far over the water. If you hear a loud “wheep!”, scan the shoreline rocks.",
+    sound: "assets/sounds/oystercatcher.mp3"
   },
-  {
+{
     id: "heron",
     name: "Great blue heron",
     latin: "Ardea herodias",
@@ -398,9 +404,10 @@ SJI.WILDLIFE = [
     emoji: "🦩",
     body: "Patient hunters of eelgrass meadows and quiet bays. Rookeries (heronries) occupy tall trees on several islands.",
     bodyKid: "Tall gray birds that stand super still in shallow water, then spear a fish with lightning speed.",
-    fun: "They nest in noisy colonies. Chicks clack their bills for food — a prehistoric-sounding racket."
+    fun: "They nest in noisy colonies. Chicks clack their bills for food — a prehistoric-sounding racket.",
+    sound: "assets/sounds/heron.mp3"
   },
-  {
+{
     id: "madrona",
     name: "Pacific madrona",
     latin: "Arbutus menziesii",
@@ -409,9 +416,10 @@ SJI.WILDLIFE = [
     emoji: "🌳",
     body: "Iconic peeling red-orange bark and evergreen leaves. Loves dry, rocky shores in the rain shadow — the visual signature of San Juan Island’s west and south coasts.",
     bodyKid: "Trees with cinnamon-colored bark that peels like paper. They love sunny rocky places by the water.",
-    fun: "Also called arbutus or madrone. Their berries feed birds in fall; the wood is dense and burns hot."
+    fun: "Also called arbutus or madrone. Their berries feed birds in fall; the wood is dense and burns hot.",
+    sound: "assets/sounds/madrona.mp3"
   },
-  {
+{
     id: "kelp",
     name: "Bull kelp",
     latin: "Nereocystis luetkeana",
@@ -420,9 +428,10 @@ SJI.WILDLIFE = [
     emoji: "🌿",
     body: "An annual kelp that grows tens of feet in a single season, forming underwater forests that shelter juvenile fish and buffer shorelines.",
     bodyKid: "Seaweed that grows as tall as trees in one summer! Fish babies hide in the kelp forest.",
-    fun: "Each plant has a gas-filled float (pneumatocyst) like a balloon holding the fronds near sunlight."
+    fun: "Each plant has a gas-filled float (pneumatocyst) like a balloon holding the fronds near sunlight.",
+    sound: "assets/sounds/kelp.mp3"
   },
-  {
+{
     id: "garry-oak",
     name: "Garry oak",
     latin: "Quercus garryana",
@@ -431,9 +440,10 @@ SJI.WILDLIFE = [
     emoji: "🍂",
     body: "Meadow oaks of the rain shadow. Garry oak ecosystems are among the most endangered habitats in the region — remnants host rare wildflowers.",
     bodyKid: "Special oak trees that like sunny meadows. Their homes are rare and precious.",
-    fun: "Coast Salish peoples tended oak prairies with fire for camas and other foods for millennia."
+    fun: "Coast Salish peoples tended oak prairies with fire for camas and other foods for millennia.",
+    sound: "assets/sounds/garry-oak.mp3"
   },
-  {
+{
     id: "fox",
     name: "Red fox",
     latin: "Vulpes vulpes",
@@ -442,9 +452,10 @@ SJI.WILDLIFE = [
     emoji: "🦊",
     body: "Introduced to the islands in the 20th century. Now a familiar roadside and field predator of rabbits and small mammals.",
     bodyKid: "Clever orange foxes that were brought here by people. They hunt rabbits and mice.",
-    fun: "San Juan foxes are often bold around people — keep food sealed when camping."
+    fun: "San Juan foxes are often bold around people — keep food sealed when camping.",
+    sound: "assets/sounds/fox.mp3"
   },
-  {
+{
     id: "rabbit",
     name: "European rabbit",
     latin: "Oryctolagus cuniculus",
@@ -453,9 +464,10 @@ SJI.WILDLIFE = [
     emoji: "🐰",
     body: "An invasive species established from releases in the 1890s. Populations boom and bust; they alter vegetation and feed foxes and eagles.",
     bodyKid: "Not native! People let pet rabbits go long ago. Now wild rabbits live in fields and dig burrows.",
-    fun: "Rabbits from the San Juans were later used to start wild populations in other U.S. states."
+    fun: "Rabbits from the San Juans were later used to start wild populations in other U.S. states.",
+    sound: "assets/sounds/rabbit.mp3"
   },
-  {
+{
     id: "steller",
     name: "Steller sea lion",
     latin: "Eumetopias jubatus",
@@ -464,9 +476,10 @@ SJI.WILDLIFE = [
     emoji: "🦭",
     body: "Larger and louder than harbor seals. Haul-outs on outer rocks; males can exceed a ton. Seasonal visitors swell local numbers.",
     bodyKid: "Huge sea lions that roar like lions! Much bigger than harbor seals.",
-    fun: "Named for Georg Wilhelm Steller, naturalist on Vitus Bering’s 1741 expedition."
+    fun: "Named for Georg Wilhelm Steller, naturalist on Vitus Bering’s 1741 expedition.",
+    sound: "assets/sounds/steller.mp3"
   },
-  {
+{
     id: "murrelet",
     name: "Marbled murrelet",
     latin: "Brachyramphus marmoratus",
@@ -475,9 +488,10 @@ SJI.WILDLIFE = [
     emoji: "🐧",
     body: "A small seabird that nests high in old-growth trees — sometimes far inland — and feeds at sea. Federally threatened; needs both forest and forage fish.",
     bodyKid: "A little seabird that nests in tall old trees and fishes in the ocean. They’re rare and protected.",
-    fun: "For decades scientists couldn’t find their nests — they were hidden on mossy high branches."
+    fun: "For decades scientists couldn’t find their nests — they were hidden on mossy high branches.",
+    sound: "assets/sounds/murrelet.mp3"
   },
-  {
+{
     id: "salmon",
     name: "Chinook salmon",
     latin: "Oncorhynchus tshawytscha",
@@ -486,9 +500,10 @@ SJI.WILDLIFE = [
     emoji: "🐟",
     body: "The preferred prey of Southern Resident orcas. Chinook runs through the Salish Sea are a linchpin: when they falter, resident orcas starve.",
     bodyKid: "The biggest Pacific salmon — and the orcas’ favorite food. Helping salmon helps whales.",
-    fun: "Also called king salmon. They can weigh over 50 pounds on legendary runs."
+    fun: "Also called king salmon. They can weigh over 50 pounds on legendary runs.",
+    sound: "assets/sounds/salmon.mp3"
   },
-  {
+{
     id: "bluebird",
     name: "Western bluebird",
     latin: "Sialia mexicana",
@@ -497,10 +512,10 @@ SJI.WILDLIFE = [
     emoji: "💙",
     body: "Extirpated for decades by starling competition for nest cavities; volunteer nest-box programs have restored them to San Juan Island prairies and pastures.",
     bodyKid: "Sky-blue birds that almost disappeared, then came back thanks to people building nest boxes!",
-    fun: "A conservation success story you can support by protecting open meadows and nest sites."
+    fun: "A conservation success story you can support by protecting open meadows and nest sites.",
+    sound: "assets/sounds/bluebird.mp3"
   },
-  /* —— Tidepool / rocky shore (San Juan Island) —— */
-  {
+{
     id: "anemone",
     name: "Aggregating anemone",
     latin: "Anthopleura elegantissima",
@@ -509,9 +524,10 @@ SJI.WILDLIFE = [
     emoji: "🪸",
     body: "Common in San Juan Island tidepools and crevices (Cattle Point, South Beach, west-side rocks). Clonal colonies carpet shaded pools; symbiotic algae can tint them green.",
     bodyKid: "A soft flower-looking animal stuck to rock in tidepools. Its tentacles gently sting tiny food!",
-    fun: "Neighboring clone armies sting each other at the border — white war-scar bands mark the front lines."
+    fun: "Neighboring clone armies sting each other at the border — white war-scar bands mark the front lines.",
+    sound: "assets/sounds/anemone.mp3"
   },
-  {
+{
     id: "ochre-star",
     name: "Ochre sea star",
     latin: "Pisaster ochraceus",
@@ -520,9 +536,10 @@ SJI.WILDLIFE = [
     emoji: "⭐",
     body: "The classic purple-or-orange keystone star of San Juan rocky shores. By eating mussels it keeps mid-intertidal space open for many other species. Populations are recovering after sea-star wasting disease.",
     bodyKid: "A big colorful sea star on the rocks at low tide. It eats mussels so other animals get room to live!",
-    fun: "Keystone-species science was partly built on studying Pisaster on Pacific Northwest shores."
+    fun: "Keystone-species science was partly built on studying Pisaster on Pacific Northwest shores.",
+    sound: "assets/sounds/ochre-star.mp3"
   },
-  {
+{
     id: "chiton",
     name: "Gumboot chiton",
     latin: "Cryptochiton stelleri",
@@ -531,9 +548,10 @@ SJI.WILDLIFE = [
     emoji: "🦠",
     body: "The world’s largest chiton — found on low-tide boulders around San Juan Island. Eight shell plates hide under a tough brick-red girdle; it rasps algae, often at night.",
     bodyKid: "A giant rock-hugging animal with a tough red back. Underneath are eight shell plates like a shield!",
-    fun: "Gumboots can exceed a foot long. Their blood is blue-green from hemocyanin."
+    fun: "Gumboots can exceed a foot long. Their blood is blue-green from hemocyanin.",
+    sound: "assets/sounds/chiton.mp3"
   },
-  {
+{
     id: "sculpin",
     name: "Tidepool sculpin",
     latin: "Oligocottus maculosus",
@@ -542,9 +560,10 @@ SJI.WILDLIFE = [
     emoji: "🐟",
     body: "Camouflaged sit-and-wait fish of residual pools on San Juan’s rocky beaches. They tolerate wild swings in temperature and salinity as pools warm between tides.",
     bodyKid: "A tiny camouflaged fish hiding in leftover tidepools. Stay still and you might see one zip!",
-    fun: "They can breathe air briefly and hop between nearby pools when stranded."
+    fun: "They can breathe air briefly and hop between nearby pools when stranded.",
+    sound: "assets/sounds/sculpin.mp3"
   },
-  {
+{
     id: "hermit",
     name: "Hermit crab",
     latin: "Pagurus spp.",
@@ -553,9 +572,10 @@ SJI.WILDLIFE = [
     emoji: "🦀",
     body: "Soft-tailed crabs that recycle empty snail shells — easy to spot scuttling in San Juan tidepools and under rockweed at low tide.",
     bodyKid: "A crab that wears a snail shell like a backpack. When it grows, it needs a bigger shell!",
-    fun: "Watch for “shell fights” — crabs may try to steal a better home from a neighbor."
+    fun: "Watch for “shell fights” — crabs may try to steal a better home from a neighbor.",
+    sound: "assets/sounds/hermit.mp3"
   },
-  {
+{
     id: "barnacle",
     name: "Acorn barnacle",
     latin: "Balanus / Chthamalus spp.",
@@ -564,9 +584,10 @@ SJI.WILDLIFE = [
     emoji: "⚪",
     body: "White volcano-shaped crustaceans cementing the high intertidal on San Juan basalt and sandstone. Legs filter-feed when submerged; plates clamp shut at low tide.",
     bodyKid: "Tiny animals glued to rock that look like little volcanoes. When water covers them, legs pop out to grab food!",
-    fun: "Barnacles are related to crabs and shrimp — not mollusks. Their glue is one of nature’s strongest."
+    fun: "Barnacles are related to crabs and shrimp — not mollusks. Their glue is one of nature’s strongest.",
+    sound: "assets/sounds/barnacle.mp3"
   },
-  {
+{
     id: "mussel",
     name: "California mussel",
     latin: "Mytilus californianus",
@@ -575,9 +596,10 @@ SJI.WILDLIFE = [
     emoji: "🐚",
     body: "Dense blue-black beds on wave-washed mid-shore rock around San Juan Island. Byssal threads hold fast; the beds shelter worms, crabs, and snails.",
     bodyKid: "Blue-black shells stuck to rock with super-strong threads. Whole neighborhoods of animals hide among them!",
-    fun: "Without sea stars, mussels can take over the mid-intertidal and squeeze out other species."
+    fun: "Without sea stars, mussels can take over the mid-intertidal and squeeze out other species.",
+    sound: "assets/sounds/mussel.mp3"
   },
-  {
+{
     id: "urchin",
     name: "Purple sea urchin",
     latin: "Strongylocentrotus purpuratus",
@@ -586,9 +608,10 @@ SJI.WILDLIFE = [
     emoji: "🟣",
     body: "Spiny grazers of the low intertidal and shallow subtidal on San Juan’s rocky coasts. They rasp algae with five teeth (Aristotle’s lantern).",
     bodyKid: "A spiky purple ball that scrapes algae off rocks. Look only — those spines are sharp!",
-    fun: "Their five teeth work like a living drill on rock and kelp holdfasts."
+    fun: "Their five teeth work like a living drill on rock and kelp holdfasts.",
+    sound: "assets/sounds/urchin.mp3"
   },
-  {
+{
     id: "rockweed",
     name: "Pacific rockweed",
     latin: "Fucus distichus (gardneri)",
@@ -597,9 +620,10 @@ SJI.WILDLIFE = [
     emoji: "🥬",
     body: "The olive-brown “rockweed” that carpets mid-intertidal boulders on San Juan Island. Branching fronds with midribs and air bladders cushion wave shock and hide crabs, snails, and sculpins at low tide.",
     bodyKid: "Brownish-green seaweed stuck to rocks. It feels rubbery and is a favorite hideout for tiny crabs!",
-    fun: "When the tide is out, rockweed drapes like a wet blanket — step carefully so you don’t crush the homes underneath."
+    fun: "When the tide is out, rockweed drapes like a wet blanket — step carefully so you don’t crush the homes underneath.",
+    sound: "assets/sounds/rockweed.mp3"
   },
-  {
+{
     id: "sea-lettuce",
     name: "Sea lettuce",
     latin: "Ulva spp.",
@@ -608,7 +632,8 @@ SJI.WILDLIFE = [
     emoji: "🥗",
     body: "Bright green sheet-like algae common in quiet San Juan embayments, seeps, and pool margins. Fast-growing; blooms can signal nutrient-rich water. Edible in principle, but harvest only where clean and permitted.",
     bodyKid: "Bright green seaweed that looks like wet lettuce leaves floating in pools and on wet sand.",
-    fun: "Sea lettuce can double its size in a few days when sunlight and nutrients line up."
+    fun: "Sea lettuce can double its size in a few days when sunlight and nutrients line up.",
+    sound: "assets/sounds/sea-lettuce.mp3"
   }
 ];
 
@@ -930,6 +955,76 @@ SJI.QUIZ = [
     options: ["Queen Victoria", "Abraham Lincoln", "Kaiser Wilhelm I of Germany", "The United Nations"],
     answer: 2,
     explain: "Both sides agreed to arbitration by German Emperor Wilhelm I, who in 1872 chose the Haro Strait boundary — awarding the San Juans to the United States."
+  },
+  {
+    q: "Lime Kiln Point is famous for which shore-based experience?",
+    qKid: "What special thing can you do at Lime Kiln Point?",
+    options: ["Gold panning", "Watching orcas from land", "Climbing a volcano", "Catching Dungeness crab"],
+    answer: 1,
+    explain: "Lime Kiln Point State Park on San Juan Island’s west side is one of the best places on Earth to see orcas from shore as they travel Haro Strait."
+  },
+  {
+    q: "What is a “keystone species” of San Juan rocky shores that eats mussels?",
+    qKid: "Which tidepool animal eats mussels and helps other animals find space?",
+    options: ["Harbor seal", "Ochre sea star", "Bull kelp", "Bald eagle"],
+    answer: 1,
+    explain: "Ochre sea stars (Pisaster) keep mussel beds from monopolizing the mid-intertidal, making room for many other species."
+  },
+  {
+    q: "Which three Southern Resident orca pods are named with letters?",
+    qKid: "Which letter-pods make up the fish-eating orcas?",
+    options: ["A, B, and C pods", "J, K, and L pods", "X, Y, and Z pods", "R, S, and T pods"],
+    answer: 1,
+    explain: "Southern Residents are organized as J, K, and L pods — matrilineal family groups that researchers have photo-identified for decades."
+  },
+  {
+    q: "What tree with peeling cinnamon bark is a visual signature of San Juan shores?",
+    qKid: "Which tree has bark that peels like cinnamon paper?",
+    options: ["Douglas fir", "Pacific madrona", "Western redcedar", "Bigleaf maple"],
+    answer: 1,
+    explain: "Pacific madrona (Arbutus menziesii) thrives in the rain shadow’s dry, rocky coastal sites — iconic red-orange bark and evergreen leaves."
+  },
+  {
+    q: "Bigg’s (transient) killer whales mainly hunt what?",
+    qKid: "What do Bigg’s orcas like to eat?",
+    options: ["Only Chinook salmon", "Marine mammals like seals", "Kelp and sea grass", "Seabird eggs"],
+    answer: 1,
+    explain: "Bigg’s orcas are mammal-eaters — seals, sea lions, and porpoises — unlike fish-specialist Southern Residents."
+  },
+  {
+    q: "Which ferry island is home to Moran State Park and Mount Constitution?",
+    qKid: "Which big ferry island has Mount Constitution?",
+    options: ["Lopez Island", "Shaw Island", "Orcas Island", "San Juan Island"],
+    answer: 2,
+    explain: "Orcas Island hosts Moran State Park and Mount Constitution, the archipelago’s high point."
+  },
+  {
+    q: "What endangered Garry oak ecosystem is rare in the rain shadow?",
+    qKid: "Which special oak meadow habitat is rare and precious here?",
+    options: ["Mangrove swamp", "Garry oak prairie", "Alpine tundra", "Redwood grove"],
+    answer: 1,
+    explain: "Garry oak meadows and prairies are among the most endangered ecosystems in the region; Coast Salish peoples tended them for millennia."
+  },
+  {
+    q: "When the tide goes out, residual pools in the rocks are called what?",
+    qKid: "What do we call the leftover water pockets full of sea stars and anemones?",
+    options: ["Fjords", "Tidepools", "Estuaries", "Hot springs"],
+    answer: 1,
+    explain: "Tidepools — residual seawater in rock basins — reveal intertidal life at low tide. Look, don’t poke: many animals are fragile."
+  },
+  {
+    q: "How can researchers tell individual orcas apart?",
+    qKid: "How do scientists know which orca is which?",
+    options: ["By counting teeth", "By unique dorsal fins and saddle patches", "By eye color only", "By the island they sleep on"],
+    answer: 1,
+    explain: "Each orca’s dorsal fin shape and gray saddle patch form a unique “fingerprint” used in photo-ID catalogs."
+  },
+  {
+    q: "Which invasive mammal digs burrows and feeds foxes and eagles on the islands?",
+    qKid: "Which hoppy animal was brought here and is not native?",
+    options: ["Mountain goat", "European rabbit", "Moose", "Coyote"],
+    answer: 1,
+    explain: "European rabbits established from 1890s releases; their boom-and-bust cycles reshape vegetation and feed predators."
   }
 ];
 

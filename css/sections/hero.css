@@ -1,0 +1,237 @@
+/* css/sections/hero.css — "Chart & Current" hero-section styles. Owned by the hero agent. */
+
+/* ---- Layered WPA dusk seascape ---- */
+.hero-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero-scene svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+/* Readability scrim under the left-hand text column */
+.hero-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 18, 29, 0.92) 0%,
+    rgba(6, 18, 29, 0.72) 30%,
+    rgba(6, 18, 29, 0.28) 52%,
+    rgba(6, 18, 29, 0) 68%
+  );
+}
+/* Old star/wave pseudo-layers of the flat canvas are covered by the scene */
+.hero-canvas::before,
+.hero-canvas::after { display: none; }
+.hero-gradient {
+  background: linear-gradient(180deg, transparent 55%, rgba(7, 19, 34, 0.55) 82%, rgba(7, 19, 34, 0.85) 100%);
+}
+
+/* ---- Ambient motion: everything breathes like tide ---- */
+.hs-ferry { animation: hsFerryCross 24s linear infinite; }
+@keyframes hsFerryCross {
+  0%   { transform: translateX(1540px); }
+  100% { transform: translateX(-160px); }
+}
+.hs-fog { animation: hsFogDrift 22s ease-in-out infinite alternate; }
+.hs-fog-b { animation-duration: 18s; animation-delay: -9s; }
+@keyframes hsFogDrift {
+  from { transform: translateX(-46px); }
+  to   { transform: translateX(46px); }
+}
+.hs-shimmer { animation: hsShimmer 9s ease-in-out infinite alternate; }
+@keyframes hsShimmer {
+  from { opacity: 0.16; }
+  to   { opacity: 0.38; }
+}
+.hs-glitter { animation: hsShimmer 7s ease-in-out infinite alternate-reverse; }
+.hs-stars { animation: hsShimmer 11s ease-in-out infinite alternate; }
+.hs-fin { animation: hsSurface 14s ease-in-out infinite; }
+.hs-fin-b { animation-delay: -4.5s; animation-duration: 16s; }
+.hs-fin-c { animation-delay: -9s; animation-duration: 18s; }
+@keyframes hsSurface {
+  0%, 6%        { opacity: 0; transform: translateY(16px); }
+  14%           { opacity: 1; transform: translateY(0); }
+  30%           { opacity: 1; transform: translateY(-2px); }
+  46%           { opacity: 1; transform: translateY(0); }
+  58%, 100%     { opacity: 0; transform: translateY(16px); }
+}
+.hs-frond { animation: hsKelpSway 12s ease-in-out infinite alternate; }
+.hs-frond-b { animation-duration: 10s; animation-delay: -4s; }
+.hs-frond-c { animation-duration: 14s; animation-delay: -7s; }
+@keyframes hsKelpSway {
+  from { transform: rotate(-1.6deg); }
+  to   { transform: rotate(1.8deg); }
+}
+.hs-madrona {
+  transform-origin: 1440px 0px;
+  animation: hsBough 16s ease-in-out infinite alternate;
+}
+@keyframes hsBough {
+  from { transform: rotate(-0.5deg); }
+  to   { transform: rotate(0.7deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hs-ferry, .hs-fog, .hs-fog-b, .hs-shimmer, .hs-glitter, .hs-stars,
+  .hs-fin, .hs-fin-b, .hs-fin-c, .hs-frond, .hs-frond-b, .hs-frond-c, .hs-madrona {
+    animation: none;
+  }
+  .hs-ferry { transform: translateX(920px); }
+  .hs-fin { opacity: 1; }
+  .hs-fin-b, .hs-fin-c { opacity: 0.6; }
+}
+
+/* ---- Primary CTA: brass chart-tab treatment (brief §5) ---- */
+.hero-cta .btn-primary {
+  background: linear-gradient(180deg, #e5c65c, var(--brass) 55%, #9c7d1d);
+  color: var(--char);
+  border: 1px solid rgba(18, 24, 29, 0.65);
+  border-radius: 7px 7px 13px 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 0 rgba(255, 244, 205, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 220, 0.55),
+    inset 0 -2px 0 rgba(18, 24, 29, 0.25),
+    0 3px 8px rgba(4, 12, 20, 0.5),
+    0 12px 28px rgba(201, 162, 39, 0.22);
+}
+.hero-cta .btn-primary::before {
+  content: "";
+  position: absolute;
+  left: 9px; right: 9px; top: 4px; height: 3px;
+  background-image: linear-gradient(90deg, rgba(18, 24, 29, 0.55) 1px, transparent 1px);
+  background-size: 5px 3px;
+  pointer-events: none;
+}
+.hero-cta .btn-primary::after { border: 1px solid rgba(18, 24, 29, 0.3); }
+.hero-cta .btn-primary:hover {
+  background: linear-gradient(180deg, #f0d472, #d4ad33 55%, #a8861e);
+  color: var(--char);
+}
+
+/* ---- Parallax layers (driven by js/hero.js) ---- */
+.hs-l-far, .hs-l-mid, .hs-l-fg { will-change: transform; }
+
+/* ---- Hero stats: brass / chart data blocks (brief §7-Hero) ---- */
+.hero-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  padding: 0;
+  border-top: none;
+  max-width: 46rem;
+  position: relative;
+  background: linear-gradient(180deg, rgba(6, 18, 29, 0.66), rgba(6, 18, 29, 0.42));
+  border: 1px solid rgba(201, 162, 39, 0.32);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 0 1px rgba(4, 12, 20, 0.45),
+    0 8px 22px rgba(4, 12, 20, 0.38);
+  overflow: hidden;
+}
+/* twin brass hairlines, chart-frame style */
+.hero-stats::before,
+.hero-stats::after {
+  content: "";
+  position: absolute;
+  left: 10px; right: 10px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(224, 199, 106, 0.5) 10%, rgba(224, 199, 106, 0.5) 90%, transparent);
+  pointer-events: none;
+}
+.hero-stats::before {
+  top: 0;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(224, 199, 106, 0.2), rgba(224, 199, 106, 0.8) 30%, rgba(224, 199, 106, 0.8) 70%, rgba(224, 199, 106, 0.2));
+}
+.hero-stats::after { bottom: 4px; }
+.hero-stats .stat {
+  padding: 1.05rem 1.1rem 1.05rem;
+  border-left: 1px solid rgba(224, 199, 106, 0.18);
+}
+.hero-stats .stat:first-child { border-left: none; }
+.hero-stats .stat-num {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: #e8cf6f;
+  text-shadow: 0 1px 0 rgba(4, 12, 20, 0.6);
+}
+.hero-stats .stat-plus {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: rgba(232, 207, 111, 0.75);
+}
+.hero-stats .stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(220, 235, 231, 0.72);
+  margin-top: 0.45rem;
+}
+@media (max-width: 768px) {
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .hero-stats .stat:nth-child(odd) { border-left: none; }
+  .hero-stats .stat:nth-child(n + 3) { border-top: 1px solid rgba(224, 199, 106, 0.18); }
+  .hero-stats::after { display: none; }
+}
+
+/* ---- Narrow viewports: a single distant fin surfaces in the open channel,
+       clear of the stat block ---- */
+@media (max-width: 480px) {
+  .hs-pod {
+    transform: translate(4px, -116px) scale(0.55);
+    transform-origin: 846px 640px;
+  }
+  .hs-fin-b, .hs-fin-c { display: none; }
+}
+
+/* ---- Reading progress: no brass cap until there is progress ---- */
+.progress-bar:not([aria-valuenow])::after,
+.progress-bar[aria-valuenow="0"]::after {
+  opacity: 0;
+}
+
+/* ---- Scroll hint: a paying-out anchor line ---- */
+.scroll-hint {
+  animation: none;
+  gap: 0.55rem;
+  color: rgba(232, 244, 248, 0.66);
+  /* off the text column, dropping into open water */
+  left: auto;
+  right: 4.5vw;
+  bottom: 1.25rem;
+  transform: none;
+}
+@media (max-width: 900px) {
+  .scroll-hint { display: none; }
+}
+.scroll-hint .sh-line { display: block; overflow: visible; }
+.scroll-hint .sh-rope {
+  animation: shPayout 1.4s linear infinite;
+}
+@keyframes shPayout {
+  from { stroke-dashoffset: 10; }
+  to   { stroke-dashoffset: 0; }
+}
+.scroll-hint .sh-anchor {
+  animation: shSink 3.2s ease-in-out infinite;
+}
+@keyframes shSink {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3.5px); }
+}
+.scroll-hint:hover { color: rgba(232, 244, 248, 0.95); }
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint .sh-rope, .scroll-hint .sh-anchor { animation: none; }
+}
