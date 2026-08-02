@@ -19,7 +19,7 @@
         style="animation-delay: ${i * 0.04}s">
         ${media}
         <h3>${w.name}</h3>
-        <p class="wild-type">${w.type === "marine" ? "marine life" : w.type}</p>
+        <p class="wild-type">${w.tags?.includes("tidepool") ? "tidepool" : w.type === "marine" ? "marine life" : w.type}</p>
       </article>`;
     }).join("");
 
@@ -59,6 +59,7 @@
       if (activeFilter === "mammal") show = type === "mammal";
       if (activeFilter === "bird") show = type === "bird";
       if (activeFilter === "marine") show = tags.includes("marine") || type === "marine";
+      if (activeFilter === "tidepool") show = tags.includes("tidepool");
       if (activeFilter === "plant") show = type === "plant";
       card.classList.toggle("hidden", !show);
     });
@@ -91,7 +92,12 @@
       emojiEl.hidden = false;
       emojiEl.textContent = w.emoji;
     }
-    document.getElementById("wm-type").textContent = w.type === "marine" ? "Marine life" : w.type;
+    const typeLabel = w.tags?.includes("tidepool")
+      ? "Tidepool"
+      : w.type === "marine"
+        ? "Marine life"
+        : w.type;
+    document.getElementById("wm-type").textContent = typeLabel;
     document.getElementById("wm-title").textContent = w.name;
     document.getElementById("wm-latin").textContent = w.latin;
     document.getElementById("wm-body").textContent = kid ? w.bodyKid : w.body;

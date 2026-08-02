@@ -18,6 +18,7 @@
     boot("timeline", () => SJI.timeline?.build());
     boot("wildlife", () => SJI.wildlife?.build());
     boot("ecology", () => SJI.ecology?.init());
+    boot("tidepool", () => SJI.tidepool?.init());
     boot("explore", () => SJI.explore?.build());
     boot("whales", () => SJI.whales?.init());
     boot("quiz", () => SJI.quiz?.start());
@@ -137,6 +138,7 @@
     SJI.timeline?.applyKidMode(on);
     SJI.explore?.applyKidMode(on);
     SJI.ecology?.refreshText();
+    SJI.tidepool?.refreshText();
 
     // Refresh map panel if open
     const content = $(".map-panel-content");
@@ -172,7 +174,7 @@
 
   /* ---------- Scroll reveals ---------- */
   function setupReveal() {
-    const els = $$(".section-header, .map-workspace, .pig-war, .whale-sim, .wildlife-filters, .wildlife-grid, .ecology-cross, .ecology-extras, .explore-tabs, .quiz, .sources, .context-card, .pod-card, .pressure-card, .extra-card, .sightings-panel, .lime-kiln-layout, .scavenger-sheet");
+    const els = $$(".section-header, .map-workspace, .pig-war, .whale-sim, .wildlife-filters, .wildlife-grid, .ecology-cross, .ecology-extras, .tidepool-workspace, .tidepool-tips, .explore-tabs, .quiz, .sources, .context-card, .pod-card, .pressure-card, .extra-card, .sightings-panel, .lime-kiln-layout, .scavenger-sheet");
     els.forEach((el) => {
       if (!el.classList.contains("reveal")) el.classList.add("reveal");
     });

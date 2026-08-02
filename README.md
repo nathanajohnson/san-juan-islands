@@ -24,8 +24,9 @@ Then visit [http://127.0.0.1:8080](http://127.0.0.1:8080).
 | **Lime Kiln** | Photo panels of the lighthouse and west-side lookout |
 | **Wildlife** | Filterable field guide with **real photos** and detail modals |
 | **Ecology** | Interactive vertical cross-section (canopy → deep channel) |
+| **Tidepools** | Rocky-shore explorer — click creatures & tidal zones + etiquette tips |
 | **Explore** | Ferry-island deep dives with place photography |
-| **Scavenger hunt** | Printable 12-item kid checklist (checkboxes persist in `localStorage`) |
+| **Scavenger hunt** | Printable San Juan Island checklist (tidepools, Lime Kiln, Pig War camps; persists in `localStorage`) |
 | **Discover** | Six-question quiz |
 
 **Kid Mode** (header toggle) rewrites key copy for younger readers and is remembered in `localStorage`.

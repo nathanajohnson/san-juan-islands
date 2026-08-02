@@ -24,7 +24,19 @@ SJI.PHOTOS = {
     steller: "assets/photos/wildlife/sea-lion.jpg",
     murrelet: "assets/photos/wildlife/murrelet.jpg",
     salmon: "assets/photos/wildlife/salmon.jpg",
-    bluebird: "assets/photos/wildlife/bluebird.jpg"
+    bluebird: "assets/photos/wildlife/bluebird.jpg",
+    /* Tidepool animals */
+    anemone: "assets/photos/wildlife/anemone.jpg",
+    "ochre-star": "assets/photos/wildlife/ochre-star.jpg",
+    chiton: "assets/photos/wildlife/chiton.jpg",
+    sculpin: "assets/photos/wildlife/sculpin.jpg",
+    hermit: "assets/photos/wildlife/hermit.jpg",
+    barnacle: "assets/photos/wildlife/barnacle.jpg",
+    mussel: "assets/photos/wildlife/mussel.jpg",
+    urchin: "assets/photos/wildlife/urchin.jpg",
+    /* Intertidal plants / algae */
+    rockweed: "assets/photos/wildlife/rockweed.jpg",
+    "sea-lettuce": "assets/photos/wildlife/sea-lettuce.jpg"
   },
   places: {
     "san-juan": "assets/photos/places/friday-harbor.jpg",
@@ -329,8 +341,8 @@ SJI.WILDLIFE = [
     type: "bird",
     tags: ["bird"],
     emoji: "🦅",
-    body: "The San Juans host one of the greatest concentrations of bald eagles in the contiguous United States. Nesting pairs claim tall firs with bay views.",
-    bodyKid: "So many eagles live here that the islands are famous for them! Watch for white heads in tall trees.",
+    body: "San Juan Island and its neighbors host one of the greatest concentrations of bald eagles in the contiguous United States. Nesting pairs claim tall firs with bay views.",
+    bodyKid: "So many eagles live here that San Juan Island is famous for them! Watch for white heads in tall trees.",
     fun: "Young eagles are brown all over for several years — they don’t get the white head until adulthood."
   },
   {
@@ -362,8 +374,8 @@ SJI.WILDLIFE = [
     type: "mammal",
     tags: ["mammal"],
     emoji: "🦌",
-    body: "The largest land mammal on most islands. With wolves long gone, deer shape forest understories and gardens alike.",
-    bodyKid: "The biggest land animal on most islands. Quiet and common — you might see one at dusk near the trees.",
+    body: "The largest land mammal on San Juan Island. With wolves long gone, deer shape forest understories and gardens alike.",
+    bodyKid: "The biggest land animal on the island. Quiet and common — you might see one at dusk near the trees.",
     fun: "Island deer sometimes swim between islands. They’ve been seen in open channels on calm days."
   },
   {
@@ -395,7 +407,7 @@ SJI.WILDLIFE = [
     type: "plant",
     tags: ["plant"],
     emoji: "🌳",
-    body: "Iconic peeling red-orange bark and evergreen leaves. Loves dry, rocky shores in the rain shadow — the visual signature of San Juan coastlines.",
+    body: "Iconic peeling red-orange bark and evergreen leaves. Loves dry, rocky shores in the rain shadow — the visual signature of San Juan Island’s west and south coasts.",
     bodyKid: "Trees with cinnamon-colored bark that peels like paper. They love sunny rocky places by the water.",
     fun: "Also called arbutus or madrone. Their berries feed birds in fall; the wood is dense and burns hot."
   },
@@ -483,9 +495,120 @@ SJI.WILDLIFE = [
     type: "bird",
     tags: ["bird"],
     emoji: "💙",
-    body: "Extirpated for decades by starling competition for nest cavities; volunteer nest-box programs have restored them to San Juan Island.",
+    body: "Extirpated for decades by starling competition for nest cavities; volunteer nest-box programs have restored them to San Juan Island prairies and pastures.",
     bodyKid: "Sky-blue birds that almost disappeared, then came back thanks to people building nest boxes!",
     fun: "A conservation success story you can support by protecting open meadows and nest sites."
+  },
+  /* —— Tidepool / rocky shore (San Juan Island) —— */
+  {
+    id: "anemone",
+    name: "Aggregating anemone",
+    latin: "Anthopleura elegantissima",
+    type: "marine",
+    tags: ["marine", "tidepool"],
+    emoji: "🪸",
+    body: "Common in San Juan Island tidepools and crevices (Cattle Point, South Beach, west-side rocks). Clonal colonies carpet shaded pools; symbiotic algae can tint them green.",
+    bodyKid: "A soft flower-looking animal stuck to rock in tidepools. Its tentacles gently sting tiny food!",
+    fun: "Neighboring clone armies sting each other at the border — white war-scar bands mark the front lines."
+  },
+  {
+    id: "ochre-star",
+    name: "Ochre sea star",
+    latin: "Pisaster ochraceus",
+    type: "marine",
+    tags: ["marine", "tidepool"],
+    emoji: "⭐",
+    body: "The classic purple-or-orange keystone star of San Juan rocky shores. By eating mussels it keeps mid-intertidal space open for many other species. Populations are recovering after sea-star wasting disease.",
+    bodyKid: "A big colorful sea star on the rocks at low tide. It eats mussels so other animals get room to live!",
+    fun: "Keystone-species science was partly built on studying Pisaster on Pacific Northwest shores."
+  },
+  {
+    id: "chiton",
+    name: "Gumboot chiton",
+    latin: "Cryptochiton stelleri",
+    type: "marine",
+    tags: ["marine", "tidepool"],
+    emoji: "🦠",
+    body: "The world’s largest chiton — found on low-tide boulders around San Juan Island. Eight shell plates hide under a tough brick-red girdle; it rasps algae, often at night.",
+    bodyKid: "A giant rock-hugging animal with a tough red back. Underneath are eight shell plates like a shield!",
+    fun: "Gumboots can exceed a foot long. Their blood is blue-green from hemocyanin."
+  },
+  {
+    id: "sculpin",
+    name: "Tidepool sculpin",
+    latin: "Oligocottus maculosus",
+    type: "marine",
+    tags: ["marine", "tidepool"],
+    emoji: "🐟",
+    body: "Camouflaged sit-and-wait fish of residual pools on San Juan’s rocky beaches. They tolerate wild swings in temperature and salinity as pools warm between tides.",
+    bodyKid: "A tiny camouflaged fish hiding in leftover tidepools. Stay still and you might see one zip!",
+    fun: "They can breathe air briefly and hop between nearby pools when stranded."
+  },
+  {
+    id: "hermit",
+    name: "Hermit crab",
+    latin: "Pagurus spp.",
+    type: "marine",
+    tags: ["marine", "tidepool"],
+    emoji: "🦀",
+    body: "Soft-tailed crabs that recycle empty snail shells — easy to spot scuttling in San Juan tidepools and under rockweed at low tide.",
+    bodyKid: "A crab that wears a snail shell like a backpack. When it grows, it needs a bigger shell!",
+    fun: "Watch for “shell fights” — crabs may try to steal a better home from a neighbor."
+  },
+  {
+    id: "barnacle",
+    name: "Acorn barnacle",
+    latin: "Balanus / Chthamalus spp.",
+    type: "marine",
+    tags: ["marine", "tidepool"],
+    emoji: "⚪",
+    body: "White volcano-shaped crustaceans cementing the high intertidal on San Juan basalt and sandstone. Legs filter-feed when submerged; plates clamp shut at low tide.",
+    bodyKid: "Tiny animals glued to rock that look like little volcanoes. When water covers them, legs pop out to grab food!",
+    fun: "Barnacles are related to crabs and shrimp — not mollusks. Their glue is one of nature’s strongest."
+  },
+  {
+    id: "mussel",
+    name: "California mussel",
+    latin: "Mytilus californianus",
+    type: "marine",
+    tags: ["marine", "tidepool"],
+    emoji: "🐚",
+    body: "Dense blue-black beds on wave-washed mid-shore rock around San Juan Island. Byssal threads hold fast; the beds shelter worms, crabs, and snails.",
+    bodyKid: "Blue-black shells stuck to rock with super-strong threads. Whole neighborhoods of animals hide among them!",
+    fun: "Without sea stars, mussels can take over the mid-intertidal and squeeze out other species."
+  },
+  {
+    id: "urchin",
+    name: "Purple sea urchin",
+    latin: "Strongylocentrotus purpuratus",
+    type: "marine",
+    tags: ["marine", "tidepool"],
+    emoji: "🟣",
+    body: "Spiny grazers of the low intertidal and shallow subtidal on San Juan’s rocky coasts. They rasp algae with five teeth (Aristotle’s lantern).",
+    bodyKid: "A spiky purple ball that scrapes algae off rocks. Look only — those spines are sharp!",
+    fun: "Their five teeth work like a living drill on rock and kelp holdfasts."
+  },
+  {
+    id: "rockweed",
+    name: "Pacific rockweed",
+    latin: "Fucus distichus (gardneri)",
+    type: "plant",
+    tags: ["plant", "marine", "tidepool"],
+    emoji: "🥬",
+    body: "The olive-brown “rockweed” that carpets mid-intertidal boulders on San Juan Island. Branching fronds with midribs and air bladders cushion wave shock and hide crabs, snails, and sculpins at low tide.",
+    bodyKid: "Brownish-green seaweed stuck to rocks. It feels rubbery and is a favorite hideout for tiny crabs!",
+    fun: "When the tide is out, rockweed drapes like a wet blanket — step carefully so you don’t crush the homes underneath."
+  },
+  {
+    id: "sea-lettuce",
+    name: "Sea lettuce",
+    latin: "Ulva spp.",
+    type: "plant",
+    tags: ["plant", "marine", "tidepool"],
+    emoji: "🥗",
+    body: "Bright green sheet-like algae common in quiet San Juan embayments, seeps, and pool margins. Fast-growing; blooms can signal nutrient-rich water. Edible in principle, but harvest only where clean and permitted.",
+    bodyKid: "Bright green seaweed that looks like wet lettuce leaves floating in pools and on wet sand.",
+    fun: "Sea lettuce can double its size in a few days when sunlight and nutrients line up."
   }
 ];
 
@@ -545,6 +668,169 @@ SJI.ECOLOGY = {
       { emoji: "🐋", name: "Minke whale" }
     ]
   }
+};
+
+/** Rocky shore / tidepool explorer */
+SJI.TIDEPOOL = {
+  zones: {
+    splash: {
+      title: "Splash zone",
+      body: "Above the high-tide line, only spray and storm surges wet the rock. Lichens paint the basalt; a few hardy barnacles and limpets cling where wave energy is highest. Life here is a drought specialist’s game.",
+      bodyKid: "This rock only gets splashed. Tough little barnacles and colorful lichens live up high where it’s mostly dry."
+    },
+    high: {
+      title: "High intertidal",
+      body: "Covered only at high tide. Acorn barnacles and limpets dominate bare rock; black turban snails graze films of algae. Emersion heat and desiccation set the upper limits of many species.",
+      bodyKid: "Underwater only when the tide is high. Barnacles and snails hang on tight so they don’t dry out."
+    },
+    mid: {
+      title: "Mid intertidal",
+      body: "Twice-daily immersion. Dense mussel beds, goose barnacles, and carpeting algae form living armor. Competition for space is fierce — sea stars pry open mussels and reset the race.",
+      bodyKid: "Covered and uncovered twice a day. Mussels, barnacles, and seaweed cover the rocks like a living rug."
+    },
+    low: {
+      title: "Low intertidal & pools",
+      body: "Exposed only on the lowest tides — the classic tidepool realm. Anemones, chitons, sculpins, urchins, and ochre stars pack crevices and residual pools. A minus tide is the best window into this underwater garden.",
+      bodyKid: "Only the lowest tides open this secret world. Look for sea stars, anemones, and tiny fish in the leftover pools!"
+    }
+  },
+  creatures: [
+    {
+      id: "anemone",
+      name: "Aggregating anemone",
+      latin: "Anthopleura elegantissima",
+      emoji: "🪸",
+      zone: "low",
+      body: "Colonies of identical clones carpet shaded pools and crevices. Tentacles sting microscopic prey; symbiotic algae tint many green. Neighboring clones fight territorial wars with specialized tentacles — a quiet civil war in every pool.",
+      bodyKid: "A soft flower-looking animal that stays stuck to rock. Its tentacles gently sting tiny food. Families of clones live side by side!",
+      fun: "When two different clone armies meet, they sting each other at the border — white war-scar bands are common."
+    },
+    {
+      id: "ochre-star",
+      name: "Ochre sea star",
+      latin: "Pisaster ochraceus",
+      emoji: "⭐",
+      zone: "mid",
+      body: "A keystone predator of the rocky shore. By eating mussels, ochre stars prevent a single competitor from monopolizing space — creating room for dozens of other species. Purple and orange morphs are both common in the San Juans.",
+      bodyKid: "A big colorful sea star that eats mussels. Without it, mussels would take over the whole rock!",
+      fun: "Keystone species concept was partly developed by studying Pisaster on Pacific Northwest shores."
+    },
+    {
+      id: "chiton",
+      name: "Gumboot chiton",
+      latin: "Cryptochiton stelleri",
+      emoji: "🦠",
+      zone: "low",
+      body: "The world’s largest chiton — a living armored slug of eight hidden plates under a leathery girdle. It rasps algae at night and can live decades. Look for brick-red backs on low-tide boulders.",
+      bodyKid: "A giant rock-hugging animal with a tough red back. Underneath are eight shell plates — like a built-in shield!",
+      fun: "Gumboots can exceed a foot long. Their blood is blue-green from hemocyanin."
+    },
+    {
+      id: "sculpin",
+      name: "Tidepool sculpin",
+      latin: "Oligocottus maculosus",
+      emoji: "🐟",
+      zone: "low",
+      body: "A master of residual pools. Camouflaged mottling and a sit-and-wait habit make sculpins easy to miss until they dart. They tolerate wide swings in temperature, salinity, and oxygen as pools warm between tides.",
+      bodyKid: "A tiny camouflaged fish that hides in leftover tidepools. Stay still and you might see one zip between rocks!",
+      fun: "They can breathe air briefly and hop between nearby pools when stranded."
+    },
+    {
+      id: "hermit",
+      name: "Hermit crab",
+      latin: "Pagurus spp.",
+      emoji: "🦀",
+      zone: "mid",
+      body: "Soft-tailed crabs that house-hunt empty snail shells. As they grow they must upgrade — competition for the right shell is a tidepool soap opera. Antennae constantly sample scent and flow.",
+      bodyKid: "A crab that wears a snail shell like a backpack home. When it gets bigger, it has to find a roomier shell!",
+      fun: "Watch for “shell fights” — crabs may try to steal a better shell from a neighbor."
+    },
+    {
+      id: "barnacle",
+      name: "Acorn barnacle",
+      latin: "Balanus / Chthamalus spp.",
+      emoji: "⚪",
+      zone: "high",
+      body: "Cemented crustaceans that filter-feed with feathery legs when submerged. At low tide they clamp opercular plates shut against desiccation. Dense white crusts mark the high intertidal like a waterline of life.",
+      bodyKid: "Tiny animals glued to rock that look like little volcanoes. When water covers them, legs pop out to grab food!",
+      fun: "Barnacles are related to crabs and shrimp — not mollusks. Their glue is one of nature’s strongest."
+    },
+    {
+      id: "mussel",
+      name: "California mussel",
+      latin: "Mytilus californianus",
+      emoji: "🐚",
+      zone: "mid",
+      body: "Byssal threads lash mussels into dense beds that buffer wave shock and create microhabitats for dozens of species. Without sea star predation, mussels can dominate mid-shore rock.",
+      bodyKid: "Blue-black shells stuck to rock with super-strong threads. Whole neighborhoods of animals hide among them!",
+      fun: "A mussel bed is a mini city — worms, crabs, and snails live in the cracks between shells."
+    },
+    {
+      id: "urchin",
+      name: "Purple sea urchin",
+      latin: "Strongylocentrotus purpuratus",
+      emoji: "🟣",
+      zone: "low",
+      body: "Grazers that rasp algae with a five-toothed Aristotle’s lantern. In balance they keep rock surfaces diverse; in outbreaks (and without sea otters or large stars) they can help create urchin barrens below the tide.",
+      bodyKid: "A spiky purple ball that scrapes algae off rocks. Handle with your eyes only — those spines are sharp!",
+      fun: "Their mouth has five teeth that work like a living drill."
+    },
+    {
+      id: "rockweed",
+      name: "Pacific rockweed",
+      latin: "Fucus distichus (gardneri)",
+      emoji: "🥬",
+      zone: "mid",
+      kind: "plant",
+      body: "Olive-brown branching algae with air bladders — the classic seaweed blanket of San Juan mid-shore rocks. Crabs, snails, and sculpins shelter under its fronds when the tide drops.",
+      bodyKid: "Rubbery brown-green seaweed that covers rocks. Lots of tiny animals hide underneath!",
+      fun: "Those little bubbles in the fronds are air sacs that help the plant float upright when the tide is in."
+    },
+    {
+      id: "sea-lettuce",
+      name: "Sea lettuce",
+      latin: "Ulva spp.",
+      emoji: "🥗",
+      zone: "high",
+      kind: "plant",
+      body: "Bright green sheets in quiet pools, seeps, and soft shores around San Juan Island. Fast-growing and easy to spot as a splash of emerald on wet rock or mud.",
+      bodyKid: "Bright green seaweed that looks like wet lettuce leaves!",
+      fun: "Sea lettuce can grow so fast it almost doubles in a few sunny days."
+    },
+    {
+      id: "kelp",
+      name: "Bull kelp",
+      latin: "Nereocystis luetkeana",
+      emoji: "🌿",
+      zone: "low",
+      kind: "plant",
+      body: "Often washed onto San Juan beaches or visible just offshore as long brown ropes with bulb floats. Juvenile fish use the living forest; beach wrack feeds shore scavengers.",
+      bodyKid: "The tall seaweed with a balloon-like float. You might see long ropes of it washed up on the beach!",
+      fun: "A single bull kelp can grow tens of feet in one summer — one of the fastest-growing seaweeds on Earth."
+    }
+  ],
+  tips: [
+    {
+      title: "Look, don’t poke",
+      body: "Hands and tools crush fragile animals and can tear anemones from rock. Observe with eyes and cameras.",
+      bodyKid: "Use your eyes, not your fingers. Animals can get hurt even by a gentle poke."
+    },
+    {
+      title: "Watch your step",
+      body: "Walk on bare rock when possible. Stepping on seaweed and mussel beds smashes homes you cannot see.",
+      bodyKid: "Step on plain rock, not on the green slippery seaweed or the mussel patches."
+    },
+    {
+      title: "Turn, then return",
+      body: "If you lift a rock, put it back exactly as you found it — dark underside down — so residents keep their shelter.",
+      bodyKid: "If a grown-up carefully lifts a rock, put it back the same way so animals keep their shady home."
+    },
+    {
+      title: "Mind the tide",
+      body: "Minus tides are best and brief. Know the schedule, keep an eye on the water, and never get cut off by a rising flood.",
+      bodyKid: "The ocean comes back! Always know when the tide turns and leave extra time to walk back."
+    }
+  ]
 };
 
 SJI.EXPLORE = {
