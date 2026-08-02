@@ -119,6 +119,8 @@ a:hover { color: var(--sea-deep); }
   backdrop-filter: blur(16px) saturate(1.2);
   border-bottom: 1px solid transparent;
   transition: background 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+  /* Allow the mobile dropdown to paint below the bar */
+  overflow: visible;
 }
 .site-header.scrolled {
   border-bottom-color: rgba(26, 31, 36, 0.08);
@@ -2202,7 +2204,9 @@ body.kid-mode .hero-title .italic { color: #f4d58d; }
     position: fixed;
     top: var(--header-h);
     left: 0; right: 0;
-    background: var(--paper);
+    z-index: 950;
+    background: rgba(247, 244, 239, 0.98);
+    background-image: var(--grain), linear-gradient(180deg, #fdfbf5, var(--paper, #f7f4ef));
     flex-direction: column;
     padding: 1rem;
     gap: 0.25rem;
@@ -2210,16 +2214,34 @@ body.kid-mode .hero-title .italic { color: #f4d58d; }
     transform: translateY(-120%);
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.3s var(--ease), opacity 0.3s;
+    visibility: hidden;
+    transition: transform 0.3s var(--ease), opacity 0.3s, visibility 0.3s;
     box-shadow: var(--shadow);
+    /* Dropdown is always light paper — never inherit header on-dark link colors */
+    color: var(--ink, #1a1f24);
   }
   .main-nav.open {
     transform: none;
     opacity: 1;
     pointer-events: auto;
+    visibility: visible;
   }
-  .main-nav a { padding: 0.75rem 1rem; font-size: 1rem; }
-  .menu-toggle { display: flex; }
+  .main-nav a,
+  .site-header.on-dark .main-nav a {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: var(--ink-soft, #3d4a52);
+  }
+  .main-nav a:hover,
+  .main-nav a.active,
+  .site-header.on-dark .main-nav a:hover,
+  .site-header.on-dark .main-nav a.active {
+    color: var(--sea-deep, #0a3d4d);
+    background: rgba(42, 111, 143, 0.1);
+  }
+  .menu-toggle { display: flex; color: inherit; }
+  .site-header.on-dark .menu-toggle { color: var(--sea-mist, #e8f4f8); }
+  .site-header:not(.on-dark) .menu-toggle { color: var(--sea-deep, #0a3d4d); }
   .kid-label { display: none; }
   .hero-stats { grid-template-columns: 1fr 1fr; }
   .whale-pods { grid-template-columns: 1fr; }

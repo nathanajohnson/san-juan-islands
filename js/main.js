@@ -82,7 +82,11 @@
     links.forEach((a) => {
       a.addEventListener("click", () => {
         $("#main-nav")?.classList.remove("open");
-        $("#menu-toggle")?.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("nav-open");
+        $("#site-header")?.classList.remove("nav-open");
+        const toggle = $("#menu-toggle");
+        toggle?.setAttribute("aria-expanded", "false");
+        toggle?.setAttribute("aria-label", "Open menu");
       });
     });
   }
@@ -90,9 +94,23 @@
   function setupMobileMenu() {
     const toggle = $("#menu-toggle");
     const nav = $("#main-nav");
+    const header = $("#site-header");
     toggle?.addEventListener("click", () => {
       const open = nav.classList.toggle("open");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      document.body.classList.toggle("nav-open", open);
+      header?.classList.toggle("nav-open", open);
+    });
+    /* Close when tapping outside the panel */
+    document.addEventListener("click", (e) => {
+      if (!nav?.classList.contains("open")) return;
+      if (nav.contains(e.target) || toggle?.contains(e.target)) return;
+      nav.classList.remove("open");
+      document.body.classList.remove("nav-open");
+      header?.classList.remove("nav-open");
+      toggle?.setAttribute("aria-expanded", "false");
+      toggle?.setAttribute("aria-label", "Open menu");
     });
   }
 
@@ -179,16 +197,25 @@
       if (!el.classList.contains("reveal")) el.classList.add("reveal");
     });
 
+    /* threshold 0: tall blocks (e.g. wildlife grid) never hit 12% visible on
+       mobile phones, so they stayed opacity:0 until a filter shrank them. */
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
+            /* Kick lazy images that sat in opacity:0 / off-screen containers */
+            entry.target.querySelectorAll("img[loading='lazy']").forEach((img) => {
+              if (!img.complete) {
+                const src = img.currentSrc || img.src;
+                if (src) img.loading = "eager";
+              }
+            });
             io.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -5% 0px" }
+      { threshold: 0, rootMargin: "64px 0px -4% 0px" }
     );
     $$(".reveal").forEach((el) => io.observe(el));
   }

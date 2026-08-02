@@ -48,13 +48,16 @@
     grid.innerHTML = SJI.WILDLIFE.map((w, i) => {
       const photo = SJI.PHOTOS?.wildlife?.[w.id];
       const badge = `<span class="wild-badge" aria-hidden="true">${SJI.icon(iconFor(w))}</span>`;
+      /* Eager for first row-ish cards so mobile shows photos without a filter
+         click; lazy for the rest once the grid is in view. */
+      const loading = i < 6 ? "eager" : "lazy";
       const media = photo
-        ? `<div class="wild-photo"><img src="${photo}" alt="" loading="lazy" />${badge}</div>`
+        ? `<div class="wild-photo"><img src="${photo}" alt="" loading="${loading}" decoding="async" />${badge}</div>`
         : `<div class="wild-photo wild-photo--icon" aria-hidden="true">${SJI.icon(iconFor(w), "icon-xl")}${badge}</div>`;
       return `
       <article class="wild-card has-photo" data-id="${w.id}" data-type="${w.type}" data-tags="${w.tags.join(" ")}"
         tabindex="0" role="button" aria-label="Learn about ${w.name}"
-        style="animation-delay: ${i * 0.04}s">
+        style="animation-delay: ${Math.min(i, 12) * 0.04}s">
         ${media}
         <div class="wild-meta">
           <h3>${w.name}</h3>
@@ -85,6 +88,9 @@
         btn.classList.add("active");
         activeFilter = btn.dataset.filter;
         applyFilter();
+        /* Ensure grid is visible if user interacts before scroll-reveal fires */
+        grid.classList.add("visible");
+        document.getElementById("wildlife-filters")?.classList.add("visible");
       });
     });
 
