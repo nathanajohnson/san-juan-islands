@@ -1,0 +1,34 @@
+name: Refresh whale sightings
+
+# Backup cache for when a visitor cannot reach Orca Network's WP API.
+# The live site primarily fetches Orca Network directly in the browser
+# (WordPress REST has open CORS). This job keeps data/sightings.json fresh
+# as a fallback and for first paint if the API is down.
+
+on:
+  schedule:
+    # Every hour (GitHub may delay scheduled runs under load)
+    - cron: "20 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Export sightings snapshot
+        run: python3 scripts/export_sightings.py
+
+      - name: Commit if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: refresh whale sightings cache"
+          file_pattern: data/sightings.json
