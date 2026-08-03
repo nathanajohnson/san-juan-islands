@@ -78,7 +78,12 @@
 
 /* Reset */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
+  overflow-x: hidden;
+  max-width: 100%;
+}
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -88,6 +93,7 @@ body {
   background: var(--paper);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  max-width: 100%;
 }
 body.kid-mode { font-size: 18px; }
 img, svg { max-width: 100%; display: block; }
@@ -437,6 +443,9 @@ body.kid-mode .kid-toggle .kid-label::after { content: none; }
 .section {
   padding: var(--space-3xl) 1.25rem;
   position: relative;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 .section-header {
   max-width: var(--max);
@@ -1290,6 +1299,11 @@ body.kid-mode .timeline-event .kid-badge { display: inline; }
   grid-template-columns: 1.15fr 1fr;
   gap: 1.25rem;
   align-items: start;
+  /* Grid items default to min-width:auto and will expand the page to fit
+     wide table content; force shrink so overflow stays inside the card. */
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 .tide-forecast,
 .tide-spots {
@@ -1297,6 +1311,9 @@ body.kid-mode .timeline-event .kid-badge { display: inline; }
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   padding: 1.35rem 1.5rem 1.25rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 .tide-forecast-head {
   display: flex;
@@ -1369,7 +1386,11 @@ body.kid-mode .timeline-event .kid-badge { display: inline; }
 
 .tide-table-wrap {
   overflow-x: auto;
-  margin: 0 -0.25rem;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  margin: 0;
+  max-width: 100%;
+  min-width: 0;
   border-radius: var(--radius);
   border: 1px solid rgba(43, 58, 66, 0.1);
 }
@@ -1377,7 +1398,9 @@ body.kid-mode .timeline-event .kid-badge { display: inline; }
   width: 100%;
   border-collapse: collapse;
   font-size: 0.86rem;
-  min-width: 28rem;
+  /* Prefer fitting the card; only force horizontal scroll when needed */
+  min-width: 0;
+  table-layout: auto;
 }
 .tide-table th {
   text-align: left;
@@ -1430,7 +1453,11 @@ body.kid-mode .timeline-event .kid-badge { display: inline; }
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.tide-tip { font-size: 0.8rem; }
+.tide-tip {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  max-width: 14rem;
+}
 .tide-loading,
 .tide-error {
   text-align: center;
@@ -2189,7 +2216,10 @@ body.kid-mode .hero-title .italic { color: #f4d58d; }
   .pressure-grid { grid-template-columns: 1fr 1fr; }
   .ecology-cross { grid-template-columns: 1fr; }
   .tidepool-layout { grid-template-columns: 1fr; }
-  .tide-live { grid-template-columns: 1fr; }
+  .tide-live {
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
   .tide-spots-grid { max-height: none; }
   .tp-tips-grid { grid-template-columns: 1fr 1fr; }
   .pig-war { grid-template-columns: 1fr; }
@@ -2250,6 +2280,46 @@ body.kid-mode .hero-title .italic { color: #f4d58d; }
   .section { padding: var(--space-2xl) 1rem; }
   .sim-legend { width: 100%; }
   #sim-scrub { width: 100px; }
+
+  /* Tide forecast: keep table inside the viewport; tip is secondary on phones */
+  .tide-forecast,
+  .tide-spots {
+    padding: 1.1rem 1rem 1rem;
+  }
+  .tide-forecast-head {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .tide-now {
+    max-width: none;
+    min-width: 0;
+    width: 100%;
+  }
+  .tide-table {
+    font-size: 0.8rem;
+  }
+  .tide-table th,
+  .tide-table td {
+    padding: 0.45rem 0.5rem;
+  }
+  .tide-table th:last-child,
+  .tide-table td.tide-tip {
+    display: none;
+  }
+  .sightings-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .tide-table th,
+  .tide-table td {
+    padding: 0.4rem 0.4rem;
+  }
+  .tide-kind {
+    font-size: 0.68rem;
+    padding: 0.12rem 0.35rem;
+  }
 }
 
 /* ========== LIVE MAP (Leaflet) ========== */

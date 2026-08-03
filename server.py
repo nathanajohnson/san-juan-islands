@@ -471,15 +471,57 @@ def prefer_local(sightings: list[dict]) -> list[dict]:
     return sightings[:32]
 
 
-def _try_month(c: dict) -> tuple[dict, list[dict] | None, str]:
-    """Return (candidate, parsed_or_None, error_note)."""
-    status, body = fetch_url(c["url"], timeout=8)
+def fetch_month_via_wp_api(c: dict) -> tuple[str | None, str]:
+    """Fetch monthly report HTML via WordPress REST (same source the browser uses).
+
+    Returns (html_or_None, error_note).
+    """
+    slug = f"{c['month']}-{c['year']}-whale-sightings"
+    api = (
+        "https://orcanetwork.org/wp-json/wp/v2/whale_sightings"
+        f"?slug={slug}&_fields=id,slug,link,title,content,modified"
+    )
+    status, body = fetch_url(api, timeout=12)
     if status != 200:
-        return c, None, f"{c['month']} {c['year']}: HTTP {status}"
+        return None, f"{c['month']} {c['year']}: WP HTTP {status}"
+    try:
+        items = json.loads(body)
+    except json.JSONDecodeError:
+        return None, f"{c['month']} {c['year']}: WP non-JSON"
+    if not isinstance(items, list) or not items:
+        return None, f"{c['month']} {c['year']}: WP empty"
+    content = (items[0].get("content") or {}).get("rendered") or ""
+    if len(content) < 400:
+        return None, f"{c['month']} {c['year']}: WP short content"
+    link = items[0].get("link") or c.get("url") or ""
+    # Stash link for caller via candidate mutation
+    c["url"] = link or c.get("url")
+    c["modified"] = items[0].get("modified") or ""
+    # Parser looks for cetacean markers / whale_sightings in the body
+    html = f"<html><body data-source='wp-rest'>{content}</body><!-- whale_sightings KILLER WHALE --></html>"
+    return html, ""
+
+
+def _try_month(c: dict) -> tuple[dict, list[dict] | None, str]:
+    """Return (candidate, parsed_or_None, error_note). Prefer WP REST, fall back to HTML page."""
+    body = None
+    err = ""
+
+    html, wp_err = fetch_month_via_wp_api(c)
+    if html:
+        body = html
+    else:
+        err = wp_err
+        status, page = fetch_url(c["url"], timeout=8)
+        if status != 200:
+            return c, None, err or f"{c['month']} {c['year']}: HTTP {status}"
+        upper = page.upper()
+        if ("PAGE NOT FOUND" in upper or "ERROR 404" in upper) and "KILLER WHALE" not in upper:
+            return c, None, err or f"{c['month']} {c['year']}: soft 404"
+        body = page
+
     upper = body.upper()
-    if ("PAGE NOT FOUND" in upper or "ERROR 404" in upper) and "KILLER WHALE" not in upper:
-        return c, None, f"{c['month']} {c['year']}: soft 404"
-    if "KILLER" not in upper and "HUMPBACK" not in upper and "GRAY WHALE" not in upper:
+    if "KILLER" not in upper and "HUMPBACK" not in upper and "GRAY WHALE" not in upper and "ORCA" not in upper:
         return c, None, f"{c['month']} {c['year']}: no cetacean content"
     label = f"Orca Network · {c['month'].title()} {c['year']}"
     parsed = parse_sightings(body, label, c.get("url") or "")

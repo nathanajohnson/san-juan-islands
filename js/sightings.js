@@ -1,14 +1,35 @@
 /**
  * Live whale-report feed for the traffic map + live cartography.
  *
- * Primary path: GET /api/sightings from local server.py (no CORS issues).
- * Fallbacks: public CORS proxies → sample San Juan set.
+ * Load order:
+ *   1. GET /api/sightings from local server.py (optional; richer media parse)
+ *   2. Orca Network WordPress REST API (live, CORS-enabled — works on GitHub Pages)
+ *   3. Bundled data/sightings.json (Actions-refreshed cache if live fetch fails)
+ *   4. Curated in-file sample set
  *
  * Educational use — not an official Orca Network product.
  */
 (function () {
   const STATUS_EL = () => document.getElementById("sightings-status");
   const LIST_EL = () => document.getElementById("sightings-list");
+
+  /** Orca Network exposes monthly reports as a CPT with open CORS on wp-json. */
+  const WP_SIGHTINGS_API =
+    "https://orcanetwork.org/wp-json/wp/v2/whale_sightings";
+
+  /** Re-poll live feed while the tab is open (real-time use on static hosts). */
+  const LIVE_POLL_MS = 10 * 60 * 1000;
+
+  let pollTimer = null;
+
+  /** Resolve a path relative to this site (supports GitHub Pages project subpaths). */
+  function siteUrl(rel) {
+    try {
+      return new URL(rel, document.baseURI || location.href).href;
+    } catch {
+      return rel;
+    }
+  }
 
   const FALLBACK = [
     {
@@ -223,10 +244,73 @@
     return "other";
   }
 
-  function parseOrcaNetworkHtml(html, sourceLabel) {
+  function speciesLabelFor(species) {
+    const sl = String(species || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+    if (sl.includes("southern resident")) return "Southern Resident killer whales";
+    if (sl.includes("bigg")) return "Bigg's killer whales";
+    if (sl === "orca" || sl === "killer whale" || sl === "killer whales") {
+      return "Killer whale (orca)";
+    }
+    if (sl.includes("humpback")) return "Humpback whale";
+    if (sl.includes("gray")) return "Gray whale";
+    if (sl.includes("minke")) return "Minke whale";
+    return String(species || "Cetacean").replace(/\s+/g, " ").trim();
+  }
+
+  function preferLocal(sightings) {
+    const local = sightings.filter(
+      (s) => s.lat >= 48.3 && s.lat <= 48.9 && s.lng >= -123.45 && s.lng <= -122.55
+    );
+    if (local.length >= 4) {
+      const rest = sightings.filter((s) => !local.includes(s));
+      return local.slice(0, 24).concat(rest.slice(0, 8));
+    }
+    return sightings.slice(0, 32);
+  }
+
+  function extractMediaFromHtml(html) {
+    const media = [];
+    const seen = new Set();
+    const re = /<a[^>]+href=["'](https?:\/\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+    let m;
+    while ((m = re.exec(html || ""))) {
+      const url = m[1];
+      if (seen.has(url)) continue;
+      const label = decodeEntities(m[2].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()) || "Link";
+      const u = url.toLowerCase();
+      const lab = label.toLowerCase();
+      if (/youtube\.com\/@|orcanetwork\.org\/(?:about|home|author|shop|donate)/i.test(u)) continue;
+      let type = null;
+      if (/youtube\.com\/watch|youtu\.be\/|youtube\.com\/embed\//i.test(u)) type = "youtube";
+      else if (u.includes("vimeo.com")) type = "vimeo";
+      else if (u.includes("orcasound")) type = "audio";
+      else if (/facebook\.com\/reel|fb\.watch/i.test(u)) type = "video";
+      else if (u.includes("facebook.com") || u.includes("fb.com")) type = "photos";
+      else if (/\.(jpe?g|png|gif|webp)(\?|$)/i.test(u)) type = "image";
+      else if (/\.(mp4|mov|webm)(\?|$)/i.test(u)) type = "video";
+      else if (/link to/i.test(lab) && /photo|video|reel|audio|youtube/i.test(lab)) {
+        type = /photo/i.test(lab) ? "photos" : /audio/i.test(lab) ? "audio" : "video";
+      }
+      if (!type) continue;
+      seen.add(url);
+      const item = { type, url, label: label.slice(0, 80) };
+      const yid = (url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/) || [])[1];
+      if (yid) item.youtubeId = yid;
+      media.push(item);
+      if (media.length >= 24) break;
+    }
+    return media;
+  }
+
+  function parseOrcaNetworkHtml(html, sourceLabel, sourceUrl) {
     const sightings = [];
-    if (!html || html.length < 800) return sightings;
-    if (!/KILLER|HUMPBACK|GRAY WHALE|MINKE|PORPOISE/i.test(html)) return sightings;
+    if (!html || html.length < 400) return sightings;
+    if (!/KILLER|HUMPBACK|GRAY WHALE|MINKE|PORPOISE|ORCA/i.test(html)) return sightings;
+
+    const pageMedia = extractMediaFromHtml(html);
 
     let text = html
       .replace(/<script[\s\S]*?<\/script>/gi, " ")
@@ -240,7 +324,7 @@
     const lines = text
       .split("\n")
       .map((l) => l.trim())
-      .filter((l) => l.length > 8 && l.length < 500);
+      .filter((l) => l.length > 8 && l.length < 1200);
 
     const speciesRe =
       /(BIGG.?S|SOUTHERN RESIDENT|KILLER WHALE|ORCA|HUMPBACK|GRAY WHALE|MINKE|PORPOISE|PACIFIC WHITE.?SIDED|FALSE KILLER|FIN WHALE)/i;
@@ -262,7 +346,9 @@
 
       const hasSpecies = speciesRe.test(line);
       if (!hasSpecies && !currentSpecies) continue;
-      if (!hasSpecies && !resolveCoords(line) && !/\bT\d{2}/.test(line)) continue;
+      if (!hasSpecies && !resolveCoords(line) && !/\bT\d{2}/.test(line) && !/\b[JKL]\s*[Pp]od\b/.test(line)) {
+        continue;
+      }
 
       const coords = resolveCoords(line);
       if (!coords) continue;
@@ -272,24 +358,33 @@
       const species = speciesMatch ? speciesMatch[0] : currentSpecies || "Cetacean";
       const group =
         (line.match(/\bT\d{2,3}[A-Z0-9]*s?\b/) || line.match(/\b[JKL]\s*[Pp]od\b/) || [""])[0];
-      const key = `${coords.lat.toFixed(3)}|${coords.lng.toFixed(3)}|${group}|${currentDate}`;
+      const note = line.slice(0, 280);
+      const key = `${coords.lat.toFixed(3)}|${coords.lng.toFixed(3)}|${group}|${currentDate}|${note.slice(0, 40)}`;
       if (seen.has(key)) continue;
       seen.add(key);
 
       const jitter = ((sightings.length * 17) % 10) * 0.001;
+      // Attach a few page-level media items to early cards (best-effort)
+      const media =
+        sightings.length < 6 && pageMedia.length
+          ? pageMedia.slice(sightings.length, sightings.length + 2)
+          : [];
       sightings.push({
         id: "live-" + sightings.length,
-        species: species.replace(/\s+/g, " "),
+        species: speciesLabelFor(species),
         kind: classify(species, line),
         group,
         location: coords.matched,
         when: currentDate || "Report",
-        note: line.slice(0, 220),
+        note,
+        report: line.slice(0, 1200),
+        media,
         lat: coords.lat + jitter - 0.005,
         lng: coords.lng + (((sightings.length * 13) % 10) * 0.001 - 0.005),
-        source: sourceLabel || "Orca Network (parsed)"
+        source: sourceLabel || "Orca Network (parsed)",
+        sourceUrl: sourceUrl || ""
       });
-      if (sightings.length >= 36) break;
+      if (sightings.length >= 40) break;
     }
     return sightings;
   }
@@ -375,32 +470,97 @@
     }
   }
 
-  /** Browser-side: walk months via CORS proxies */
-  async function loadFromProxies() {
+  /**
+   * Live path for GitHub Pages / any static host:
+   * Orca Network's WP REST API reflects Access-Control-Allow-Origin, so the
+   * browser can fetch the latest monthly report without a backend proxy.
+   */
+  async function fetchMonthViaWpApi(c) {
+    const slug = `${c.month}-${c.year}-whale-sightings`;
+    const apiUrl =
+      `${WP_SIGHTINGS_API}?slug=${encodeURIComponent(slug)}` +
+      `&_fields=id,slug,link,title,content,modified`;
+    try {
+      const res = await fetch(apiUrl, {
+        signal: abortableTimeout(20000),
+        headers: { Accept: "application/json" },
+        cache: "no-store"
+      });
+      if (!res.ok) return null;
+      const items = await res.json();
+      if (!Array.isArray(items) || !items.length) return null;
+      const item = items[0];
+      const html = item.content?.rendered || "";
+      if (html.length < 400) return null;
+      const label = `Orca Network · ${c.month} ${c.year}`;
+      const sourceUrl =
+        item.link ||
+        `https://orcanetwork.org/whale_sightings/${slug}/`;
+      const parsed = parseOrcaNetworkHtml(html, label, sourceUrl);
+      if (parsed.length < 2) return null;
+      const chosen = preferLocal(parsed);
+      return {
+        ok: true,
+        live: true,
+        sightings: chosen,
+        source: `${c.month} ${c.year}`,
+        sourceUrl,
+        count: chosen.length,
+        refreshed: item.modified || new Date().toISOString(),
+        via: "wp-rest"
+      };
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function loadFromWpApi(onProgress) {
     const candidates = monthCandidates(18);
+    // Parallel batches (newest first), stop at first successful month in order
+    const batchSize = 4;
+    for (let i = 0; i < candidates.length; i += batchSize) {
+      const batch = candidates.slice(i, i + batchSize);
+      if (onProgress) {
+        const newest = batch[0];
+        onProgress(newest);
+      }
+      const results = await Promise.all(batch.map((c) => fetchMonthViaWpApi(c)));
+      for (let j = 0; j < results.length; j++) {
+        if (results[j]) return results[j];
+      }
+    }
+    return null;
+  }
+
+  /** Browser-side HTML scrape via public CORS proxies (secondary). */
+  async function loadFromProxies() {
+    const candidates = monthCandidates(12);
     for (const c of candidates) {
       setStatus(`Trying Orca Network · ${c.month} ${c.year}…`, "loading");
       const html = await fetchViaProxy(c.url);
       if (!html) continue;
       const parsed = parseOrcaNetworkHtml(
         html,
-        `Orca Network · ${c.month} ${c.year}`
+        `Orca Network · ${c.month} ${c.year}`,
+        c.url
       );
       if (parsed.length >= 2) {
+        const chosen = preferLocal(parsed);
         return {
           ok: true,
           live: true,
-          sightings: parsed,
+          sightings: chosen,
           source: `${c.month} ${c.year}`,
           sourceUrl: c.url,
-          count: parsed.length
+          count: chosen.length,
+          via: "cors-proxy"
         };
       }
     }
     return null;
   }
 
-  function applyData(data) {
+  function applyData(data, mode) {
     current = data.sightings.map((s, i) => ({
       ...s,
       id: s.id || `live-${i}`,
@@ -408,19 +568,35 @@
       media: Array.isArray(s.media) ? s.media : [],
       sourceUrl: s.sourceUrl || data.sourceUrl || ""
     }));
-    live = !!data.live;
+    const fromSnapshot = mode === "snapshot" || !!data.static;
+    live = !!data.live && !fromSnapshot;
     lastSource = data.source || data.sourceUrl || "";
     lastSourceUrl = data.sourceUrl || "";
     const when = data.refreshed
-      ? new Date(data.refreshed).toLocaleTimeString()
+      ? new Date(data.refreshed).toLocaleString(undefined, {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit"
+        })
       : new Date().toLocaleTimeString();
     const withMedia = current.filter((s) => s.media?.length).length;
-    setStatus(
-      `Live feed · ${current.length} reports from Orca Network (${lastSource})` +
-        (withMedia ? ` · ${withMedia} with media links` : "") +
-        ` · ${when}`,
-      "live"
-    );
+    const mediaBit = withMedia ? ` · ${withMedia} with media links` : "";
+    if (fromSnapshot) {
+      setStatus(
+        `Cached Orca Network reports · ${current.length} pins (${lastSource || "cache"})` +
+          mediaBit +
+          ` · updated ${when}`,
+        "live"
+      );
+    } else {
+      setStatus(
+        `Live feed · ${current.length} reports from Orca Network (${lastSource})` +
+          mediaBit +
+          ` · ${when}`,
+        "live"
+      );
+    }
     apply();
   }
 
@@ -431,10 +607,36 @@
     lastSourceUrl = "https://orcanetwork.org/";
     setStatus(
       reason ||
-        "Sample sightings only — start with `python3 server.py` for a live Orca Network feed (CORS blocks browser-only fetch).",
+        "Sample sightings only — could not reach Orca Network. Try Refresh, or open orcanetwork.org.",
       "fallback"
     );
     apply();
+  }
+
+  /** Actions-refreshed cache for when the live API is unreachable. */
+  async function loadFromStaticSnapshot() {
+    try {
+      const bust = `t=${Date.now()}`;
+      const res = await fetch(siteUrl(`data/sightings.json?${bust}`), {
+        signal: abortableTimeout(12000),
+        cache: "no-store"
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (!data || !Array.isArray(data.sightings) || data.sightings.length < 2) {
+        return null;
+      }
+      return {
+        ...data,
+        ok: true,
+        live: false,
+        static: true,
+        source: data.source || "cached snapshot",
+        sourceUrl: data.sourceUrl || "https://orcanetwork.org/"
+      };
+    } catch (_) {
+      return null;
+    }
   }
 
   function apply() {
@@ -648,29 +850,57 @@
       .replace(/"/g, "&quot;");
   }
 
-  async function refresh(force) {
-    setStatus("Fetching Orca Network sightings…", "loading");
+  function startLivePolling() {
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(() => {
+      if (document.hidden) return;
+      refresh(true).catch((e) => console.warn("Sightings poll failed", e));
+    }, LIVE_POLL_MS);
+  }
 
-    // 1) Local proxy (recommended)
+  async function refresh(force) {
+    setStatus("Fetching latest Orca Network sightings…", "loading");
+
+    // 1) Optional local server.py (richer parse when developing)
     const local = await loadFromLocalApi(!!force);
     if (local) {
-      applyData(local);
+      applyData(local, "live");
       return true;
     }
 
-    // 2) CORS proxies (best-effort)
+    // 2) Live: Orca Network WordPress REST (CORS-open — works on GitHub Pages)
+    try {
+      const wp = await loadFromWpApi((c) => {
+        setStatus(`Loading Orca Network · ${c.month} ${c.year}…`, "loading");
+      });
+      if (wp) {
+        applyData(wp, "live");
+        return true;
+      }
+    } catch (e) {
+      console.warn("WP REST feed failed", e);
+    }
+
+    // 3) CORS HTML proxies (secondary live path)
     try {
       const proxied = await loadFromProxies();
       if (proxied) {
-        applyData(proxied);
+        applyData(proxied, "live");
         return true;
       }
     } catch (e) {
       console.warn("Proxy feed failed", e);
     }
 
+    // 4) GitHub Actions cache (stale but real data if live paths failed)
+    const snap = await loadFromStaticSnapshot();
+    if (snap) {
+      applyData(snap, "snapshot");
+      return true;
+    }
+
     loadFallback(
-      "Could not reach a live Orca Network monthly report. Run `python3 server.py` then open http://127.0.0.1:8080 — or check orcanetwork.org."
+      "Could not reach Orca Network right now. Sample pins shown — try Refresh, or visit orcanetwork.org."
     );
     return false;
   }
@@ -692,7 +922,7 @@
     // Show samples immediately, then upgrade to live
     loadFallback("Loading live Orca Network feed…");
     setStatus("Loading live Orca Network feed…", "loading");
-    refresh(false);
+    refresh(false).then(() => startLivePolling());
   }
 
   SJI.sightings = {

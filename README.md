@@ -6,7 +6,7 @@ A feature-rich, New York Times–style interactive website about the San Juan Is
 
 **https://nathanajohnson.github.io/san-juan-islands/**
 
-Hosted on GitHub Pages (static). The local Python server below is optional and mainly improves the live whale-sightings feed.
+Hosted on GitHub Pages (static). Whale pins load **live** in the browser from [Orca Network’s WordPress REST API](https://orcanetwork.org/wp-json/wp/v2/whale_sightings) (open CORS — no backend required). A GitHub Actions cache at `data/sightings.json` is only a fallback.
 
 ## Open it locally (recommended for whale feed)
 
@@ -58,15 +58,37 @@ The “Google satellite” basemap button appears when a key is present. Without
 
 ## Whale sighting feed
 
-With `python3 server.py`:
+### How live data works on GitHub Pages
 
-1. Server fetches the latest available monthly report from [Orca Network](https://orcanetwork.org/whale_sightings/…) (walks back up to 18 months)
-2. Parses species, groups (e.g. T65Bs, J pod), dates, place names, and embedded lat/lng
-3. Client loads `GET /api/sightings` and draws pins on the **live map** and **whale traffic canvas**
+GitHub Pages is static, so it cannot run `server.py`. Instead the browser calls Orca Network’s public WordPress REST endpoint directly:
 
-Without the proxy, the client tries public CORS proxies, then falls back to a curated sample set. Always open Orca Network for authoritative, up-to-date reports.
+```
+GET https://orcanetwork.org/wp-json/wp/v2/whale_sightings?slug=october-2025-whale-sightings
+```
+
+That API returns the full monthly report HTML and **allows CORS from any origin**, so a Pages site can load the latest published month without a proxy. The client walks newest → older months (up to 18), parses species / places / coordinates, and re-polls about every 10 minutes while the tab is open.
+
+### Load order
+
+1. **`GET /api/sightings`** if you run `python3 server.py` (optional; same data, richer media parse)
+2. **Orca Network WP REST** (primary live path on GitHub Pages)
+3. **Public CORS proxies** to monthly HTML pages (secondary)
+4. **`data/sightings.json`** Actions cache (fallback if live fetch fails)
+5. **In-file samples** only if everything else fails
+
+Refresh the cache snapshot (CI / offline fallback):
 
 ```bash
+python3 scripts/export_sightings.py
+```
+
+An hourly GitHub Action (`.github/workflows/refresh-sightings.yml`) re-exports `data/sightings.json` so the site still has recent pins if Orca Network is briefly unreachable. Always open Orca Network for authoritative, up-to-date reports.
+
+```bash
+# Live API the browser uses (no key)
+curl -s 'https://orcanetwork.org/wp-json/wp/v2/whale_sightings?slug=october-2025-whale-sightings&_fields=slug,modified' | head
+
+# Local server (optional)
 curl -s http://127.0.0.1:8080/api/sightings | head
 ```
 
